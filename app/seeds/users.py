@@ -14,7 +14,7 @@ def seed_users():
         username='marnie',
         email='marnie@aa.io',
         password='password',
-        firstname="Marnie".
+        firstname="Marnie",
         lastname="WasThere")
     bobbie = User(
         username='bobbie', email='bobbie@aa.io', password='password',
