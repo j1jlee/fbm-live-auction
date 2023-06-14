@@ -15,7 +15,7 @@ class Item(db.Model):
     lastKnownPriceCents = db.Column(db.Integer, nullable=False)
     imageUrl = db.Column(db.Text)
 
-    ownerId = db.Column(db.Integer, db.ForeignKey("users.id")) #table
+    ownerId = db.Column(db.Integer, db.ForeignKey("users.id")) 
     owner = db.relationship("User", back_populates="items")
 
     #https://github.com/appacademy/Module-6-Resources/blob/main/group_project_resources/flask-sqlalchemy-quickref.md

@@ -1,21 +1,31 @@
-from app.models import db, Item, environment, SCHEMA
+from app.models import db, Item, User, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
 def seed_items():
-    item1 = Item(
-        
 
-    db.session.add(bobbie)
+    demo_user_ref = User.query.filter(User.username == "Demo").first()
+
+    item1 = Item(
+            name = "18th Century Vase",
+            description = "This is a 18th Century Vase.... from somewhere",
+            lastKnownPriceCents = 50000, #so, $500
+            imageUrl = "defaultImage.png",
+
+            owner = demo_user_ref #hopefully this works
+            )
+
+    db.session.add(item1)
     db.session.commit()
 
-"""     id = db.Column(db.Integer, primary_key=True)
-    ownerId = db.Column(db.Integer, nullable=False)
+"""         id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, default="No description provided")
-    # lastKnownPrice = db.Column(db.Float(2))
     lastKnownPriceCents = db.Column(db.Integer, nullable=False)
-    imageUrl = db.Column(db.Text) """
+    imageUrl = db.Column(db.Text)
+
+    ownerId = db.Column(db.Integer, db.ForeignKey("users.id"))
+    owner = db.relationship("User", back_populates="items") """
 
 
 
