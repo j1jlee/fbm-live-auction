@@ -14,6 +14,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
+    firstname = db.Column(db.String(50), nullable=False)
+    lastname = db.Column(db.String(50), nullable=False)
+    
     cashCents = db.Column(db.Integer, default=0)
     items = db.relationship("Item", back_populates="owner")
     #                       Class name,            relationship var
