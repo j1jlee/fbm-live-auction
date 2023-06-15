@@ -32,14 +32,17 @@ def post_new_item():
     form = createItemForm(csrf_enabled=True)
 
 
-    print("\n\n\nin post item route", request.cookies)
+    # print("\n\n\nin post item route", request.cookies)
 
-    print("what about this?", request.get_json(force=True))
+    # print("what about this?", request.get_json(force=True))
 
-    # print("what is form?", form)
-    # print("does form have key 'csrf-token??", form.get_json(force=True))
+    # print("what is form dir?", dir(form))
+    # # print("what is form[csrf-token]?", form["csrf-token"])
+    # print("what is form[csrf-token]?", form['csrf-token'])
+    # # print("does form have key 'csrf-token??", form.get_json(force=True))
 
-    form['csrf-token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = request.cookies['csrf_token']
+    #THE KEY IS CSRF_TOKEN, NOT CSRF-TOKEN
 
     if form.validate_on_submit():
         data = form.data
@@ -53,6 +56,8 @@ def post_new_item():
 
         db.session.add(new_item)
         db.session.commit()
+        return new_item.to_dict()
+    
     if form.errors:
         return {"errors" : form.errors}
 

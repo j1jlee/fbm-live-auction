@@ -41,6 +41,9 @@ function ItemListPage() {
                 <li>Item ID: {item.id}</li>
                 <li>Name: {item.name}</li>
                <li>Description: {item.description}</li>
+               <li>lastKnownPrice: {item.lastKnownPriceCents}</li>
+               <li>imageUrl: {item.imageUrl}</li>
+               <li>ownerId: {item.ownerId}</li>
                </ul>
                 </>
             )) : <li>No items listed</li>
