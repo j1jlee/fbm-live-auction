@@ -4,8 +4,6 @@ import { useModal } from "../../context/Modal";
 
 import { createItemThunk } from "../../store/item"
 
-import { applyMiddleware } from "redux";
-
 function ItemCreateModal() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState([]);

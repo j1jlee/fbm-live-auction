@@ -9,6 +9,7 @@ import "./ItemListPage.css"
 import { getItemsThunk } from "../../store/item";
 
 import ItemCreateModal from "../ItemCreateModal";
+import ItemDeleteModal from "../ItemDeleteModal";
 import OpenModalButton from "../OpenModalButton";
 
 
@@ -26,8 +27,8 @@ function ItemListPage() {
         dispatch(getItemsThunk())
     }, [dispatch])
 
-    console.log("ALL ITEMS", allItems)
-    console.log("ALL ITEMS LIST", allItemsList)
+    // console.log("ALL ITEMS", allItems)
+    // console.log("ALL ITEMS LIST", allItemsList)
 
     //redirect user to landing page if not logged in
     currentUser ? console.log("currentUser exists") : history.push("/");
@@ -54,6 +55,10 @@ function ItemListPage() {
                <li>imageUrl: {item.imageUrl}</li>
                <li>ownerId: {item.ownerId}</li>
                </ul>
+               <OpenModalButton
+                    buttonText="Delete Item"
+                    modalComponent={<ItemDeleteModal itemId={item.id}/>}
+                />
                 </>
             )) : <li>No items listed</li>
             }

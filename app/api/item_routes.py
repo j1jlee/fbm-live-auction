@@ -26,6 +26,22 @@ def get_single_item(id):
     item = Item.query.get(id)
     return item.to_dict()
 
+@item_routes.route('/<int:id>', methods=["DELETE"])
+@login_required
+def delete_single_item(id):
+    item = Item.query.get(id)
+
+    if item is None:
+        #syntax for returning 404??
+        return {"error": f"Item {id} not found for delete"}, 404
+    item_name = item.name
+
+    db.session.delete(item)
+    db.session.commit()
+
+    return {"message": f"Item {item_name} successfully deleted"}
+
+
 @item_routes.route('/new', methods=["POST"])
 @login_required
 def post_new_item():
@@ -57,7 +73,7 @@ def post_new_item():
         db.session.add(new_item)
         db.session.commit()
         return new_item.to_dict()
-    
+
     if form.errors:
         return {"errors" : form.errors}
 

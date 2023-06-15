@@ -20,9 +20,9 @@ const updateItem = (item) => ({
     payload: item
 })
 
-const deleteItem = (item) => ({
+const deleteItem = (itemId) => ({
     type: DELETE_ITEM,
-    payload: item
+    payload: itemId
 })
 
 
@@ -54,11 +54,22 @@ export const createItemThunk = (item) => async (dispatch) => {
         return newItem;
     } else {
         const errors = await response.json();
-
         console.log("\n\n\nerrors from create item thunk", errors)
-
         return errors;
     }
+}
+
+export const deleteItemThunk = (itemId) => async (dispatch) => {
+    const response = await fetch(`/api/items/${itemId}`, {
+        method: "DELETE"})
+
+    if (response.ok) {
+        dispatch(deleteItem(itemId));
+    } else {
+        const errors = await response.json();
+        return errors;
+    }
+
 }
 
 // export const authenticate = () => async (dispatch) => {
@@ -104,6 +115,20 @@ export default function itemReducer(state = initialState, action) {
 
             resState[action.payload.id] = action.payload;
             return resState;
+        case DELETE_ITEM:
+            const delState = {...state};
+            const deleteItemId = action.payload;
+
+            console.log("delete item id", deleteItemId)
+
+            try {
+                delete delState[deleteItemId];
+                console.log("item successfully deleted; store")
+            } catch (e) {
+                console.log("unable to delete item; store");
+            }
+            return delState;
+
 
         default:
             return state;
