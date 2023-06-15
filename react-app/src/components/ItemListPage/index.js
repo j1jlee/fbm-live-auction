@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import "./ItemListPage.css"
 import { getItemsThunk } from "../../store/item";
 
+import ItemCreateModal from "../ItemCreateModal";
+import OpenModalButton from "../OpenModalButton";
+
 
 function ItemListPage() {
 
@@ -24,6 +27,13 @@ function ItemListPage() {
     return (
         <>
         <h1>Item list Page here!</h1>
+
+        <div>
+        <OpenModalButton
+                    buttonText="Create New Item"
+                    modalComponent={<ItemCreateModal />}
+                />
+        </div>
         <div>
             {allItemsList ? allItemsList.map((item) => (
                 <>

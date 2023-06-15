@@ -40,6 +40,26 @@ export const getItemsThunk = () => async (dispatch) => {
 
 }
 
+export const createItemThunk = (item) => async (dispatch) => {
+    const response = await fetch("/api/items/new",
+    {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(item)
+    })
+
+    if (response.ok) {
+        const newItem = await response.json();
+        dispatch(createItem(newItem))
+        return newItem;
+    } else {
+        const errors = await response.json();
+
+        console.log("\n\n\nerrors from create item thunk", errors)
+
+        return errors;
+    }
+}
 
 // export const authenticate = () => async (dispatch) => {
 //     const response = await fetch("/api/auth/", {
@@ -77,6 +97,14 @@ export default function itemReducer(state = initialState, action) {
                 })
             }
             return newItems;
+        case CREATE_ITEM:
+            const resState = {...state};
+
+            console.log("item?", action.payload);
+
+            resState[action.payload.id] = action.payload;
+            return resState;
+
         default:
             return state;
     }

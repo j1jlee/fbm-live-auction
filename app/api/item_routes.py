@@ -1,6 +1,8 @@
 from flask import Blueprint, request
 from flask_login import login_required
-from app.models import Item
+from app.models import db, Item
+
+from app.forms.create_item_form import createItemForm
 
 item_routes = Blueprint('items', __name__)
 
@@ -23,6 +25,28 @@ def get_single_item(id):
     """
     item = Item.query.get(id)
     return item.to_dict()
+
+@item_routes.route('/new', methods=["POST"])
+@login_required
+def post_new_item():
+    form = createItemForm()
+    form['csrf-token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        data = form.data
+        new_item = Item(
+            name = data['name'],
+            description = data['description'],
+            lastKnownPriceCents = data['lastKnownPriceCents'],
+            imageUrl = data['imageUrl'],
+            ownerId = data['ownerId']
+        )
+
+        db.session.add(new_item)
+        db.session.commit()
+    if form.errors:
+        return {"errors" : form.errors}
+
 
 @item_routes.route('/post_test', methods=["POST"])
 # @login_required
