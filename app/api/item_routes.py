@@ -65,20 +65,20 @@ def update_single_item(id):
     if edit_item is None:
         return {"error": f"Item {id} not found to edit"}, 404
 
-    print("do i need to to_dict first????")
+    print("\n\n\nChanging: ")
 
     # edit_item = edit_item.to_dict()
 
     if form.validate_on_submit():
         data = form.data
         if data['name']:
-            print(f"Changing item name from {edit_item.name} to data['name']")
+            print(f"Changing item name from {edit_item.name} to {data['name']}")
             edit_item.name = data['name']
         if data['description']:
-            print(f"Changing item description from {edit_item.description} to data['description']")
+            print(f"Changing item description from {edit_item.description} to {data['description']}")
             edit_item.description = data['description']
         if data['imageUrl']:
-            print(f"Changing item imageUrl from {edit_item.imageUrl} to data['imageUrl']")
+            print(f"Changing item imageUrl from {edit_item.imageUrl} to {data['imageUrl']}")
             edit_item.imageUrl = data['imageUrl']
         # if data['name']:
         #     print(f"Changing item name from {edit_item['name']} to data['name']")
