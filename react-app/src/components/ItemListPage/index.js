@@ -43,7 +43,7 @@ function ItemListPage() {
                <li>Description: {item.description}</li>
                </ul>
                 </>
-            )) : <li>Nope</li>
+            )) : <li>No items listed</li>
             }
         </div>
         </>

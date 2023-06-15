@@ -29,7 +29,16 @@ def get_single_item(id):
 @item_routes.route('/new', methods=["POST"])
 @login_required
 def post_new_item():
-    form = createItemForm()
+    form = createItemForm(csrf_enabled=True)
+
+
+    print("\n\n\nin post item route", request.cookies)
+
+    print("what about this?", request.get_json(force=True))
+
+    # print("what is form?", form)
+    # print("does form have key 'csrf-token??", form.get_json(force=True))
+
     form['csrf-token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():

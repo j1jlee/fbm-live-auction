@@ -35,6 +35,18 @@ function ItemCreateModal() {
     })
     }
 
+    const validImageSuffix = ["png", "jpg", "jpeg", "gif", "tiff", "bmp"]
+    // console.log("itemimageurl", itemImageUrl)
+    // console.log("imageUrl.split(',')", itemImageUrl.split("."))
+    // console.log("suffix test", itemImageUrl.split(".")[1]);
+    // console.log("split length", itemImageUrl.split(".").length)
+
+    if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
+        // console.log("add the error, no . OR wrong suffix")
+        submitErrors.push({itemImageUrl: "image URL should be format 'png', 'jpg', 'jpeg', 'gif', 'tiff', or 'bmp'"})
+    }
+
+
     if (submitErrors.length) {
         setErrors(submitErrors)
         return;
@@ -68,8 +80,8 @@ function ItemCreateModal() {
     <>
       <div>
       <h1>Create New Item</h1>
-      <form onSubmit={handleSubmit} >
-        method={"POST"}
+      <form onSubmit={handleSubmit} method={"POST"}>
+
         <ul>
           {errors.map((error) => {
             const errorEntry = Object.entries(error);
@@ -124,6 +136,21 @@ function ItemCreateModal() {
           />
         </label>
         </div>
+
+        <label>
+          Image URL
+          <input
+            // id="create-rename-input"
+            type="text"
+            value={itemImageUrl}
+            onChange={(e) => {
+              setItemImageUrl(e.target.value)
+              }
+            }
+            //   required
+          />
+        </label>
+
 
         <button type="submit">Create Item</button>
       </form>
