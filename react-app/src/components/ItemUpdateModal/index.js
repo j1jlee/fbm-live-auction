@@ -73,15 +73,23 @@ function ItemUpdateModal({update_item}) {
 
     //   closeModal();
     // }
+    if (Object.entries(updateItem).length === 0) {
+        console.log("No changes detected");
+        closeModal();
+        return;
+    }
 
     try {
           const result = dispatch(updateItemThunk(updateItem, update_item.id));
           if (result.errors) {
             setErrors(result.errors)
+            return;
           }
           closeModal();
+          return;
       } catch (e) {
         console.log("what is the error?", e)
+        return;
       }
 
     }
@@ -151,7 +159,7 @@ function ItemUpdateModal({update_item}) {
         </label>
 
 
-        <button type="submit">Create Item</button>
+        <button type="submit">Update Item</button>
       </form>
 
       </div>

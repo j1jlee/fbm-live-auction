@@ -42,31 +42,53 @@ def delete_single_item(id):
 
     return {"message": f"Item {item_name} successfully deleted"}
 
-@item_routes.route('/<int:id>', methods=["UPDATE"])
+@item_routes.route('/<int:id>', methods=["PUT"])
+# @item_routes.route('/<int:id>', methods=["UPDATE"])
 @login_required
 def update_single_item(id):
 
-    print("At update item flask route")
+    print("\n\n\nAt update item flask route")
+    print("getting id>>", id)
     #edit this
     form = updateItemForm()
+
+    print("at form")
+
     form['csrf_token'].data = request.cookies['csrf_token']
+
+
+    print("form data csrf token")
+
 
     # print("request data", request.data)
     edit_item = Item.query.get(id)
     if edit_item is None:
         return {"error": f"Item {id} not found to edit"}, 404
 
+    print("do i need to to_dict first????")
+
+    # edit_item = edit_item.to_dict()
+
     if form.validate_on_submit():
         data = form.data
         if data['name']:
-            print(f"Changing item name from {edit_item['name']} to data['name']")
-            edit_item['name'] = data['name']
-        if data['desription']:
-            print(f"Changing item desription from {edit_item['desription']} to data['desription']")
-            edit_item['desription'] = data['desription']
+            print(f"Changing item name from {edit_item.name} to data['name']")
+            edit_item.name = data['name']
+        if data['description']:
+            print(f"Changing item description from {edit_item.description} to data['description']")
+            edit_item.description = data['description']
         if data['imageUrl']:
-            print(f"Changing item imageUrl from {edit_item['imageUrl']} to data['imageUrl']")
-            edit_item['imageUrl'] = data['imageUrl']
+            print(f"Changing item imageUrl from {edit_item.imageUrl} to data['imageUrl']")
+            edit_item.imageUrl = data['imageUrl']
+        # if data['name']:
+        #     print(f"Changing item name from {edit_item['name']} to data['name']")
+        #     edit_item['name'] = data['name']
+        # if data['description']:
+        #     print(f"Changing item description from {edit_item['description']} to data['description']")
+        #     edit_item['description'] = data['description']
+        # if data['imageUrl']:
+        #     print(f"Changing item imageUrl from {edit_item['imageUrl']} to data['imageUrl']")
+        #     edit_item['imageUrl'] = data['imageUrl']
 
 
          #lastKnownPriceCents should NOT be changeable

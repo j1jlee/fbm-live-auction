@@ -60,12 +60,16 @@ export const createItemThunk = (item) => async (dispatch) => {
 }
 
 export const updateItemThunk = (item, oldItemId) => async (dispatch) => {
+    //item here is an object containing JUST the attributes to change
+    //oldItemId refers to the item we're updating
     console.log("at update item thunk, item", item)
     console.log("thunk, item.id??", oldItemId)
 
     const response = await fetch(`/api/items/${oldItemId}`, {
-        method: "UPDATE",
+        method: "PUT",
+        // method: "UPDATE",
         headers: {"Content-Type": "application/json"},
+        // body: item
         body: JSON.stringify(item)
     })
 
@@ -73,6 +77,9 @@ export const updateItemThunk = (item, oldItemId) => async (dispatch) => {
 
     if (response.ok) {
         const editedItem = await response.json();
+
+        console.log("edited item?", editedItem)
+
         dispatch(updateItem(editedItem))
         return editedItem;
     } else {
