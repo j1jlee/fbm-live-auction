@@ -10,6 +10,7 @@ import { getItemsThunk } from "../../store/item";
 
 import ItemCreateModal from "../ItemCreateModal";
 import ItemDeleteModal from "../ItemDeleteModal";
+import ItemUpdateModal from "../ItemUpdateModal";
 import OpenModalButton from "../OpenModalButton";
 
 
@@ -55,6 +56,11 @@ function ItemListPage() {
                <li>imageUrl: {item.imageUrl}</li>
                <li>ownerId: {item.ownerId}</li>
                </ul>
+               <OpenModalButton
+                    buttonText="Update Item"
+                    modalComponent={<ItemUpdateModal update_item={item}/>}
+                />
+
                <OpenModalButton
                     buttonText="Delete Item"
                     modalComponent={<ItemDeleteModal itemId={item.id}/>}

@@ -59,6 +59,29 @@ export const createItemThunk = (item) => async (dispatch) => {
     }
 }
 
+export const updateItemThunk = (item, oldItemId) => async (dispatch) => {
+    console.log("at update item thunk, item", item)
+    console.log("thunk, item.id??", oldItemId)
+
+    const response = await fetch(`/api/items/${oldItemId}`, {
+        method: "UPDATE",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(item)
+    })
+
+    // console.log("what is the response thjunk??", response)
+
+    if (response.ok) {
+        const editedItem = await response.json();
+        dispatch(updateItem(editedItem))
+        return editedItem;
+    } else {
+        const errors = await response.json();
+        console.log('\n\n\nerrors from update item thunk')
+        return errors;
+    }
+}
+
 export const deleteItemThunk = (itemId) => async (dispatch) => {
     const response = await fetch(`/api/items/${itemId}`, {
         method: "DELETE"})
@@ -128,6 +151,20 @@ export default function itemReducer(state = initialState, action) {
                 console.log("unable to delete item; store");
             }
             return delState;
+
+        case UPDATE_ITEM:
+            const updateState = {...state};
+            const updateItem = action.payload;
+
+            console.log(`store, updating item ${updateItem.name}`)
+
+            try {
+                updateState[updateItem.id] = updateItem;
+                console.log(`item ${updateItem.name} successfully updated; store`)
+            } catch {
+                console.log("Unable to update item; store")
+            }
+            return updateState;
 
 
         default:

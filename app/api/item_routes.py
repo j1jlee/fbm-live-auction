@@ -3,6 +3,7 @@ from flask_login import login_required
 from app.models import db, Item
 
 from app.forms.create_item_form import createItemForm
+from app.forms.update_item_form import updateItemForm
 
 item_routes = Blueprint('items', __name__)
 
@@ -40,6 +41,52 @@ def delete_single_item(id):
     db.session.commit()
 
     return {"message": f"Item {item_name} successfully deleted"}
+
+@item_routes.route('/<int:id>', methods=["UPDATE"])
+@login_required
+def update_single_item(id):
+
+    print("At update item flask route")
+    #edit this
+    form = updateItemForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    # print("request data", request.data)
+    edit_item = Item.query.get(id)
+    if edit_item is None:
+        return {"error": f"Item {id} not found to edit"}, 404
+
+    if form.validate_on_submit():
+        data = form.data
+        if data['name']:
+            print(f"Changing item name from {edit_item['name']} to data['name']")
+            edit_item['name'] = data['name']
+        if data['desription']:
+            print(f"Changing item desription from {edit_item['desription']} to data['desription']")
+            edit_item['desription'] = data['desription']
+        if data['imageUrl']:
+            print(f"Changing item imageUrl from {edit_item['imageUrl']} to data['imageUrl']")
+            edit_item['imageUrl'] = data['imageUrl']
+
+
+         #lastKnownPriceCents should NOT be changeable
+         #ownerId should NOT be manually changeable
+
+        # new_item = Item(
+        #     name = data['name'],
+        #     description = data['description'],
+        #     lastKnownPriceCents = data['lastKnownPriceCents'],
+        #     imageUrl = data['imageUrl'],
+        #     ownerId = data['ownerId']
+        db.session.commit()
+        return edit_item.to_dict()
+
+    return { "errors": "Unknown error in update item"}
+    # if form.errors:
+    #     return {"errors" : form.errors}
+
+
+
 
 
 @item_routes.route('/new', methods=["POST"])
