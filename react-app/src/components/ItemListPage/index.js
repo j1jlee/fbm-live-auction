@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 // import { logout } from "../../store/session";
 // import OpenModalButton from "../OpenModalButton";
 // import LoginFormModal from "../LoginFormModal";
@@ -15,7 +16,11 @@ function ItemListPage() {
 
     const dispatch = useDispatch();
     const allItems = useSelector(state => state.items)
+    const currentUser = useSelector(state => state.session.user)
+    const history = useHistory();
+
     const allItemsList = allItems ? Object.values(allItems) : []
+
 
     useEffect(() => {
         dispatch(getItemsThunk())
@@ -23,6 +28,10 @@ function ItemListPage() {
 
     console.log("ALL ITEMS", allItems)
     console.log("ALL ITEMS LIST", allItemsList)
+
+    //redirect user to landing page if not logged in
+    currentUser ? console.log("currentUser exists") : history.push("/");
+
 
     return (
         <>
