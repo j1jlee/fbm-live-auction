@@ -16,9 +16,13 @@ class User(db.Model, UserMixin):
 
     firstname = db.Column(db.String(50), nullable=False)
     lastname = db.Column(db.String(50), nullable=False)
-    
+
     cashCents = db.Column(db.Integer, default=0)
     items = db.relationship("Item", back_populates="owner")
+
+    userAuctions = db.relationship("Auction", back_populates="seller")
+
+    userBids = db.relationship("Bid", back_populates="bidder")
     #                       Class name,            relationship var
 
     @property

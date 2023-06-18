@@ -12,10 +12,10 @@ class Bid(db.Model):
 
     #relationships, foreign keys
     auctionId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("auctions.id")))
-    auction = db.relationship("Auction", back_populates="bids")
+    bidAuction = db.relationship("Auction", back_populates="auctionBids")
     #bidder
     bidderId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")))
-    bidder = db.relationship("User", back_populates="bids")
+    bidder = db.relationship("User", back_populates="userBids")
 
     timeOfBid = db.Column(db.DateTime, nullable=False,
                            default=datetime.utcnow)
@@ -27,18 +27,28 @@ class Bid(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'auctionName': self.auctionName,
-            'auctionDescription': self.auctionDescription,
-            'auctionOpen': self.auctionOpen,
-            'startingBidCents': self.startingBidCents,
-            'finalBidCents': self.finalBidCents,
-            'createdAt': self.createdAt,
-            'updatedAt': self.updatedAt,
-            'startTime': self.startTime,
-            'endTime': self.endTime,
-            'auctionItemId': self.auctionItemId,
-            'sellerId': self.sellerId,
-            #does this work?
-            'bids': self.bids
+
+            'auctionId': self.auctionId,
+            'bidderId': self.bidderId,
+            'timeOfBid': self.timeOfBid,
+            'bidAmountCents': self.bidAmountCents
+
+            #test to see if this works later
+            #'bidder': self.bidder
+            #'auction': self.auction
+
+            # 'auctionName': self.auctionName,
+            # 'auctionDescription': self.auctionDescription,
+            # 'auctionOpen': self.auctionOpen,
+            # 'startingBidCents': self.startingBidCents,
+            # 'finalBidCents': self.finalBidCents,
+            # 'createdAt': self.createdAt,
+            # 'updatedAt': self.updatedAt,
+            # 'startTime': self.startTime,
+            # 'endTime': self.endTime,
+            # 'auctionItemId': self.auctionItemId,
+            # 'sellerId': self.sellerId,
+            # #does this work?
+            # 'bids': self.bids
 
         }

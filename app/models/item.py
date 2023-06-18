@@ -18,6 +18,8 @@ class Item(db.Model):
     ownerId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")))
     owner = db.relationship("User", back_populates="items")
 
+    itemAuction = db.relationship("Auction", back_populates="auctionItem")
+
     #https://github.com/appacademy/Module-6-Resources/blob/main/group_project_resources/flask-sqlalchemy-quickref.md
 
     def to_dict(self):

@@ -31,13 +31,14 @@ class Auction(db.Model):
 
     #relationships, foreign keys
     auctionItemId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("items.id")))
-    auctionItem = db.relationship("Item", back_populates="auctions")
+    auctionItem = db.relationship("Item", back_populates="itemAuction")
+
     #auction item relationship
     sellerId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")))
-    seller = db.relationship("User", back_populates="auctions")
+    seller = db.relationship("User", back_populates="userAuctions")
     #seller relationship
     # bidId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("bid.id")))
-    bids = db.relationship("Bid", back_populates="auctions")
+    auctionBids = db.relationship("Bid", back_populates="bidAuction")
 
 
     #https://github.com/appacademy/Module-6-Resources/blob/main/group_project_resources/flask-sqlalchemy-quickref.md
