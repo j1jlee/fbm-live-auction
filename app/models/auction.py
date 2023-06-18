@@ -57,7 +57,7 @@ class Auction(db.Model):
             'endTime': self.endTime,
             'auctionItemId': self.auctionItemId,
             'sellerId': self.sellerId,
-            #does this work?
-            'bids': self.bids
+            #does this work?, no, bids are not JSON serializable
+            # 'bids': self.auctionBids
 
         }

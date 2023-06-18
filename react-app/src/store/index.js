@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import session from './session'
 import item from "./item"
 import itemReducer from './item';
+import auctionReducer from './auction';
 
 const rootReducer = combineReducers({
   session,
   items:itemReducer,
+  auctions: auctionReducer
 });
 
 

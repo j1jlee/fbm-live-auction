@@ -1,4 +1,4 @@
-from app.models import db, Auction, User, environment, SCHEMA
+from app.models import db, Auction, User, Item, environment, SCHEMA
 from sqlalchemy.sql import text
 
 from datetime import datetime
@@ -8,6 +8,7 @@ def seed_auctions():
 
     demo_user_ref = User.query.filter(User.username == "Demo").first()
 
+    auction_item_ref = Item.query.filter(Item.name.like("%18th Century%")).first()
 
     auction_test = Auction(
         auctionName = "First Test Auction",
@@ -16,8 +17,11 @@ def seed_auctions():
 
         startingBidCents = 50000,
         startTime = datetime.strptime("20/07/23 16:30", "%d/%m/%y %H:%M"),
-        endTime = datetime.strptime("20/07/23 17:00", "%d/%m/%y %H:%M")
+        endTime = datetime.strptime("20/07/23 17:00", "%d/%m/%y %H:%M"),
         #finalBidCents, createdAt, updatedAt, all default
+
+        auctionItem = auction_item_ref,
+        seller = demo_user_ref
     )
 
 

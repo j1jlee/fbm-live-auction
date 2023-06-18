@@ -7,6 +7,7 @@ import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 
 import ItemListPage from "./components/ItemListPage"
+import LandingPageAuctionList from "./components/LandingPageAuctionList"
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path="/items">
             <ItemListPage />
+          </Route>
+          <Route exact path="/">
+            <LandingPageAuctionList />
           </Route>
         </Switch>
       )}
