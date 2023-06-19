@@ -32,6 +32,24 @@ function LandingPageAuctionList() {
 
     console.log("all items at auction?", allItems)
 
+    const testTime = "Thu, 20 Jul 2023 16:30:00 GMT"
+    const testDateTime = new Date(testTime)
+
+    const nowTime = new Date();
+
+    console.log("nowTime", nowTime)
+    console.log("\n\n\nNOWTIME OFFSET", nowTime.getTimezoneOffset())
+
+    console.log("does this work?", testDateTime)
+
+    console.log("getTIme??", nowTime.getTime())
+
+    function timeUTCtoLocal(utcDateTime) {
+        const returnDateTime = new Date(utcDateTime);
+        return returnDateTime.toString();
+    }
+
+
     return (
         <>
         <h1>Auction List Page here!</h1>
@@ -50,6 +68,7 @@ function LandingPageAuctionList() {
                <li>Open: {auction.auctionOpen === true ? "True" : "False"}</li>
 
                <li>startTime: {auction.startTime}</li>
+               <li> {timeUTCtoLocal(auction.startTime) }</li>
                <li>endTime: {auction.endTime}</li>
                <li>sellerId: {auction.sellerId}</li>
 

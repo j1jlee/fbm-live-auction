@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 
 import ItemCreateModal from "../ItemCreateModal";
+import AuctionCreateModal from '../AuctionCreateModal';
 
 import "./NavSideBar.css";
 import OpenModalButton from '../OpenModalButton';
@@ -19,18 +20,25 @@ function NavSideBar({ isLoaded }){
         <ul>
 
 			<li>
-				<NavLink exact to="/">Home</NavLink>
+				<NavLink exact to="/">Auctions</NavLink>
 			</li>
             {sessionUser ? (
 			<li>
 				<NavLink exact to="/items">Items</NavLink>
 			</li>
-            ) : "Items Disabled"}
+            ) : <li><a>Items Disabled</a></li> }
 
             <li>
                 <OpenModalButton
                     buttonText="+ Create New Item"
                     modalComponent={<ItemCreateModal />}
+                />
+            </li>
+
+            <li>
+                <OpenModalButton
+                    buttonText="+ Schedule New Auction"
+                    modalComponent={<AuctionCreateModal />}
                 />
             </li>
 		</ul>

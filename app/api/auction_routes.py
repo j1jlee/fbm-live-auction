@@ -2,6 +2,9 @@ from flask import Blueprint, request
 from flask_login import login_required
 from app.models import db, Item, Auction
 
+from datetime import datetime
+
+from app.forms.create_auction_form import createAuctionForm
 
 auction_routes = Blueprint('auctions', __name__)
 
@@ -106,34 +109,38 @@ def update_single_auction(id):
 @auction_routes.route('/new', methods=["POST"])
 @login_required
 def post_new_auction():
+
+    print("At create auction PY")
+
     form = createAuctionForm(csrf_enabled=True)
-
-
-    # print("\n\n\nin post item route", request.cookies)
-
-    # print("what about this?", request.get_json(force=True))
-
-    # print("what is form dir?", dir(form))
-    # # print("what is form[csrf-token]?", form["csrf-token"])
-    # print("what is form[csrf-token]?", form['csrf-token'])
-    # # print("does form have key 'csrf-token??", form.get_json(force=True))
 
     form['csrf_token'].data = request.cookies['csrf_token']
     #THE KEY IS CSRF_TOKEN, NOT CSRF-TOKEN
 
     if form.validate_on_submit():
         data = form.data
-        new_item = Item(
-            name = data['name'],
-            description = data['description'],
-            lastKnownPriceCents = data['lastKnownPriceCents'],
-            imageUrl = data['imageUrl'],
-            ownerId = data['ownerId']
+        new_auction = Auction(
+            # name = data['name'],
+            # description = data['description'],
+            # lastKnownPriceCents = data['lastKnownPriceCents'],
+            # imageUrl = data['imageUrl'],
+            # ownerId = data['ownerId']
+
+            auctionName = data['auctionName'],
+            auctionDescription = data['auctionDescription'],
+            auctionItemId = data['auctionItemId'],
+            startingBidCents = data['startingBidCents'],
+            startTime = data['startTime'],
+            endTime = data['endTime'],
+
+            createdAt = datetime.utcnow(),
+            updatedAt = datetime.utcnow()
+
         )
 
-        db.session.add(new_item)
+        db.session.add(new_auction)
         db.session.commit()
-        return new_item.to_dict()
+        return new_auction.to_dict()
 
     if form.errors:
         return {"errors" : form.errors}

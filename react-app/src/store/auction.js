@@ -41,12 +41,20 @@ export const getAuctionsThunk = () => async (dispatch) => {
 }
 
 export const createAuctionThunk = (auction) => async (dispatch) => {
+
+    console.log("\n\n\nAt create auction thunk")
+
+
     const response = await fetch("/api/auctions/new",
     {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(auction)
     })
+
+    if (response.errors) {
+        console.log("errors here,", response.errors)
+    }
 
     if (response.ok) {
         const newAuction = await response.json();
