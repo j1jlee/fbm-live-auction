@@ -5,9 +5,13 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import NavSideBar from "./components/NavSideBar";
 
 import ItemListPage from "./components/ItemListPage"
 import LandingPageAuctionList from "./components/LandingPageAuctionList"
+
+import "./App.css"
+
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +22,17 @@ function App() {
 
   return (
     <>
+      <div className="app-entire-wrapper">
+        <div className="app-navbar-one">
       <Navigation isLoaded={isLoaded} />
+        </div>   {/* end of navbar one */}
+
+    <div className="app-navbar-two-and-page">
+        <div className="app-navbar-two">
+        <NavSideBar isLoaded={isLoaded} />
+        </div>
+
+      <div className="app-just-page">
       {isLoaded && (
         <Switch>
           <Route path="/login" >
@@ -35,6 +49,11 @@ function App() {
           </Route>
         </Switch>
       )}
+      </div>
+
+    </div>{/* end of navbar-two-and-page */}
+
+      </div> {/* App entire wrapper ends here */}
     </>
   );
 }

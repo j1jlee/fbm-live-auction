@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 import { getAuctionsThunk } from "../../store/auction";
 import { getItemsThunk } from "../../store/item";
@@ -16,10 +16,10 @@ function LandingPageAuctionList() {
     const dispatch = useDispatch();
     const allItems = useSelector(state => state.items)
     const allAuctions = useSelector(state => state.auctions)
-    const currentUser = useSelector(state => state.session.user)
-    const history = useHistory();
+    // const currentUser = useSelector(state => state.session.user)
+    // const history = useHistory();
 
-    const allItemsList = allItems ? Object.values(allItems) : []
+    // const allItemsList = allItems ? Object.values(allItems) : []
     const allAuctionsList = allAuctions ? Object.values(allAuctions) : []
 
     useEffect(() => {
@@ -47,7 +47,7 @@ function LandingPageAuctionList() {
                <li>Item ID: {auction.auctionItemId}</li>
                <li>Item Name: {allItems ? allItems[auction.auctionItemId].name : "Item Not Found"}</li>
 
-               <li>Open: {auction.auctionOpen == true ? "True" : "False"}</li>
+               <li>Open: {auction.auctionOpen === true ? "True" : "False"}</li>
 
                <li>startTime: {auction.startTime}</li>
                <li>endTime: {auction.endTime}</li>

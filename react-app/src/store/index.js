@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import session from './session'
-import item from "./item"
+// import item from "./item"
 import itemReducer from './item';
 import auctionReducer from './auction';
 

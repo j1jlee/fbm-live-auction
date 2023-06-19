@@ -1,0 +1,74 @@
+
+* {
+    /* display: inline-block; */
+    margin: 0;
+}
+
+.app-entire-wrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.app-just-page {
+    /* background-color: beige; */
+    width: 100%;
+
+    padding: 1rem;
+}
+
+.app-navbar-one {
+    display: flex;
+    width: 100%;
+
+    /* padding: 1.5rem; */
+    justify-content: space-around;
+
+
+}
+
+.app-navbar-two-and-page {
+    display: flex;
+    height: 100%;
+}
+
+.app-navbar-two {
+    height: 100%;
+    width: 15rem;
+
+    /* background-color: lavenderblush; */
+    box-shadow: 1px 0px 5px 2px lightgray;
+    /* margin-top: 0; */
+
+    /* border-top: 1px solid white; */
+
+    padding: 0.3rem;
+}
+
+.app-navbar-two ul {
+    /* background-color: blueviolet; */
+    /* list-style: none; */
+    padding-left: 0;
+}
+
+.app-navbar-two a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
+
+.app-navbar-two li {
+    /* background-color: brown; */
+    list-style: none;
+
+    padding: 0.5rem;
+    border-radius: 7px;
+
+    margin: 3px;
+}
+
+.app-navbar-two li:hover {
+    background-color: lightgray;
+
+    transition: background-color 0.3s;
+}

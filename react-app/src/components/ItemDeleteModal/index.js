@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 
 import { deleteItemThunk } from "../../store/item"
