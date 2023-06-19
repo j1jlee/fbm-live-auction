@@ -39,22 +39,23 @@ function ItemListPage() {
         <>
         <h1>Item list Page here!</h1>
 
-        <div>
+        {/* <div>
         <OpenModalButton
                     buttonText="Create New Item"
                     modalComponent={<ItemCreateModal />}
                 />
-        </div>
-        <div>
+        </div> */}
+        <div className="item-list-container">
             {allItemsList ? allItemsList.map((item) => (
                 <>
-                <ul key={item.id}>
-                <li>Item ID: {item.id}</li>
-                <li>Name: {item.name}</li>
-               <li>Description: {item.description}</li>
-               <li>lastKnownPrice: {item.lastKnownPriceCents}</li>
-               <li>imageUrl: {item.imageUrl}</li>
-               <li>ownerId: {item.ownerId}</li>
+                <div className="item-list-node">
+                <ul>
+                <li key={item.id}>Item ID: {item.id}</li>
+                <li key={item.name}>Name: {item.name}</li>
+               <li key={item.description}>Description: {item.description}</li>
+               <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li>
+               <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
+               <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
                </ul>
                <OpenModalButton
                     buttonText="Update Item"
@@ -65,6 +66,9 @@ function ItemListPage() {
                     buttonText="Delete Item"
                     modalComponent={<ItemDeleteModal itemId={item.id}/>}
                 />
+
+                </div> {/* end of item list node */}
+
                 </>
             )) : <li>No items listed</li>
             }

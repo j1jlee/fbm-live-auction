@@ -34,7 +34,7 @@
 
 .app-navbar-two {
     height: 100%;
-    width: 15rem;
+    width: 20rem;
 
     /* background-color: lavenderblush; */
     box-shadow: 1px 0px 5px 2px lightgray;
@@ -60,15 +60,47 @@
 .app-navbar-two li {
     /* background-color: brown; */
     list-style: none;
-
-    padding: 0.5rem;
     border-radius: 7px;
 
     margin: 3px;
 }
 
+.app-navbar-two li a {
+    /* background-color: green; */
+    display: flex;
+    padding: 0.8rem;
+    border-radius: 7px;
+    height: 100%;
+    width: 90%;
+}
+
+.app-navbar-two li button {
+    background-color: #F0F8FF;
+    display: flex;
+    padding: 0.8rem;
+    border-radius: 7px;
+    border: 0;
+    height: 100%;
+    width: 100%;
+
+    color: #007FFF;
+    text-align: center;
+    font-weight: 600;
+}
+
+.app-navbar-two li button:hover {
+    background-color: lightgray;
+    transition: background-color 0.2s;
+}
+
+
+
 .app-navbar-two li:hover {
     background-color: lightgray;
 
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
+}
+
+.app-navbar-two-selected {
+    background-color: lightgray;
 }
