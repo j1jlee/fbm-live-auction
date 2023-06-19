@@ -51,11 +51,20 @@ function AuctionCreateModal() {
     // }
 
 
+    console.log("\n\n\nstartTime???", startTime)
+    console.log("typeof startTime???", typeof startTime)
+    console.log("\n\n\nendTime???", endTime)
+    console.log("typeof endTime???", typeof endTime)
+
     const timeNow = new Date();
     const timeNowMilli = timeNow.getTime();
 
     const startDateTimeIntoObj = new Date(startTime);
     const endDateTimeIntoObj = new Date(endTime);
+
+    console.log("\n\n\nis this working??", startDateTimeIntoObj)
+    console.log("\n\n\ntypeof??", typeof startDateTimeIntoObj)
+    console.log("\n\n\ndate obj to string?????", startDateTimeIntoObj.toString())
 
     if (startTime == "" || endTime == "") {
         submitErrors.push({Time: "Please select a starting and ending date"})
@@ -87,8 +96,8 @@ function AuctionCreateModal() {
        startingBidCents: startingBidCents * 100,
     //    startTime,
     //    endTime,
-        startTime: startDateTimeIntoObj,
-        endTime: endDateTimeIntoObj,
+        startTime: startDateTimeIntoObj.toString(),
+        endTime: endDateTimeIntoObj.toString(),
        auctionItemId,
        sellerId: currentUser.id
 
@@ -193,13 +202,13 @@ function AuctionCreateModal() {
             value={startTime}
             onChange={(e) => {
                 setStartTime(e.target.value)
-                console.log("typeof datetime local??", typeof startTime)
-                console.log("datetime local??", startTime)
-                console.log("into date?", Date(startTime))
-                const timeTest = new Date(startTime)
-                const timeNowTest = new Date()
-                console.log("into date getTime()?", timeTest.getTime())
-                console.log("now getTime()", timeNowTest.getTime())
+                // console.log("typeof datetime local??", typeof startTime)
+                // console.log("datetime local??", startTime)
+                // console.log("into date?", Date(startTime))
+                // const timeTest = new Date(startTime)
+                // const timeNowTest = new Date()
+                // console.log("into date getTime()?", timeTest.getTime())
+                // console.log("now getTime()", timeNowTest.getTime())
                 }
             }
             //   required

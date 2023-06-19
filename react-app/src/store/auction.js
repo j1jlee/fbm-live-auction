@@ -52,9 +52,6 @@ export const createAuctionThunk = (auction) => async (dispatch) => {
         body: JSON.stringify(auction)
     })
 
-    if (response.errors) {
-        console.log("errors here,", response.errors)
-    }
 
     if (response.ok) {
         const newAuction = await response.json();

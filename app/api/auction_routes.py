@@ -2,7 +2,9 @@ from flask import Blueprint, request
 from flask_login import login_required
 from app.models import db, Item, Auction
 
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from dateutil import parser
 
 from app.forms.create_auction_form import createAuctionForm
 
@@ -117,8 +119,46 @@ def post_new_auction():
     form['csrf_token'].data = request.cookies['csrf_token']
     #THE KEY IS CSRF_TOKEN, NOT CSRF-TOKEN
 
+
+
+
     if form.validate_on_submit():
         data = form.data
+
+
+
+        # strStartTime = data['startTime']
+        # strEndTime = data['endTime']
+
+        # formatStartTime = parser.parse(strStartTime)
+        # formatEndTime = parser.parse(strEndTime)
+        strStartTime = data['startTime']
+        strEndTime = data['endTime']
+
+        strStartTime = strStartTime.split(" (")[0]
+        strEndTime = strEndTime.split(" (")[0]
+
+        timeOffset = strStartTime[-5:]
+        # timeOffset = strStartTime.slice(-5)
+        pos_or_neg = 1 if timeOffset[0] == "-" else -1
+        #want to have the OPPOSITE of the offset
+
+        timeOffsetHours = int(timeOffset[1 : 3]) * pos_or_neg
+        # timeOffsetHours = int(timeOffset.slice(1, 3)) * pos_or_neg
+        timeOffsetMinutes = int(timeOffset[3:]) * pos_or_neg
+        # timeOffsetMinutes = int(timeOffset.slice(3)) * pos_or_neg
+
+
+        formatStartTime = datetime.strptime(strStartTime, "%a %b %d %Y %H:%M:%S %Z%z") + timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+        formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z") + timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+        # formatStartTime = datetime.strptime(strStartTime, "%a %b %d %Y %H:%M:%S %Z%z")
+        # formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z")
+        # Tue Jun 20 2023 17:05:00 GMT-0400 (Eastern Daylight Time)
+
+        #for some reason, not taking %z parameter, timezone offset
+
+
         new_auction = Auction(
             # name = data['name'],
             # description = data['description'],
@@ -126,12 +166,19 @@ def post_new_auction():
             # imageUrl = data['imageUrl'],
             # ownerId = data['ownerId']
 
+
+
+
             auctionName = data['auctionName'],
             auctionDescription = data['auctionDescription'],
             auctionItemId = data['auctionItemId'],
             startingBidCents = data['startingBidCents'],
-            startTime = data['startTime'],
-            endTime = data['endTime'],
+            # startTime = data['startTime'],
+            # endTime = data['endTime'],
+
+            startTime = formatStartTime,
+            endTime = formatEndTime,
+
 
             createdAt = datetime.utcnow(),
             updatedAt = datetime.utcnow()

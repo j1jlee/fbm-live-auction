@@ -16,8 +16,10 @@ class createAuctionForm(FlaskForm):
         #select in frontend
     #sellerId
     startingBidCents = IntegerField("startingBidCents")
-    startTime = DateTimeField("startTime")
-    endTime = DateTimeField("startTime")
+    # startTime = DateTimeField("startTime")
+    # endTime = DateTimeField("startTime")
+    startTime = StringField("startTime")
+    endTime = StringField("startTime")
 
 
     # 'endTime': self.endTime,

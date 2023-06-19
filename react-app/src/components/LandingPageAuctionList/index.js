@@ -68,6 +68,7 @@ function LandingPageAuctionList() {
                <li>Open: {auction.auctionOpen === true ? "True" : "False"}</li>
 
                <li>startTime: {auction.startTime}</li>
+               <li>startTimeType: {typeof auction.startTime}</li>
                <li> {timeUTCtoLocal(auction.startTime) }</li>
                <li>endTime: {auction.endTime}</li>
                <li>sellerId: {auction.sellerId}</li>
