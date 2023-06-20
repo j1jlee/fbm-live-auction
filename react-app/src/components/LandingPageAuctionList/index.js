@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 import { getAuctionsThunk } from "../../store/auction";
@@ -71,6 +71,7 @@ function LandingPageAuctionList() {
     const testDateTime = new Date(testTime)
     const nowTime = new Date();
 
+    const history = useHistory();
     // console.log("nowTime", nowTime)
     // console.log("\n\n\nNOWTIME OFFSET", nowTime.getTimezoneOffset())
 
@@ -89,12 +90,12 @@ function LandingPageAuctionList() {
         <h1>Auction List Page here!</h1>
 
         {/* https://www.npmjs.com/package/react-countdown */}
-        <div className="landing-page-timer-test">
+        {/* <div className="landing-page-timer-test">
             <Countdown date={Date.now() + 10000}>
                 {<p>Countdown complete??</p>}
                 </Countdown>
 
-        </div>
+        </div> */}
 
         <h2>Current Auctions:</h2>
         <div className="landing-page-auction-wrapper">
@@ -102,7 +103,12 @@ function LandingPageAuctionList() {
             {sortedAuctionsCurrent ? sortedAuctionsCurrent.map((auction) => (
             // {allAuctionsList ? allAuctionsList.map((auction) => (
                 <>
-                <div className="landing-page-auction-node">
+                <div className="landing-page-auction-node"
+                onClick={() => {
+                    history.push(`/auction/${auction.id}`)
+                }}>
+
+
                 <ul key={auction.id}>
 
                 <li>
@@ -154,7 +160,11 @@ function LandingPageAuctionList() {
             {sortedAuctionsPassed ? sortedAuctionsPassed.map((auction) => (
             // {allAuctionsList ? allAuctionsList.map((auction) => (
                 <>
-                <div className="landing-page-auction-node">
+                <div className="landing-page-auction-node"
+                    onClick={() => {
+                    history.push(`/auction/${auction.id}`)
+                    }}
+                >
                 <ul key={auction.id}>
 
                 <li>

@@ -9,6 +9,7 @@ import NavSideBar from "./components/NavSideBar";
 
 import ItemListPage from "./components/ItemListPage";
 import LandingPageAuctionList from "./components/LandingPageAuctionList";
+import SingleAuctionPage from "./components/SingleAuctionPage";
 
 import AaCountdownTest from "./components/AaCountdownTest";
 
@@ -51,6 +52,9 @@ function App() {
              <AaCountdownTest />
           </Route>
 
+          <Route exact path="/auction/:auctionId" >
+            <SingleAuctionPage />
+          </Route>
 
 
           <Route exact path="/">

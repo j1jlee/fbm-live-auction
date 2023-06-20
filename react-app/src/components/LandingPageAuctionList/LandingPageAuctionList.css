@@ -20,6 +20,11 @@
     grid-auto-flow: row;
 }
 
+.landing-page-auction-node:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}
+
 .landing-page-auction-node {
     /* display: grid; */
     /* width: 15rem; */

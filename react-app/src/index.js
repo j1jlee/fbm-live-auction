@@ -8,6 +8,8 @@ import configureStore from "./store";
 import * as sessionActions from "./store/session";
 import App from "./App";
 
+import AuctionTrackerProvider from "./context/AuctionTracker";
+
 import "./index.css";
 
 const store = configureStore();
@@ -23,12 +25,18 @@ if (process.env.NODE_ENV !== "production") {
 function Root() {
 	return (
 		<ModalProvider>
+
+			<AuctionTrackerProvider>
+
 			<Provider store={store}>
 				<BrowserRouter>
 					<App />
 					<Modal />
 				</BrowserRouter>
 			</Provider>
+
+			</AuctionTrackerProvider>
+			
 		</ModalProvider>
 	);
 }
