@@ -41,6 +41,12 @@ function NavSideBar({ isLoaded }){
                     modalComponent={<AuctionCreateModal />}
                 />
             </li>
+
+            <li>
+				<NavLink to="/test">Countdown Test</NavLink>
+			</li>
+
+
 		</ul>
         </div>
 	);

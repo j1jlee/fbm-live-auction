@@ -7,8 +7,10 @@ import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import NavSideBar from "./components/NavSideBar";
 
-import ItemListPage from "./components/ItemListPage"
-import LandingPageAuctionList from "./components/LandingPageAuctionList"
+import ItemListPage from "./components/ItemListPage";
+import LandingPageAuctionList from "./components/LandingPageAuctionList";
+
+import AaCountdownTest from "./components/AaCountdownTest";
 
 import "./App.css"
 
@@ -44,6 +46,13 @@ function App() {
           <Route path="/items">
             <ItemListPage />
           </Route>
+
+          <Route path="/test">
+             <AaCountdownTest />
+          </Route>
+
+
+
           <Route exact path="/">
             <LandingPageAuctionList />
           </Route>
