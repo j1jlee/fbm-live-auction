@@ -1,12 +1,13 @@
 
 
 
-/* .landing-page-auction-wrapper {
+
+.landing-page-auction-wrapper {
     display: flex;
     flex-direction: row;
-} */
+}
 
-.item-list-container {
+.landing-page-auction-grid {
     /* background-color: aquamarine; */
     margin-top: 1rem;
 
@@ -19,8 +20,8 @@
     grid-auto-flow: row;
 }
 
-.item-list-node {
-    /* display: grid;
-    width: 15rem; */
+.landing-page-auction-node {
+    /* display: grid; */
+    /* width: 15rem; */
     padding: 1rem;
 }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuctionsThunk } from "../../store/auction";
 import { getItemsThunk } from "../../store/item";
 
+import "./LandingPageAuctionList.css"
 // import ItemCreateModal from "../ItemCreateModal";
 // import ItemDeleteModal from "../ItemDeleteModal";
 // import ItemUpdateModal from "../ItemUpdateModal";
@@ -55,9 +56,11 @@ function LandingPageAuctionList() {
         <h1>Auction List Page here!</h1>
 
 
-        <div>
+        <div className="landing-page-auction-wrapper">
+            <div className="landing-page-auction-grid">
             {allAuctionsList ? allAuctionsList.map((auction) => (
                 <>
+                <div className="landing-page-auction-node">
                 <ul key={auction.id}>
                 <li>Auction ID: {auction.id}</li>
                 <li>Name: {auction.auctionName}</li>
@@ -76,6 +79,7 @@ function LandingPageAuctionList() {
                <li>Starting Bid: {auction.startingBidCents}</li>
                <li>Current Highest Bid: TBA</li>
                </ul>
+               </div>
                {/* <OpenModalButton
                     buttonText="Update Item"
                     modalComponent={<ItemUpdateModal update_item={item}/>}
@@ -85,9 +89,12 @@ function LandingPageAuctionList() {
                     buttonText="Delete Item"
                     modalComponent={<ItemDeleteModal itemId={item.id}/>}
                 /> */}
+
+
                 </>
             )) : <li>No auctions listed</li>
             }
+            </div>
         </div>
         </>
     )
