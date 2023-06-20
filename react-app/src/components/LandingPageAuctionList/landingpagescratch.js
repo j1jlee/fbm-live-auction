@@ -6,8 +6,6 @@ import { useHistory } from "react-router-dom";
 import { getAuctionsThunk } from "../../store/auction";
 import { getItemsThunk } from "../../store/item";
 
-import { urlToImage } from "../aaaMiddleware";
-
 import Countdown from 'react-countdown';
 
 import "./LandingPageAuctionList.css"
@@ -89,8 +87,7 @@ function LandingPageAuctionList() {
     function renderAuction(auctionList) {
         return (
             <div className="landing-page-auction-grid">
-            {auctionList ? auctionList.map((auction) => (
-            // {sortedAuctionsCurrent ? sortedAuctionsCurrent.map((auction) => ( */}
+            {sortedAuctionsCurrent ? sortedAuctionsCurrent.map((auction) => (
             // {allAuctionsList ? allAuctionsList.map((auction) => (
                 <>
                 <div className="landing-page-auction-node"
@@ -134,55 +131,126 @@ function LandingPageAuctionList() {
         )
     }
 
-    function renderAuctionNew(auctionList) {
-        return (
-            <>
-           <div className="landing-page-auction-grid">
-
-           {auctionList.map((auction) => (
-            <>
-            <div className="landing-page-auction-node"
-            onClick={() => {
-                history.push(`/auction/${auction.id}`)
-            }}>
-
-
-            <div className="landing-page-auction-new-node-image">item image? {allItems ? allItems[auction.auctionItemId].imageUrl : "Item Not Found"}</div>
-
-            <Countdown
-                date={auction.endTime}>
-                <p>Auction Expired</p>
-            </Countdown>
-
-            <div>$ {auction.startingBidCents}</div>
-            <div>{auction.auctionName}</div>
-            <div>{auction.auctionDescription}</div>
-
-            </div>
-            </>
-           ))
-            }
-
-            </div>
-            </>
-        )
-    }
-
 
     return (
         <>
         <h1>Auction List Page here!</h1>
 
+        {/* https://www.npmjs.com/package/react-countdown */}
+        {/* <div className="landing-page-timer-test">
+            <Countdown date={Date.now() + 10000}>
+                {<p>Countdown complete??</p>}
+                </Countdown>
+
+        </div> */}
+
         <h2>Current Auctions:</h2>
         <div className="landing-page-auction-wrapper">
-            {renderAuctionNew(sortedAuctionsCurrent)}
-            {/* {renderAuction(sortedAuctionsCurrent)} */}
+            {renderAuction(sortedAuctionsCurrent)}
+            {/* <div className="landing-page-auction-grid">
+            {sortedAuctionsCurrent ? sortedAuctionsCurrent.map((auction) => (
+            // {allAuctionsList ? allAuctionsList.map((auction) => (
+                <>
+                <div className="landing-page-auction-node"
+                onClick={() => {
+                    history.push(`/auction/${auction.id}`)
+                }}>
+
+
+                <ul key={auction.id}>
+
+                <li>
+                    <Countdown
+                        date={auction.endTime}>
+                            <p>Auction Expired</p>
+                    </Countdown>
+
+                </li>
+
+                <li>Auction ID: {auction.id}</li>
+                <li>Name: {auction.auctionName}</li>
+               <li>Description: {auction.auctionDescription}</li>
+               <li>Item ID: {auction.auctionItemId}</li>
+               <li>Item Name: {allItems ? allItems[auction.auctionItemId].name : "Item Not Found"}</li>
+
+               <li>Open: {auction.auctionOpen === true ? "True" : "False"}</li>
+
+               <li>startTime: {auction.startTime}</li>
+               <li>startTimeType: {typeof auction.startTime}</li>
+               <li> {timeUTCtoLocal(auction.startTime) }</li>
+               <li>endTime: {auction.endTime}</li>
+               <li>sellerId: {auction.sellerId}</li>
+
+               <li>Starting Bid: {auction.startingBidCents}</li>
+               <li>Current Highest Bid: TBA</li>
+               </ul>
+               </div>
+
+
+                </>
+            )) : <li>No auctions listed</li>
+        }
+            </div> */}
         </div>
+
+
+        {/* <OpenModalButton
+             buttonText="Update Item"
+             modalComponent={<ItemUpdateModal update_item={item}/>}
+         />
+
+        <OpenModalButton
+             buttonText="Delete Item"
+             modalComponent={<ItemDeleteModal itemId={item.id}/>}
+         /> */}
+
 
 
         <h2>Previous Auctions:</h2>
         <div className="landing-page-auction-wrapper">
             {renderAuction(sortedAuctionsPassed)}
+            {/* <div className="landing-page-auction-grid">
+            {sortedAuctionsPassed ? sortedAuctionsPassed.map((auction) => (
+            // {allAuctionsList ? allAuctionsList.map((auction) => (
+                <>
+                <div className="landing-page-auction-node"
+                    onClick={() => {
+                    history.push(`/auction/${auction.id}`)
+                    }}
+                >
+                <ul key={auction.id}>
+
+                <li>
+                    <Countdown
+                        date={auction.endTime}>
+                            <p>Auction Expired</p>
+                    </Countdown>
+
+                </li>
+
+                <li>Auction ID: {auction.id}</li>
+                <li>Name: {auction.auctionName}</li>
+               <li>Description: {auction.auctionDescription}</li>
+               <li>Item ID: {auction.auctionItemId}</li>
+               <li>Item Name: {allItems ? allItems[auction.auctionItemId].name : "Item Not Found"}</li>
+
+               <li>Open: {auction.auctionOpen === true ? "True" : "False"}</li>
+
+               <li>startTime: {auction.startTime}</li>
+               <li>startTimeType: {typeof auction.startTime}</li>
+               <li> {timeUTCtoLocal(auction.startTime) }</li>
+               <li>endTime: {auction.endTime}</li>
+               <li>sellerId: {auction.sellerId}</li>
+
+               <li>Starting Bid: {auction.startingBidCents}</li>
+               <li>Current Highest Bid: TBA</li>
+               </ul>
+               </div>
+
+                </>
+            )) : <li>No auctions listed</li>
+            }
+            </div> */}
         </div>
         </>
     )

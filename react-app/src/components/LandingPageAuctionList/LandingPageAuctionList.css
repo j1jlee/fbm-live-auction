@@ -29,4 +29,10 @@
     /* display: grid; */
     /* width: 15rem; */
     padding: 1rem;
+    height: 20rem;
+}
+
+.landing-page-auction-new-node-image {
+    height: 70%;
+    width: 100%;
 }
