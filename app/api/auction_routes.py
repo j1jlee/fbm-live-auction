@@ -8,6 +8,11 @@ from dateutil import parser
 
 from app.forms.create_auction_form import createAuctionForm
 
+
+import os
+# hacky business
+
+
 auction_routes = Blueprint('auctions', __name__)
 
 
@@ -149,9 +154,20 @@ def post_new_auction():
         # timeOffsetMinutes = int(timeOffset.slice(3)) * pos_or_neg
 
 
-        formatStartTime = datetime.strptime(strStartTime, "%a %b %d %Y %H:%M:%S %Z%z") + timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+        formatStartTime = datetime.strptime(strStartTime, "%a %b %d %Y %H:%M:%S %Z%z")
+        formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z")
 
-        formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z") + timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+        if os.environ.get('FLASK_ENV') != 'production':
+            formatStartTime += timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+            formatEndTime += timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+        # formatStartTime = datetime.strptime(strStartTime, "%a %b %d %Y %H:%M:%S %Z%z") + timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+        # formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z") + timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+
+
+
         # formatStartTime = datetime.strptime(strStartTime, "%a %b %d %Y %H:%M:%S %Z%z")
         # formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z")
         # Tue Jun 20 2023 17:05:00 GMT-0400 (Eastern Daylight Time)

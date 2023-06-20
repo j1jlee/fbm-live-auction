@@ -3,6 +3,7 @@ from datetime import datetime
 
 
 
+
 class Auction(db.Model):
     __tablename__ = 'auctions'
 
