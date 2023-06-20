@@ -24,22 +24,22 @@ function LandingPageAuctionList() {
 
     // const allItemsList = allItems ? Object.values(allItems) : []
     const allAuctionsList = allAuctions ? Object.values(allAuctions) : []
-    const AuctionsPassed = []
-    const AuctionsCurrent = []
+    const auctionsPassed = []
+    const auctionsCurrent = []
 
     allAuctionsList ? allAuctionsList.forEach((auction) => {
         const nowTime = (new Date()).getTime();
         const auctionEndTime = new Date(auction.endTime);
         if (auctionEndTime.getTime() < nowTime) {
             console.log("time is less?")
-            AuctionsPassed.push(auction)
+            auctionsPassed.push(auction)
         } else {
-            AuctionsCurrent.push(auction)
+            auctionsCurrent.push(auction)
         }
     }) : console.log("");
 
-    const sortedAuctionsCurrent = sortAuctions(AuctionsCurrent);
-    const sortedAuctionsPassed = sortAuctions(AuctionsPassed);
+    const sortedAuctionsCurrent = auctionsCurrent.length ? sortAuctions(auctionsCurrent) : [];
+    const sortedAuctionsPassed = auctionsPassed.length ? sortAuctions(auctionsPassed) : [];
 
     useEffect(() => {
         dispatch(getAuctionsThunk());
