@@ -1,0 +1,41 @@
+
+
+.single-auction-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    height: 100%;
+}
+.single-auction-left {
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: .5fr 3fr 5fr;
+
+}
+.single-auction-right {
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: 1fr .25fr .25fr 4fr;
+}
+
+
+.single-auction-image {
+
+}
+.single-auction-bidform {
+
+}
+.single-auction-item {
+
+}
+.single-auction-countdown {
+
+}
+.single-auction-highest {
+
+}
+.single-auction-bidform {
+
+}

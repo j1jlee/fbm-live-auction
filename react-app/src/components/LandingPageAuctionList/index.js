@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -34,6 +34,8 @@ function LandingPageAuctionList() {
     const auctionsPassed = []
     const auctionsCurrent = []
 
+    const [switchBool, setSwitchBool] = useState(true);
+
     allAuctionsList ? allAuctionsList.forEach((auction) => {
         const nowTime = (new Date()).getTime();
         const auctionEndTime = new Date(auction.endTime);
@@ -51,7 +53,7 @@ function LandingPageAuctionList() {
     useEffect(() => {
         dispatch(getAuctionsThunk());
         dispatch(getItemsThunk());
-    }, [dispatch])
+    }, [dispatch, switchBool])
 
 
     function sortAuctions(auctionList) {
@@ -172,6 +174,10 @@ function LandingPageAuctionList() {
 
             <Countdown
                 date={auction.endTime}>
+                {/* {() => {
+                    setSwitchBool(!switchBool)
+                    return "<p>Auction Expired</p>"
+                }} */}
                 <p>Auction Expired</p>
             </Countdown>
 

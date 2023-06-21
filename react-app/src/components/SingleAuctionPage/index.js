@@ -7,6 +7,8 @@ import { getAuctionsThunk } from "../../store/auction"
 import { getItemsThunk } from "../../store/item"
 import Countdown from "react-countdown";
 
+import "./SingleAuctionPage.css"
+
 //websocket???
 // import { io } from 'socket.io-client';
 // let socket;
@@ -72,21 +74,52 @@ export default Chat; */
 
     const { auctionId } = useParams();
     const allAuctions = useSelector(state => state.auctions)
+    const allItems = useSelector(state => state.items)
+
     const thisAuction = allAuctions ? allAuctions[auctionId] : ""
+    const thisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : ''
+
+
 
     console.log("all auctions?", allAuctions)
     console.log("this auction?", thisAuction)
+    console.log("this item?", thisItem)
 
     return (
         <>
-        <h1>Auction page for {thisAuction ? thisAuction.auctionName : "undefined"}</h1>
+        <h1>{thisAuction ? thisAuction.auctionName : ""}</h1>
 
-        <div>
-        <Countdown
-            date={thisAuction.endTime}>
-                <p>Auction Expired</p>
-        </Countdown>
+        <div className="single-auction-grid">
+
+        <div className="single-auction-left">
+            <div>{thisItem ? thisItem.name : ''} </div>
+            <div className="single-auction-image">
+                IMAGE
+            </div>
+            <div className="single-auction-bidfeed">
+                BID FEED
+            </div>
         </div>
+
+        <div className="single-auction-right">
+
+            <div className="single-auction-item-description">{thisItem ? thisItem.description : ''}</div>
+            <div className="single-auction-countdown">
+            <Countdown
+                date={thisAuction.endTime}>
+                    <p>Auction Expired</p>
+            </Countdown>
+            </div>
+
+            <div className="single-auction-highest">HIGHEST BID BY WHOM</div>
+           <div className="single-auction-bidform">BIDFORM</div>
+
+        </div>
+        </div>
+
+
+
+
 
         </>
     )

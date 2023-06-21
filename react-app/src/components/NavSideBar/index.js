@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+//
 
 
 import ItemCreateModal from "../ItemCreateModal";
@@ -45,9 +46,9 @@ function NavSideBar({ isLoaded }){
                 />
             </li>
 
-            {/* <li>
+            <li>
 				<NavLink to="/test">Countdown Test</NavLink>
-			</li> */}
+			</li>
 
 
 		</ul>
