@@ -183,16 +183,16 @@ function LandingPageAuctionList() {
 
     return (
         <>
-        <h1>Auction List Page here!</h1>
+        {/* <h1>Auction List Page here!</h1> */}
 
-        <h2>Current Auctions:</h2>
+        <h2>Today's picks</h2>
         <div className="landing-page-auction-wrapper">
             {renderAuctionNew(sortedAuctionsCurrent)}
             {/* {renderAuction(sortedAuctionsCurrent)} */}
         </div>
 
 
-        <h2>Previous Auctions:</h2>
+        <h2>Past Auctions:</h2>
         <div className="landing-page-auction-wrapper">
             {renderAuction(sortedAuctionsPassed)}
         </div>

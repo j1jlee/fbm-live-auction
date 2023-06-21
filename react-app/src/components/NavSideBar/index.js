@@ -17,6 +17,9 @@ function NavSideBar({ isLoaded }){
 
 	return (
 		<div className="navsidebar-wrapper">
+
+        <h2 className="navsidebar-title">Live Auction</h2>
+
         <ul>
 
 			<li>

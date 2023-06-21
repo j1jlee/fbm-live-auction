@@ -8,8 +8,8 @@ import { getItemsThunk } from "../../store/item"
 import Countdown from "react-countdown";
 
 //websocket???
-import { io } from 'socket.io-client';
-let socket;
+// import { io } from 'socket.io-client';
+// let socket;
 
 
 function SingleAuctionPage() {
