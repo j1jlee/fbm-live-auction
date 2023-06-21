@@ -4,30 +4,31 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getAuctionsThunk } from "../../store/auction"
+import { getItemsThunk } from "../../store/item"
+import Countdown from "react-countdown";
 
 //websocket???
 import { io } from 'socket.io-client';
 let socket;
 
-import Countdown from "react-countdown";
 
 function SingleAuctionPage() {
 
     const dispatch = useDispatch();
 
-    const [bidLog, setBidLog] = useState([]);
+    // const [bidLog, setBidLog] = useState([]);
 
-    useEffect(() => {
-        socket = io();
+    // useEffect(() => {
+    //     socket = io();
 
-        socket.on("socket-bid", (bidMessage) => {
-            setBidLog(bidLogs => [...bidLogs, bidMessage])
+    //     socket.on("socket-bid", (bidMessage) => {
+    //         setBidLog(bidLogs => [...bidLogs, bidMessage])
 
-            return (() => {
-                socket.disconnect()
-            })
-        })
-    })
+    //         return (() => {
+    //             socket.disconnect()
+    //         })
+    //     })
+    // })
 
 
 

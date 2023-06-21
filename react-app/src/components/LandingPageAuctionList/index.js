@@ -6,6 +6,9 @@ import { useHistory } from "react-router-dom";
 import { getAuctionsThunk } from "../../store/auction";
 import { getItemsThunk } from "../../store/item";
 
+import OpenModalButton from "../OpenModalButton";
+import AuctionUpdateModal from "../AuctionUpdateModal";
+
 import { urlToImage } from "../aaaMiddleware";
 
 import Countdown from 'react-countdown';
@@ -142,10 +145,11 @@ function LandingPageAuctionList() {
            {auctionList.map((auction) => (
             <>
             <div className="landing-page-auction-node"
-            onClick={() => {
+            >
+
+            <div className="landing-page-auction-node-link" onClick={() => {
                 history.push(`/auction/${auction.id}`)
             }}>
-
 
             <div className="landing-page-auction-new-node-image">item image? {allItems ? allItems[auction.auctionItemId].imageUrl : "Item Not Found"}</div>
 
@@ -159,6 +163,14 @@ function LandingPageAuctionList() {
             <div>{auction.auctionDescription}</div>
 
             </div>
+
+            <OpenModalButton
+            buttonText="Update Auction"
+            modalComponent={<AuctionUpdateModal update_auction={auction} />} />
+
+            </div>
+
+
             </>
            ))
             }

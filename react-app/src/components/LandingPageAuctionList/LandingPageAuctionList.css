@@ -32,6 +32,11 @@
     height: 20rem;
 }
 
+.landing-page-auction-node-link {
+    /* border: 1px solid pink; */
+    height: 90%;
+}
+
 .landing-page-auction-new-node-image {
     height: 70%;
     width: 100%;

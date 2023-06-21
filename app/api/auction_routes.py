@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from dateutil import parser
 
 from app.forms.create_auction_form import createAuctionForm
+from app.forms.update_auction_form import updateAuctionForm
 
 
 import os
@@ -76,15 +77,6 @@ def update_single_auction(id):
 
     print("\n\n\nChanging: ")
 
-    # edit_auction = edit_auction.to_dict()
-
-
-    #EDIT LATER WHEN MAKING FORM
-    ###
-    #
-    #
-    #
-
     if form.validate_on_submit():
         data = form.data
         if data['auctionName']:
@@ -94,13 +86,84 @@ def update_single_auction(id):
         if data['auctionDescription']:
             print(f"Changing auction description from {edit_auction.auctionDescription} to {data['auctionDescription']}")
             edit_auction.auctionDescription = data['auctionDescription']
-        if data['auctionOpen']:
-            print(f"Changing auction open bool from {edit_auction.auctionOpen} to {data['auctionOpen']}")
-            edit_auction.auctionOpen = data['auctionOpen']
 
         if data['startingBidCents']:
             print(f"Changing auction startingBidCents from {edit_auction.startingBidCents} to {data['startingBidCents']}")
             edit_auction.startingBidCents = data['startingBidCents']
+
+    #
+        if data['startTime']:
+
+            print("What is startTime?", data['startTime'])
+
+            strStartTime = data['startTime']
+            strStartTime = strStartTime.split(" (")[0]
+
+            timeOffset = strStartTime[-5:]
+            pos_or_neg = 1 if timeOffset[0] == "-" else -1
+            timeOffsetHours = int(timeOffset[1 : 3]) * pos_or_neg
+            timeOffsetMinutes = int(timeOffset[3:]) * pos_or_neg
+
+            formatStartTime = datetime.strptime(strStartTime, "%a %b %d %Y %H:%M:%S %Z%z")
+
+            if os.environ.get('FLASK_ENV') != 'production':
+                formatStartTime += timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+            edit_auction.startTime = formatStartTime
+
+        if data['endTime']:
+            strEndTime = data['endTime']
+            strEndTime = strEndTime.split(" (")[0]
+
+            timeOffset = strEndTime[-5:]
+            pos_or_neg = 1 if timeOffset[0] == "-" else -1
+            timeOffsetHours = int(timeOffset[1 : 3]) * pos_or_neg
+            timeOffsetMinutes = int(timeOffset[3:]) * pos_or_neg
+
+            formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z")
+
+            if os.environ.get('FLASK_ENV') != 'production':
+                formatEndTime += timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+            edit_auction.endTime = formatEndTime
+
+        strEndTime = data['endTime']
+
+
+        strEndTime = strEndTime.split(" (")[0]
+
+
+        # timeOffset = strStartTime.slice(-5)
+
+        #want to have the OPPOSITE of the offset
+
+
+        # timeOffsetHours = int(timeOffset.slice(1, 3)) * pos_or_neg
+
+        # timeOffsetMinutes = int(timeOffset.slice(3)) * pos_or_neg
+
+
+
+        formatEndTime = datetime.strptime(strEndTime, "%a %b %d %Y %H:%M:%S %Z%z")
+
+        if os.environ.get('FLASK_ENV') != 'production':
+            formatStartTime += timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+            formatEndTime += timedelta(hours=timeOffsetHours, minutes=timeOffsetMinutes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         db.session.commit()
         return edit_auction.to_dict()
