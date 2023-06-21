@@ -1,16 +1,68 @@
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getAuctionsThunk } from "../../store/auction";
-import { getItemsThunk } from "../../store/item";
+import { getAuctionsThunk } from "../../store/auction"
+
+//websocket???
+import { io } from 'socket.io-client';
+let socket;
 
 import Countdown from "react-countdown";
 
 function SingleAuctionPage() {
 
     const dispatch = useDispatch();
+
+    const [bidLog, setBidLog] = useState([]);
+
+    useEffect(() => {
+        socket = io();
+
+        socket.on("socket-bid", (bidMessage) => {
+            setBidLog(bidLogs => [...bidLogs, bidMessage])
+
+            return (() => {
+                socket.disconnect()
+            })
+        })
+    })
+
+
+
+/*  const updateChatInput = (e) => {
+        setChatInput(e.target.value)
+    };
+
+    const sendChat = (e) => {
+        e.preventDefault()
+        socket.emit("chat", { user: user.username, msg: chatInput });
+        setChatInput("")
+    }
+
+    return (user && (
+        <div>
+            <div>
+                {messages.map((message, ind) => (
+                    <div key={ind}>{`${message.user}: ${message.msg}`}</div>
+                ))}
+            </div>
+            <form onSubmit={sendChat}>
+                <input
+                    value={chatInput}
+                    onChange={updateChatInput}
+                />
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    )
+    )
+};
+
+
+export default Chat; */
+
 
     useEffect(() => {
         dispatch(getAuctionsThunk());
