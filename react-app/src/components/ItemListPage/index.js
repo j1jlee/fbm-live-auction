@@ -40,7 +40,7 @@ function ItemListPage() {
 
     return (
         <>
-        <h1>Item list Page here!</h1>
+        <h2>Inventory</h2>
 
 
 

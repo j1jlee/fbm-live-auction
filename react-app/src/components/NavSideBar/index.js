@@ -45,9 +45,9 @@ function NavSideBar({ isLoaded }){
                 />
             </li>
 
-            <li>
+            {/* <li>
 				<NavLink to="/test">Countdown Test</NavLink>
-			</li>
+			</li> */}
 
 
 		</ul>

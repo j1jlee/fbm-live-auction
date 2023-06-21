@@ -41,3 +41,7 @@
     height: 70%;
     width: 100%;
 }
+
+.update-disabled {
+    visibility: collapse;
+}

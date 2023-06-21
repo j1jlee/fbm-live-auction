@@ -45,7 +45,7 @@ def delete_single_auction(id):
     if auction is None:
         #syntax for returning 404??
         return {"error": f"auction {id} not found for delete"}, 404
-    auction_name = auction.name
+    auction_name = auction.auctionName
 
     db.session.delete(auction)
     db.session.commit()

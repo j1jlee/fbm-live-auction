@@ -8,6 +8,7 @@ import { getItemsThunk } from "../../store/item";
 
 import OpenModalButton from "../OpenModalButton";
 import AuctionUpdateModal from "../AuctionUpdateModal";
+import AuctionDeleteModal from "../AuctionDeleteModal";
 
 import { urlToImage } from "../aaaMiddleware";
 
@@ -89,52 +90,68 @@ function LandingPageAuctionList() {
         return returnDateTime.toString();
     }
 
-    function renderAuction(auctionList) {
-        return (
-            <div className="landing-page-auction-grid">
-            {auctionList ? auctionList.map((auction) => (
-            // {sortedAuctionsCurrent ? sortedAuctionsCurrent.map((auction) => ( */}
-            // {allAuctionsList ? allAuctionsList.map((auction) => (
-                <>
-                <div className="landing-page-auction-node"
-                onClick={() => {
-                    history.push(`/auction/${auction.id}`)
-                }}>
+    // function renderAuction(auctionList) {
+    //     return (
+    //         <div className="landing-page-auction-grid">
+    //         {auctionList ? auctionList.map((auction) => (
+    //         // {sortedAuctionsCurrent ? sortedAuctionsCurrent.map((auction) => ( */}
+    //         // {allAuctionsList ? allAuctionsList.map((auction) => (
+    //             <>
+    //             <div className="landing-page-auction-node"
+    //             onClick={() => {
+    //                 history.push(`/auction/${auction.id}`)
+    //             }}>
 
 
-                <ul key={auction.id}>
+    //             <ul key={auction.id}>
 
-                <li>
-                    <Countdown
-                        date={auction.endTime}>
-                            <p>Auction Expired</p>
-                    </Countdown>
+    //             <li>
+    //                 <Countdown
+    //                     date={auction.endTime}>
+    //                         <p>Auction Expired</p>
+    //                 </Countdown>
 
-                </li>
+    //             </li>
 
-                <li>Auction ID: {auction.id}</li>
-                <li>Name: {auction.auctionName}</li>
-               <li>Description: {auction.auctionDescription}</li>
-               <li>Item ID: {auction.auctionItemId}</li>
-               <li>Item Name: {allItems ? allItems[auction.auctionItemId].name : "Item Not Found"}</li>
+    //             <li>Auction ID: {auction.id}</li>
+    //             <li>Name: {auction.auctionName}</li>
+    //            <li>Description: {auction.auctionDescription}</li>
+    //            <li>Item ID: {auction.auctionItemId}</li>
+    //            <li>Item Name: {allItems ? allItems[auction.auctionItemId].name : "Item Not Found"}</li>
 
-               <li>Open: {auction.auctionOpen === true ? "True" : "False"}</li>
+    //            <li>Open: {auction.auctionOpen === true ? "True" : "False"}</li>
 
-               <li>startTime: {auction.startTime}</li>
-               <li>startTimeType: {typeof auction.startTime}</li>
-               <li> {timeUTCtoLocal(auction.startTime) }</li>
-               <li>endTime: {auction.endTime}</li>
-               <li>sellerId: {auction.sellerId}</li>
+    //            <li>startTime: {auction.startTime}</li>
+    //            <li>startTimeType: {typeof auction.startTime}</li>
+    //            <li> {timeUTCtoLocal(auction.startTime) }</li>
+    //            <li>endTime: {auction.endTime}</li>
+    //            <li>sellerId: {auction.sellerId}</li>
 
-               <li>Starting Bid: {auction.startingBidCents}</li>
-               <li>Current Highest Bid: TBA</li>
-               </ul>
-               </div>
-                </>
-            )) : <li>No auctions listed</li>
-            }
-            </div>
-        )
+    //            <li>Starting Bid: {auction.startingBidCents}</li>
+    //            <li>Current Highest Bid: TBA</li>
+    //            </ul>
+    //            </div>
+    //             </>
+    //         )) : <li>No auctions listed</li>
+    //         }
+    //         </div>
+    //     )
+    // }
+
+    function pastTime(time) {
+
+        const defTime = new Date(time);
+        const timeMilli = defTime.getTime();
+
+        const timeNow = new Date;
+        const timeNowMilli = timeNow.getTime();
+
+        if (timeMilli < timeNowMilli) {
+            console.log("timeMilli, timenowMilli", timeMilli, timeNowMilli)
+            return "update-disabled";
+        } else {
+            return ""
+        }
     }
 
     function renderAuctionNew(auctionList) {
@@ -164,9 +181,17 @@ function LandingPageAuctionList() {
 
             </div>
 
+            <span className={pastTime(auction.startTime)}>
             <OpenModalButton
             buttonText="Update Auction"
             modalComponent={<AuctionUpdateModal update_auction={auction} />} />
+            </span>
+
+            <span className={pastTime(auction.startTime)}>
+            <OpenModalButton
+            buttonText="Delete Auction"
+            modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
+            </span>
 
             </div>
 
@@ -194,7 +219,7 @@ function LandingPageAuctionList() {
 
         <h2>Past Auctions:</h2>
         <div className="landing-page-auction-wrapper">
-            {renderAuction(sortedAuctionsPassed)}
+            {renderAuctionNew(sortedAuctionsPassed)}
         </div>
         </>
     )
