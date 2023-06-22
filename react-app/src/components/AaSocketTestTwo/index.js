@@ -9,7 +9,7 @@ let socket;
 
 // ALL CUSTOM COMPONENTS MUST BE IN UPPER CASE
 // OR REACT WILL NOT REAAD THEM
-function AaCountdownTest() {
+function AaSocketTestTwo() {
 
     const testRenderer = ({ hours, minutes, seconds, completed}) => {
         if (completed) {
@@ -32,11 +32,11 @@ function AaCountdownTest() {
         socket = io();
 
         //create websocket DEFINE what EVENT does?
+        //receiving
         socket.on("chatEvent", (chat) => {
-            //setMessages(messages => [...messages, chat])
-            console.log("CHAT 1?", chat)
+            console.log("CHAT?", chat)
             if (chat.chatNum) {
-                if (chat.chatNum == 1) {
+                if (chat.chatNum == 2) {
                     setMessages(messages => [...messages, chat])
                 }
             } else return;
@@ -53,7 +53,8 @@ function AaCountdownTest() {
 
     const sendChat = (e) => {
         e.preventDefault()
-        socket.emit("chatEvent", { chatNum: 1, user: user.username, msg: chatInput });
+        //TO sockets.py, @socketio.on("chatEvent")
+        socket.emit("chatEvent", { chatNum: 2, user: user.username, msg: chatInput });
         setChatInput("")
     }
     //sockettest
@@ -62,39 +63,9 @@ function AaCountdownTest() {
 
     return (user && (
         <>
-        <h1>Countdown Test here!</h1>
+        <h1>Socket Test here!</h1>
 
-        {/* https://www.npmjs.com/package/react-countdown */}
-        <div className="landing-page-timer-test">
 
-        <Countdown date={Date.now() + 5000}>
-        {<p>Countdown complete??</p>}
-        {/* {() => console.log("countdown 1 complete!")} */}
-        </Countdown>
-
-        </div>
-
-        <div>
-            <Countdown
-            date={Date.now() + 11000}
-            zeroPadTime={2}
-            /* onMount
-            onStart
-            onPause
-            onStop
-            onTick
-            onComplete */
-            renderer={testRenderer}
-            />
-        </div>
-
-        <p>Milliseconds test</p>
-        <Countdown
-            date={Date.now() + 10000}
-            intervalDelay={0}
-            precision={3}
-            renderer={props => <div>{props.total}</div>}
-        />
 
 
         {/* WEBSOCKETS CHAT */}
@@ -118,4 +89,4 @@ function AaCountdownTest() {
 }
 
 
-export default AaCountdownTest;
+export default AaSocketTestTwo;

@@ -8,10 +8,13 @@ import Navigation from "./components/Navigation";
 import NavSideBar from "./components/NavSideBar";
 
 import ItemListPage from "./components/ItemListPage";
+import ItemDetailPage from "./components/ItemDetailPage";
+
 import LandingPageAuctionList from "./components/LandingPageAuctionList";
 import SingleAuctionPage from "./components/SingleAuctionPage";
 
 import AaCountdownTest from "./components/AaCountdownTest";
+import AaSocketTestTwo from "./components/AaSocketTestTwo";
 
 import "./App.css"
 
@@ -44,12 +47,20 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <Route path="/items">
+
+          <Route path="/items/:itemId">
+            <ItemDetailPage />
+          </Route>
+
+          <Route exact path="/items">
             <ItemListPage />
           </Route>
 
           <Route path="/test">
              <AaCountdownTest />
+          </Route>
+          <Route path="/test2">
+             <AaSocketTestTwo />
           </Route>
 
           <Route exact path="/auction/:auctionId" >

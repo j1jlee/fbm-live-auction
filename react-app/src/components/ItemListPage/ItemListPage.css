@@ -24,3 +24,7 @@
     width: 15rem; */
     padding: 1rem;
 }
+
+.item-list-node-hover:hover {
+    background-color: lightgray;
+}

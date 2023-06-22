@@ -50,6 +50,10 @@ function NavSideBar({ isLoaded }){
 				<NavLink to="/test">Countdown Test</NavLink>
 			</li>
 
+            <li>
+				<NavLink to="/test2">Socket Test</NavLink>
+			</li>
+
 
 		</ul>
         </div>

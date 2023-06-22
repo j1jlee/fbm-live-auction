@@ -26,6 +26,12 @@ function ItemListPage() {
 
     const allItemsList = allItems ? Object.values(allItems) : []
 
+    const userItemsList = allItemsList ? allItemsList.filter((item) => item.ownerId === currentUser.id) : []
+
+    const otherItemsList = allItemsList ? allItemsList.filter((item) => item.ownerId !== currentUser.id) : []
+
+    // console.log("userItemsList?", userItemsList)
+
 
     useEffect(() => {
         dispatch(getItemsThunk())
@@ -51,10 +57,11 @@ function ItemListPage() {
                 />
         </div> */}
         <div className="item-list-container">
-            {allItemsList ? allItemsList.map((item) => (
+            {userItemsList ? userItemsList.map((item) => (
+            // {allItemsList ? allItemsList.map((item) => (
                 <>
-                <div className="item-list-node">
-                <ul>
+                <div className="item-list-node item-list-node-hover">
+                <ul onClick={() => history.push(`/items/${item.id}`)}>
                 <li key={item.id}>Item ID: {item.id}</li>
                 <li key={item.name}>Name: {item.name}</li>
                <li key={item.description}>Description: {item.description}</li>
@@ -71,6 +78,37 @@ function ItemListPage() {
                     buttonText="Delete Item"
                     modalComponent={<ItemDeleteModal itemId={item.id}/>}
                 />
+
+                </div> {/* end of item list node */}
+
+                </>
+            )) : <li>No items listed</li>
+            }
+        </div>
+
+        <h2>Other User's Items (Maybe you can win these in a future auction!)</h2>
+        <div className="item-list-container">
+            {otherItemsList ? otherItemsList.map((item) => (
+            // {allItemsList ? allItemsList.map((item) => (
+                <>
+                <div className="item-list-node item-list-node-hover">
+                <ul onClick={() => history.push(`/items/${item.id}`)}>
+                <li key={item.id}>Item ID: {item.id}</li>
+                <li key={item.name}>Name: {item.name}</li>
+               <li key={item.description}>Description: {item.description}</li>
+               <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li>
+               <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
+               <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
+               </ul>
+               {/* <OpenModalButton
+                    buttonText="Update Item"
+                    modalComponent={<ItemUpdateModal update_item={item}/>}
+                />
+
+               <OpenModalButton
+                    buttonText="Delete Item"
+                    modalComponent={<ItemDeleteModal itemId={item.id}/>}
+                /> */}
 
                 </div> {/* end of item list node */}
 
