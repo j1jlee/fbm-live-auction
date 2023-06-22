@@ -6,5 +6,5 @@ from wtforms.validators import DataRequired, ValidationError
 class createBidForm(FlaskForm):
     auctionId = IntegerField("auctionId")
     bidderId = IntegerField("bidderId")
-    timeOfBid = StringField("timeOfBid")
+    # timeOfBid = StringField("timeOfBid")
     bidAmountCents = IntegerField("bidAmountCents")

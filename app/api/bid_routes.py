@@ -1,5 +1,8 @@
 from flask import Blueprint, request
 from flask_login import login_required
+
+from datetime import datetime;
+
 from app.models import db, Bid, Auction
 
 from app.forms.create_bid_form import createBidForm
@@ -74,11 +77,13 @@ def post_new_bid():
 
     if form.validate_on_submit():
         data = form.data
+
         new_bid = Bid(
             auctionId = data['auctionId'],
             bidderId = data['bidderId'],
-            timeOfBid = time_format(data['timeOfBid']),
+            # timeOfBid = time_format(data['timeOfBid']),
             bidAmountCents = data['bidAmountCents'],
+            timeOfBid = datetime.utcnow()
         )
 
         db.session.add(new_bid)

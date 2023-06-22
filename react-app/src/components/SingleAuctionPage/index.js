@@ -49,7 +49,10 @@ function SingleAuctionPage() {
     const [errors, setErrors] = useState({})
 
     console.log("BidLIst?", bidList)
+    console.log("pre sort thisauctionbidlist?", thisAuctionBidList)
     const sortedBidList = sortBidByTime(thisAuctionBidList)
+
+
     console.log("sortedBidList?", sortedBidList)
     console.log("thisItem?", thisItem)
     console.log("thisAuction?", thisAuction)
@@ -65,12 +68,15 @@ function SingleAuctionPage() {
             return tempBidList;
         }
 
-        tempBidList.sort((a, b) => {
+        const sortedTempBidList = tempBidList.sort((a, b) => {
             const aDate = new Date(a.timeOfBid);
             const bDate = new Date(b.timeOfBid);
 
             const aDateGetTime = aDate.getTime();
             const bDateGetTime = bDate.getTime()
+
+            console.log("in sortBidByTime, aDate, bdate", aDateGetTime, bDateGetTime)
+
 
             if (aDateGetTime < bDateGetTime) {
                 return -1;
@@ -81,9 +87,14 @@ function SingleAuctionPage() {
                 return 0;
             }
         })
+        return sortedTempBidList;
     }
 
     function bidLogMapper(bids) {
+        if (!bids) {
+            return (<li>No bids yet!</li>)
+        }
+
         if (bids.length === 0) {
             return (<li>No current bids!</li>);
         }
@@ -125,6 +136,8 @@ function SingleAuctionPage() {
             timeOfBid: newDate.toString(),
             bidAmountCents: bidInput * 100
         }
+
+        return tempNewBid;
     }
 
     function centsToDollars(cents) {
@@ -148,41 +161,10 @@ function SingleAuctionPage() {
                 newLog = `User ${bid.bidderId} bid ${centsToDollars(bid.bidAmount)}!`
             }
 
-            console.log("new highest bid should be", bid.bidAmount)
-            setHighestBid(bid.bidAmount);
-
-            console.log("newLog coming through,", newLog);
-
-            console.log("\n\nnewLogs created, what's bidlogs", bidLogs)
-
-
-            // setBoolSwitch(!boolSwitch);
-            const tempBidLogs = [...bidLogs, newLog]
-
-            console.log("\n\n\ntempbidlogs", tempBidLogs);
-
-            setBidLogs([tempBidLogs]);
-            // setBidLogs([...bidLogs, newLog]);
-            // setBoolSwitch(!boolSwitch);
-
-            // console.log("\n\nsending, bidLogs changed?", bidLogs);
-
+            /* socketAuctionId: thisAuction.id, bidderId: currentUser.id, bidAmount: tempBidInput, localHighestBid: tempBidInput */
+            //trigger refresh ONLY if auctionId is this iD
             return;
-            // if (chat.chatNum) {
-                //     if (chat.chatNum == 2) {
-            //         setMessages(messages => [...messages, chat])
-            //     }
-            // } else return;
-            /*
-            if (bid.bidderId == auctionId) {
-                //new message
 
-                setBidLogs((bidLogs) => [...bidLogs, ])
-            }
-
-
-
-            */
         })
         // when component unmounts, disconnect
         return (() => {
@@ -208,17 +190,7 @@ function SingleAuctionPage() {
     const sendBid = async (e) => {
         e.preventDefault();
 
-        // if (!highestBid) {
-        //     try {
-        //         console.log("setting first highest bid")
-        //         setHighestBid(thisAuction.startingBidCents);
-        //     } catch {
-        //         console.log("sending bid, attempting to apply first highest bid")
-        //     }
-        // }
-
         setErrors({});
-
         const tempErrors = {};
 
         console.log("\n\n\nstarting sendBid, tempErrors should be empty", tempErrors)
@@ -240,38 +212,20 @@ function SingleAuctionPage() {
             tempErrors.currentHighestBid = `Must bid higher than ${centsToDollars(currentHighestBid)}`
         }
 
-        // if (highestBid && (tempBidInput <= highestBid)) {
-            //     tempErrors.highestBid = `Must bid higher than current highest bid: ${String(highestBid).substring(0, String(highestBid).length - 2)}.
-            //     ${String(highestBid).substring(String(highestBid).length - 2)}`
-            // }
-
-            // if (thisAuction && (tempBidInput <= thisAuction.startingBidCents)) {
-                //     tempErrors.highestBid = `Must bid higher than initial bid: ${String(thisAuction.startingBidCents).substring(0, String(thisAuction.startingBidCents).length - 2)}.
-                //     ${String(thisAuction.startingBidCents).substring(String(thisAuction.startingBidCents).length - 2)}`
-                // }
-
-                // if (thisAuction && (tempBidInput < thisAuction.startingBidCents)) {
-
-                    //     console.log("\n\n\nwhat is my bidinput? they think it's lower", tempBidInput)
-                    //     console.log("than this", thisAuction.startingBidCents)
-
-
-                    //     tempErrors.highestBid = `Must bid higher than the starting bid: ${String(thisAuction.startingBidCents).substring(0, String(thisAuction.startingBidCents).length - 2)}. ${String(thisAuction.startingBidCents).substring(String(thisAuction.startingBidCents).length - 2)}`
-                    // }
 
         if (Object.values(tempErrors).length > 0) {
             setErrors(tempErrors);
-            // console.log("\n\n\nObject values blah blah", Object.values(tempErrors));setBidInput(0);
             return;
         }
 
-        if (!sortedBidList.length) {
-            console.log("First bid ever")
-            const firstBid = newBid();
-            await dispatch(createBidThunk(firstBid))
-            return;
-        }
-        // setHighestBid(tempBidInput);
+        // if (!sortedBidList.length) {
+        //     console.log("First bid ever")
+        //     const firstBid = newBid();
+        //     await dispatch(createBidThunk(firstBid))
+        //     return;
+        // }
+        const sendBid = newBid();
+        await dispatch(createBidThunk(sendBid))
 
         socket.emit("bidEvent", { socketAuctionId: thisAuction.id, bidderId: currentUser.id, bidAmount: tempBidInput, localHighestBid: tempBidInput});
 
@@ -305,7 +259,7 @@ function SingleAuctionPage() {
                 ))
                 } */}
                 <ul>
-                {bidLogMapper(sortedBidList)}
+                {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>}
                 </ul>
             </div>
         </div>
@@ -315,8 +269,9 @@ function SingleAuctionPage() {
             <div className="single-auction-item-description">{thisItem ? thisItem.description : ''}</div>
             <div className="single-auction-countdown">
             <Countdown
-                date={thisAuction.endTime}>
-                    <p>Auction Expired</p>
+                date={thisAuction.endTime}
+                onComplete={<p>Auction Expired</p>}>
+
             </Countdown>
             </div>
 

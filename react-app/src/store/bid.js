@@ -41,6 +41,9 @@ export const getBidsThunk = () => async (dispatch) => {
 }
 
 export const createBidThunk = (bid) => async (dispatch) => {
+
+    console.log("At create bid thunk, what is bid", bid)
+
     const response = await fetch("/api/bids/new",
     {
         method: "POST",
@@ -134,7 +137,7 @@ export default function bidReducer(state = initialState, action) {
         case CREATE_BID:
             const resState = {...state};
 
-            console.log("bid?", action.payload);
+            console.log("\n\nreducer: bid?", action.payload);
 
             resState[action.payload.id] = action.payload;
             return resState;
