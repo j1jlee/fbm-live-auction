@@ -37,4 +37,7 @@ function centsToDollars(cents) {
     return `${String(cents).substring(0, String(cents).length - 2)}.${String(cents).substring(String(cents).length - 2)}`
 }
 
+
+
+
 export { urlToImage, centsToDollars };

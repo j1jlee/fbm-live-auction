@@ -23,9 +23,15 @@ function SingleAuctionPage() {
     useEffect(() => {
         dispatch(getAuctionsThunk());
         dispatch(getItemsThunk());
-        dispatch(getBidsThunk());
+        // dispatch(getBidsThunk());
     }, [dispatch])
-    // }, [dispatch, bidLogs])
+
+
+    const [ boolSwitch, setBoolSwitch ] = useState(true)
+
+    useEffect(() => {
+        dispatch(getBidsThunk());
+    }, [boolSwitch])
 
 
     const currentUser = useSelector(state => state.session.user)
@@ -43,7 +49,6 @@ function SingleAuctionPage() {
     const thisAuction = allAuctions ? allAuctions[auctionId] : ""
     const thisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : ''
 
-    const [ boolSwitch, setBoolSwitch ] = useState(true)
     const [bidInput, setBidInput] = useState(0);
     const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
     const [errors, setErrors] = useState({})
@@ -59,8 +64,9 @@ function SingleAuctionPage() {
 
 
 
-
-
+    //
+    //
+    //HELPER FUNCTIONS
     function sortBidByTime(bids) {
         const tempBidList = [...bids]
 
@@ -75,7 +81,7 @@ function SingleAuctionPage() {
             const aDateGetTime = aDate.getTime();
             const bDateGetTime = bDate.getTime()
 
-            console.log("in sortBidByTime, aDate, bdate", aDateGetTime, bDateGetTime)
+            // console.log("in sortBidByTime, aDate, bdate", aDateGetTime, bDateGetTime)
 
 
             if (aDateGetTime < bDateGetTime) {
@@ -144,6 +150,40 @@ function SingleAuctionPage() {
         return `${String(cents).substring(0, String(cents).length - 2)}.${String(cents).substring(String(cents).length - 2)}`
     }
 
+    function resolveAuction(resAuctionId) {
+        const resThisAuction = allAuctions ? allAuctions[auctionId] : ""
+
+        if (resThisAuction.auctionOpen == false) {
+            console.log(`Auction ${resThisAuction.auctionId} is already closed! Skipping;`)
+            return;
+        }
+
+        const resThisItem = allItems && resThisAuction ? allItems[resThisAuction.auctionItemId] : '';
+
+        // const bidList = allBids ? Object.values(allBids) : [];
+        const resThisAuctionBidList = allBids ? Object.values(allBids).filter((bid) => {
+            return bid.auctionId == auctionId
+        }) : [];
+
+        let highestBid = '';
+        for (let bid in resThisAuctionBidList) {
+
+        }
+
+        // if (resThisAuction.auctionOpen == true) {
+        //     console.log("\n\n\nthis auction is open, with timer over! closing:")
+        // }
+        console.log("\n\n\nthis auction is open, with timer over! closing:")
+
+
+
+    }
+
+    //END OF HELPER FUNCTIONS
+    //
+    //
+
+
     useEffect(() => {
 
         socket = io();
@@ -151,18 +191,12 @@ function SingleAuctionPage() {
         socket.on("bidEvent", (bid) => {
             console.log("pre-bid bidlogs", bidLogs)
             console.log("\n\n\nBID?", bid)
-            //socketAuctionId, bidderId, bidAmount, localHighestBid
-            let newLog = "";
-            // console.log("\n\n\nbid.bidderId?", bid.bidderId);
-            // console.log("\n\n\ncurrentUser.Id?", currentUser.id);
-            if (bid.bidderId == currentUser.id) {
-                newLog = `You made the highest bid, with ${centsToDollars(bid.bidAmount)}!`
-            } else {
-                newLog = `User ${bid.bidderId} bid ${centsToDollars(bid.bidAmount)}!`
-            }
 
-            /* socketAuctionId: thisAuction.id, bidderId: currentUser.id, bidAmount: tempBidInput, localHighestBid: tempBidInput */
-            //trigger refresh ONLY if auctionId is this iD
+            if (bid.socketAuctionId == auctionId) {
+                //trigger refresh?
+                console.log("socketAuctionId matches auctionId, refresh")
+                setBoolSwitch(!boolSwitch);
+            }
             return;
 
         })
@@ -251,13 +285,6 @@ function SingleAuctionPage() {
                 IMAGE
             </div>
             <div className="single-auction-bidfeed">
-                {/* BID FEED */}
-                {/* {bidLogs.map((log) => (
-                    <div>
-                        {`${log}`}
-                        </div>
-                ))
-                } */}
                 <ul>
                 {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>}
                 </ul>
@@ -268,11 +295,12 @@ function SingleAuctionPage() {
 
             <div className="single-auction-item-description">{thisItem ? thisItem.description : ''}</div>
             <div className="single-auction-countdown">
-            <Countdown
+            {thisAuction ? <Countdown
                 date={thisAuction.endTime}
-                onComplete={<p>Auction Expired</p>}>
+                // onComplete={resolveAuction(auctionId)}>
+                onComplete={() => resolveAuction(auctionId)}>
 
-            </Countdown>
+            </Countdown> : <p></p>}
             </div>
 
             <div className="single-auction-highest">HIGHEST BID BY WHOM</div>
