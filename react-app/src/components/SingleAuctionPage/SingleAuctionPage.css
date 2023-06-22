@@ -24,8 +24,8 @@
 .single-auction-image {
 
 }
-.single-auction-bidform {
-
+.single-auction-bidfeed {
+    overflow-y: scroll;
 }
 .single-auction-item {
 

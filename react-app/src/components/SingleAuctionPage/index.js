@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getAuctionsThunk } from "../../store/auction"
 import { getItemsThunk } from "../../store/item"
+import { getBidsThunk, createBidThunk } from "../../store/bid"
 import Countdown from "react-countdown";
 
 import "./SingleAuctionPage.css"
@@ -22,6 +23,7 @@ function SingleAuctionPage() {
     useEffect(() => {
         dispatch(getAuctionsThunk());
         dispatch(getItemsThunk());
+        dispatch(getBidsThunk());
     }, [dispatch])
     // }, [dispatch, bidLogs])
 
@@ -31,6 +33,9 @@ function SingleAuctionPage() {
 
     const allAuctions = useSelector(state => state.auctions)
     const allItems = useSelector(state => state.items)
+    const allBids = useSelector(state => state.bids)
+
+    const bidList = allBids ? Object.values(allBids) : [];
 
     const thisAuction = allAuctions ? allAuctions[auctionId] : ""
     const thisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : ''
@@ -38,8 +43,21 @@ function SingleAuctionPage() {
     const [ boolSwitch, setBoolSwitch ] = useState(true)
     const [bidInput, setBidInput] = useState(0);
     const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
+    const [errors, setErrors] = useState({})
 
-    // setHighestBid(thisAuction.startingBidCents)
+
+    console.log("BidLIst?", bidList)
+
+    const sortedBidList = sortBidByTime(bidList)
+
+    console.log("sortedBidList?", sortedBidList)
+    // const test1 = bidList ? bidList[0].timeOfBid : '';
+
+    // console.log("test1 gettime?", typeof test1)
+    // const test1Date = new Date(test1);
+    // console.log("test1 date", test1Date)
+    // console.log("gettime", test1Date.getTime())
+
 
     // if (!highestBid) {
     //     try{
@@ -49,6 +67,48 @@ function SingleAuctionPage() {
     //         console.log("useless")
     //     }
     // }
+
+    function sortBidByTime(bids) {
+        const tempBidList = [...bids]
+
+        if (tempBidList.length <= 1) {
+            return tempBidList;
+        }
+
+        tempBidList.sort((a, b) => {
+            const aDate = new Date(a.timeOfBid);
+            const bDate = new Date(b.timeOfBid);
+
+            const aDateGetTime = aDate.getTime();
+            const bDateGetTime = bDate.getTime()
+
+            if (aDateGetTime < bDateGetTime) {
+                return -1;
+            }
+            else if (aDateGetTime > bDateGetTime) {
+                return 1;
+            } else {
+                return 0;
+            }
+        })
+    }
+
+    function bidLogMapper(bids) {
+        if (bids.length === 0) {
+            return (<li>No current bids!</li>);
+        }
+
+        return ( bids.map((bid) => {
+            let bidderVar = "You";
+            if (bid.bidderId !== currentUser.id) {
+                bidderVar = `User ${bid.bidderId}`
+            }
+
+            return (<li>{bidderVar} bid {centsToDollars(bid.bidAmountCents)}</li>)
+
+        }))
+    }
+
     function centsToDollars(cents) {
         return `${String(cents).substring(0, String(cents).length - 2)}.${String(cents).substring(String(cents).length - 2)}`
     }
@@ -56,20 +116,14 @@ function SingleAuctionPage() {
     useEffect(() => {
 
         socket = io();
-
         //receiving
         socket.on("bidEvent", (bid) => {
-
             console.log("pre-bid bidlogs", bidLogs)
-
             console.log("\n\n\nBID?", bid)
             //socketAuctionId, bidderId, bidAmount, localHighestBid
             let newLog = "";
-
-
             // console.log("\n\n\nbid.bidderId?", bid.bidderId);
             // console.log("\n\n\ncurrentUser.Id?", currentUser.id);
-
             if (bid.bidderId == currentUser.id) {
                 newLog = `You made the highest bid, with ${centsToDollars(bid.bidAmount)}!`
             } else {
@@ -126,7 +180,6 @@ function SingleAuctionPage() {
 
 
 
-    const [errors, setErrors] = useState({})
 
 
 
@@ -215,12 +268,15 @@ function SingleAuctionPage() {
             </div>
             <div className="single-auction-bidfeed">
                 {/* BID FEED */}
-                {bidLogs.map((log) => (
+                {/* {bidLogs.map((log) => (
                     <div>
                         {`${log}`}
                         </div>
                 ))
-                }
+                } */}
+                <ul>
+                {bidLogMapper(sortedBidList)}
+                </ul>
             </div>
         </div>
 

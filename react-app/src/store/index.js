@@ -4,11 +4,13 @@ import session from './session'
 // import item from "./item"
 import itemReducer from './item';
 import auctionReducer from './auction';
+import bidReducer from './bid';
 
 const rootReducer = combineReducers({
   session,
   items:itemReducer,
-  auctions: auctionReducer
+  auctions: auctionReducer,
+  bids: bidReducer
 });
 
 
