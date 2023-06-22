@@ -52,6 +52,7 @@ def delete_single_auction(id):
 
     return {"message": f"Auction {auction_name} successfully deleted"}
 
+
 @auction_routes.route('/<int:id>', methods=["PUT"])
 # @auction_routes.route('/<int:id>', methods=["UPDATE"])
 @login_required

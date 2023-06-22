@@ -4,6 +4,7 @@ const GET_BIDS = "session/GET_BIDS";
 // const UPDATE_BID = "session/UPDATE_BID";
 const DELETE_BID = "session/DELETE_BID";
 const DELETE_BIDS_AUCTION = "session/DELETE_BIDS_AUCTION"
+const DELETE_JUNK = "session/DELETE_JUNK_BIDS"
 
 const getBids = (bids) => ({
     type: GET_BIDS,
@@ -23,6 +24,11 @@ const createBid = (bid) => ({
 const deleteBid = (bidId) => ({
     type: DELETE_BID,
     payload: bidId
+})
+
+const deleteJunkBids = () => ({
+    type: DELETE_JUNK,
+    payload: ""
 })
 
 
@@ -90,6 +96,19 @@ export const createBidThunk = (bid) => async (dispatch) => {
 //     }
 // }
 
+export const deleteJunkThunk = () => async (dispatch) => {
+    const response = await fetch('/api/bids/junk', {
+        method: "DELETE"})
+    if (response.ok) {
+        dispatch(deleteJunkBids());
+        return {"message": `Junk bids successfully deleted`}
+    } else {
+        const errors = await response.json();
+        return errors;
+    }
+
+}
+
 export const deleteBidThunk = (bidId) => async (dispatch) => {
     const response = await fetch(`/api/bids/${bidId}`, {
         method: "DELETE"})
@@ -101,7 +120,6 @@ export const deleteBidThunk = (bidId) => async (dispatch) => {
         const errors = await response.json();
         return errors;
     }
-
 }
 
 export const deleteAllBidsAuctionThunk = (auctionId) => async (dispatch) => {
@@ -156,6 +174,31 @@ export default function bidReducer(state = initialState, action) {
             }
             return delState;
 
+        case DELETE_JUNK:
+            const junkState = {...state};
+
+            console.log("at junk reducer, what is junkState", junkState)
+
+            for (let key in junkState) {
+                const junkBid = junkState[key];
+
+                if (junkBid.auctionId == -1) {
+                    console.log(`Deleting junk at ${junkBid.id}`)
+                    delete junkState[key];
+                }
+            }
+            // const junkStateValues = Object.values(junkState);
+
+            // if (junkStateValues.length) {
+            //     for (let index in junkStateValues) {
+            //         // const tempBid = junkStateValues[index];
+            //         if (junkStateValues[index].auctionId == -1) {
+            //             console.log("deleting junk:", junkStateValues[index])
+            //             delete junkStateValues[index];
+            //         }
+            //     }
+            // }
+            return junkState;
         // case UPDATE_BID:
         //     const updateState = {...state};
         //     const updatebid = action.payload;

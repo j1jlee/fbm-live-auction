@@ -48,6 +48,21 @@ def delete_single_bid(id):
     return {"message": f"bid {id} successfully deleted"}
 
 
+@bid_routes.route('/junk', methods=['DELETE'])
+def delete_junk_bids():
+    junkBids = Bid.query.filter(Bid.auctionId == -1)
+
+    if junkBids is None:
+        return { "message": "Sadly no junkBids left to delete"}
+
+    for junkBid in junkBids:
+        db.session.delete(junkBid)
+
+    db.session.commit()
+
+    return {"message": "Junkbids deleted"}
+
+
 @bid_routes.route('/auctions/<int:auctionId>', methods=["DELETE"])
 #/bids/auctions/:auctionId
 @login_required

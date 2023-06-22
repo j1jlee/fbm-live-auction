@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getAuctionsThunk } from "../../store/auction"
 import { getItemsThunk } from "../../store/item"
-import { getBidsThunk, createBidThunk } from "../../store/bid"
+import { getBidsThunk, createBidThunk, deleteJunkThunk } from "../../store/bid"
+
 import Countdown from "react-countdown";
 
 import "./SingleAuctionPage.css"
@@ -18,20 +19,22 @@ let socket;
 function SingleAuctionPage() {
 
     const dispatch = useDispatch();
-    const [ bidLogs, setBidLogs] = useState([]);
+    // const [ bidLogs, setBidLogs] = useState([]);
+    const [ numSwitch, setNumSwitch ] = useState(0)
+    const [ boolSwitch, setBoolSwitch ] = useState(true)
 
     useEffect(() => {
         dispatch(getAuctionsThunk());
         dispatch(getItemsThunk());
-        // dispatch(getBidsThunk());
-    }, [dispatch])
-
-
-    const [ boolSwitch, setBoolSwitch ] = useState(true)
-
-    useEffect(() => {
         dispatch(getBidsThunk());
-    }, [boolSwitch])
+        // dispatch(getBidsThunk());
+    }, [dispatch, boolSwitch, numSwitch])
+
+
+
+    // useEffect(() => {
+    //     dispatch(getBidsThunk());
+    // }, [boolSwitch])
 
 
     const currentUser = useSelector(state => state.session.user)
@@ -50,7 +53,7 @@ function SingleAuctionPage() {
     const thisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : ''
 
     const [bidInput, setBidInput] = useState(0);
-    const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
+    // const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
     const [errors, setErrors] = useState({})
 
     console.log("BidLIst?", bidList)
@@ -133,6 +136,19 @@ function SingleAuctionPage() {
         return tempHighestBid;
     }
 
+    function junkBid() {
+        const newDate = new Date();
+
+        const junkBid = {
+            auctionId: -1,
+            bidderId: -1,
+            timeOfBid: newDate.toString(),
+            bidAmountCents: -1
+        }
+
+        return junkBid;
+    }
+
     function newBid() {
         const newDate = new Date();
 
@@ -140,7 +156,7 @@ function SingleAuctionPage() {
             auctionId,
             bidderId: currentUser.id,
             timeOfBid: newDate.toString(),
-            bidAmountCents: bidInput * 100
+            bidAmountCents: Math.floor(bidInput * 100)
         }
 
         return tempNewBid;
@@ -151,24 +167,44 @@ function SingleAuctionPage() {
     }
 
     function resolveAuction(resAuctionId) {
-        const resThisAuction = allAuctions ? allAuctions[auctionId] : ""
+        // const resThisAuction = allAuctions ? allAuctions[auctionId] : ""
 
-        if (resThisAuction.auctionOpen == false) {
-            console.log(`Auction ${resThisAuction.auctionId} is already closed! Skipping;`)
+        if (thisAuction.auctionOpen == false) {
+            console.log(`Auction ${thisAuction.auctionId} is already closed! Skipping;`)
             return;
         }
 
-        const resThisItem = allItems && resThisAuction ? allItems[resThisAuction.auctionItemId] : '';
+        // const resThisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : '';
+
+        //just use thisitem
 
         // const bidList = allBids ? Object.values(allBids) : [];
-        const resThisAuctionBidList = allBids ? Object.values(allBids).filter((bid) => {
-            return bid.auctionId == auctionId
-        }) : [];
+        // const thisAuctionBidList = allBids ? Object.values(allBids).filter((bid) => {
+        //     return bid.auctionId == auctionId
+        // }) : [];
 
-        let highestBid = '';
-        for (let bid in resThisAuctionBidList) {
 
+        console.log("\n\n\npre-finding highest bid", thisAuctionBidList)
+        console.log("\n\n\npre-finding highest bid", thisAuctionBidList)
+
+        let highestBid = {bidAmountCents: 0};
+        let latestBid = {timeOfBid: "Thu 01 Jan 1970 00:00:00 GMT"};
+        for (let bid of thisAuctionBidList) {
+            console.log("individual bids,", bid)
+
+            if (bid.bidAmountCents > highestBid.bidAmountCents) {
+                highestBid = bid;
+            }
+            const bidDate = new Date(bid.timeOfBid);
+            const latestDate = new Date(latestBid.timeofBid);
+
+            if (bidDate.getTime() > latestDate.getTime()) {
+                latestBid = bid;
+            }
         }
+
+        console.log("highest bid:", highestBid)
+        console.log("latest bid:", latestBid)
 
         // if (resThisAuction.auctionOpen == true) {
         //     console.log("\n\n\nthis auction is open, with timer over! closing:")
@@ -189,13 +225,24 @@ function SingleAuctionPage() {
         socket = io();
         //receiving
         socket.on("bidEvent", (bid) => {
-            console.log("pre-bid bidlogs", bidLogs)
             console.log("\n\n\nBID?", bid)
 
             if (bid.socketAuctionId == auctionId) {
                 //trigger refresh?
                 console.log("socketAuctionId matches auctionId, refresh")
-                setBoolSwitch(!boolSwitch);
+
+                // const tempBool = boolSwitch;
+                setBoolSwitch(!boolSwitch)
+
+                // const testNum = numSwitch;
+                // setNumSwitch(testNum + 1);
+                // // dispatch(getBidsThunk);
+
+                dispatch(createBidThunk(junkBid()));
+
+                dispatch(deleteJunkThunk())
+
+                dispatch(getBidsThunk())
             }
             return;
 
@@ -204,11 +251,6 @@ function SingleAuctionPage() {
         return (() => {
             socket.disconnect()
         })
-        /*
-        @socketio.on("bidEvent")
-        def handle_bid(data):
-        emit("bidEvent", data, broadcast=True)
- */
     }, [])
     // }, [dispatch])
 
@@ -221,13 +263,16 @@ function SingleAuctionPage() {
         setBidInput(e.target.value)
         )
 
-    const sendBid = async (e) => {
+    const sendBid = (e) => {
         e.preventDefault();
 
         setErrors({});
         const tempErrors = {};
 
         console.log("\n\n\nstarting sendBid, tempErrors should be empty", tempErrors)
+
+        console.log("bidInput before?", bidInput)
+
         const tempBidInput = bidInput * 100;
 
         // console.log("bidinput??", typeof bidInput)
@@ -252,16 +297,13 @@ function SingleAuctionPage() {
             return;
         }
 
-        // if (!sortedBidList.length) {
-        //     console.log("First bid ever")
-        //     const firstBid = newBid();
-        //     await dispatch(createBidThunk(firstBid))
-        //     return;
-        // }
         const sendBid = newBid();
-        await dispatch(createBidThunk(sendBid))
 
-        socket.emit("bidEvent", { socketAuctionId: thisAuction.id, bidderId: currentUser.id, bidAmount: tempBidInput, localHighestBid: tempBidInput});
+        dispatch(createBidThunk(sendBid))
+        .then(console.log("bid creating?"))
+        .then(socket.emit("bidEvent", { socketAuctionId: thisAuction.id, bidderId: currentUser.id, bidAmount: parseInt(bidInput * 100), localHighestBid: tempBidInput})
+        )
+
 
         setBidInput(0);
         return;
@@ -271,7 +313,7 @@ function SingleAuctionPage() {
     // console.log("this auction?", thisAuction)
     // console.log("this item?", thisItem)
     // console.log("current highest bid?", highestBid)
-    console.log("bidLogs?", bidLogs)
+    // console.log("bidLogs?", bidLogs)
 
     return (
         <>
@@ -298,7 +340,7 @@ function SingleAuctionPage() {
             {thisAuction ? <Countdown
                 date={thisAuction.endTime}
                 // onComplete={resolveAuction(auctionId)}>
-                onComplete={() => resolveAuction(auctionId)}>
+                onComplete={thisAuction && (() => resolveAuction(auctionId))}>
 
             </Countdown> : <p></p>}
             </div>
