@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useModal } from "../../context/Modal";
+import { useModal } from "../../context/Modal"
+;
+import { useHistory } from "react-router-dom";
 
 import { createAuctionThunk } from "../../store/auction"
 
@@ -26,6 +28,8 @@ function AuctionCreateModal() {
 //   console.log("\n\n\nmyItemsList?", myItemsList)
 
   const { closeModal } = useModal();
+
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,6 +111,8 @@ function AuctionCreateModal() {
       if (result) {
         setErrors(result.errors)
       }
+
+      history.push("/");
       closeModal();
     }
 

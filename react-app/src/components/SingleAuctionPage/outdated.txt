@@ -37,7 +37,7 @@ function SingleAuctionPage() {
 
     const bidList = allBids ? Object.values(allBids) : [];
     const thisAuctionBidList = allBids ? Object.values(allBids).filter((bid) => {
-        return bid.auctionId == auctionId
+        return bid.auctionId = auctionId
     }) : [];
 
     const thisAuction = allAuctions ? allAuctions[auctionId] : ""
@@ -48,15 +48,28 @@ function SingleAuctionPage() {
     const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
     const [errors, setErrors] = useState({})
 
+
     console.log("BidLIst?", bidList)
+
     const sortedBidList = sortBidByTime(thisAuctionBidList)
+
     console.log("sortedBidList?", sortedBidList)
-    console.log("thisItem?", thisItem)
-    console.log("thisAuction?", thisAuction)
+    // const test1 = bidList ? bidList[0].timeOfBid : '';
+
+    // console.log("test1 gettime?", typeof test1)
+    // const test1Date = new Date(test1);
+    // console.log("test1 date", test1Date)
+    // console.log("gettime", test1Date.getTime())
 
 
-
-
+    // if (!highestBid) {
+    //     try{
+    //         setHighestBid(thisAuction.startingBidCents)
+    //     }
+    //     catch {
+    //         console.log("useless")
+    //     }
+    // }
 
     function sortBidByTime(bids) {
         const tempBidList = [...bids]
@@ -100,13 +113,7 @@ function SingleAuctionPage() {
     }
 
     function getHighestBid(bids) {
-        let tempHighestBid = thisAuction.startingBidCents;
-
-        // if (!bids) {
-        //     console.log("No bids yet");
-        //     return tempHighestBid
-        // }
-
+        let tempHighestBid = 1;
         for (let bid of bids) {
             if (bid.bidAmountCents > tempHighestBid) {
                 tempHighestBid = bid.bidAmountCents;
@@ -116,16 +123,6 @@ function SingleAuctionPage() {
         return tempHighestBid;
     }
 
-    function newBid() {
-        const newDate = new Date();
-
-        const tempNewBid = {
-            auctionId,
-            bidderId: currentUser.id,
-            timeOfBid: newDate.toString(),
-            bidAmountCents: bidInput * 100
-        }
-    }
 
     function centsToDollars(cents) {
         return `${String(cents).substring(0, String(cents).length - 2)}.${String(cents).substring(String(cents).length - 2)}`
@@ -205,17 +202,17 @@ function SingleAuctionPage() {
         setBidInput(e.target.value)
         )
 
-    const sendBid = async (e) => {
+    const sendBid = (e) => {
         e.preventDefault();
 
-        // if (!highestBid) {
-        //     try {
-        //         console.log("setting first highest bid")
-        //         setHighestBid(thisAuction.startingBidCents);
-        //     } catch {
-        //         console.log("sending bid, attempting to apply first highest bid")
-        //     }
-        // }
+        if (!highestBid) {
+            try {
+                console.log("setting first highest bid")
+                setHighestBid(thisAuction.startingBidCents);
+            } catch {
+                console.log("sending bid, attempting to apply first highest bid")
+            }
+        }
 
         setErrors({});
 
@@ -234,44 +231,32 @@ function SingleAuctionPage() {
             tempErrors.bidInput = "Can't bid over six figures"
         }
 
-        const currentHighestBid = getHighestBid(thisAuctionBidList) //sortedBidList
-
-        if (tempBidInput <= currentHighestBid) {
-            tempErrors.currentHighestBid = `Must bid higher than ${centsToDollars(currentHighestBid)}`
+        if (highestBid && (tempBidInput <= highestBid)) {
+            tempErrors.highestBid = `Must bid higher than current highest bid: ${String(highestBid).substring(0, String(highestBid).length - 2)}.
+            ${String(highestBid).substring(String(highestBid).length - 2)}`
         }
 
-        // if (highestBid && (tempBidInput <= highestBid)) {
-            //     tempErrors.highestBid = `Must bid higher than current highest bid: ${String(highestBid).substring(0, String(highestBid).length - 2)}.
-            //     ${String(highestBid).substring(String(highestBid).length - 2)}`
-            // }
+        if (thisAuction && (tempBidInput <= thisAuction.startingBidCents)) {
+            tempErrors.highestBid = `Must bid higher than initial bid: ${String(thisAuction.startingBidCents).substring(0, String(thisAuction.startingBidCents).length - 2)}.
+            ${String(thisAuction.startingBidCents).substring(String(thisAuction.startingBidCents).length - 2)}`
+        }
 
-            // if (thisAuction && (tempBidInput <= thisAuction.startingBidCents)) {
-                //     tempErrors.highestBid = `Must bid higher than initial bid: ${String(thisAuction.startingBidCents).substring(0, String(thisAuction.startingBidCents).length - 2)}.
-                //     ${String(thisAuction.startingBidCents).substring(String(thisAuction.startingBidCents).length - 2)}`
-                // }
+        if (thisAuction && (tempBidInput < thisAuction.startingBidCents)) {
 
-                // if (thisAuction && (tempBidInput < thisAuction.startingBidCents)) {
-
-                    //     console.log("\n\n\nwhat is my bidinput? they think it's lower", tempBidInput)
-                    //     console.log("than this", thisAuction.startingBidCents)
+            console.log("\n\n\nwhat is my bidinput? they think it's lower", tempBidInput)
+            console.log("than this", thisAuction.startingBidCents)
 
 
-                    //     tempErrors.highestBid = `Must bid higher than the starting bid: ${String(thisAuction.startingBidCents).substring(0, String(thisAuction.startingBidCents).length - 2)}. ${String(thisAuction.startingBidCents).substring(String(thisAuction.startingBidCents).length - 2)}`
-                    // }
+            tempErrors.highestBid = `Must bid higher than the starting bid: ${String(thisAuction.startingBidCents).substring(0, String(thisAuction.startingBidCents).length - 2)}. ${String(thisAuction.startingBidCents).substring(String(thisAuction.startingBidCents).length - 2)}`
+        }
 
         if (Object.values(tempErrors).length > 0) {
             setErrors(tempErrors);
-            // console.log("\n\n\nObject values blah blah", Object.values(tempErrors));setBidInput(0);
+            console.log("\n\n\nObject values blah blah", Object.values(tempErrors));setBidInput(0);
             return;
         }
 
-        if (!sortedBidList.length) {
-            console.log("First bid ever")
-            const firstBid = newBid();
-            await dispatch(createBidThunk(firstBid))
-            return;
-        }
-        // setHighestBid(tempBidInput);
+        setHighestBid(tempBidInput);
 
         socket.emit("bidEvent", { socketAuctionId: thisAuction.id, bidderId: currentUser.id, bidAmount: tempBidInput, localHighestBid: tempBidInput});
 

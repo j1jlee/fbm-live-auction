@@ -10,6 +10,8 @@ import OpenModalButton from "../OpenModalButton";
 import AuctionUpdateModal from "../AuctionUpdateModal";
 import AuctionDeleteModal from "../AuctionDeleteModal";
 
+import { centsToDollars } from "../aaaMiddleware";
+
 import { urlToImage } from "../aaaMiddleware";
 
 import Countdown from 'react-countdown';
@@ -181,7 +183,7 @@ function LandingPageAuctionList() {
                 <p>Auction Expired</p>
             </Countdown>
 
-            <div>$ {auction.startingBidCents}</div>
+            <div>$ {centsToDollars(auction.startingBidCents)}</div>
             <div>{auction.auctionName}</div>
             <div>{auction.auctionDescription}</div>
 
