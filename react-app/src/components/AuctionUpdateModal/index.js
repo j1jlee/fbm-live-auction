@@ -11,6 +11,9 @@ function AuctionUpdateModal({update_auction}) {
   const [auctionName, setAuctionName] = useState(update_auction.auctionName);
   const [auctionDescription, setAuctionDescription] = useState(update_auction.auctionDescription);
   const [auctionStartingBidCents, setAuctionStartingBidCents] = useState(update_auction.startingBidCents);
+  const [ boolSwitch, setBoolSwitch ] = useState(true);
+
+
   const [startTime, setStartTime] = useState(timeToISO(update_auction.startTime))
   const [endTime, setEndTime] = useState(timeToISO(update_auction.endTime))
 //   const currentUser = useSelector(state => state.session.user)
@@ -95,17 +98,19 @@ function AuctionUpdateModal({update_auction}) {
 
 
     if ((originalStartTimeObj).getTime() < timeNowMilli) {
-        if (auctionStartingBidCents !== update_auction.startingBidCents) {
-            submitErrors.push({auctionStartingBid: "Cannot change starting bid once auction has started!"})
-        }
+        // if (auctionStartingBidCents !== update_auction.startingBidCents) {
+        //     submitErrors.push({auctionStartingBid: "Cannot change starting bid once auction has started!"})
+        // }
 
-        if (startTime !== update_auction.startTime) {
-            submitErrors.push({startTime: `Cannot change start time once auction has started! Original time was ${originalStartTimeObj}`})
-        }
+        // if (startTime !== update_auction.startTime) {
+        //     submitErrors.push({startTime: `Cannot change start time once auction has started! Original time was ${originalStartTimeObj}`})
+        // }
 
-        if (endTime !== update_auction.endTime) {
-            submitErrors.push({endTime: `Cannot change end time once auction has started! Original time was ${originalEndTimeObj}`})
-        }
+        // if (endTime !== update_auction.endTime) {
+        //     submitErrors.push({endTime: `Cannot change end time once auction has started! Original time was ${originalEndTimeObj}`})
+        // }
+        alert("Cannot update once auction has started! Closing modal.");
+        closeModal();
     }
 
 

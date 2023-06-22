@@ -175,7 +175,13 @@ function LandingPageAuctionList() {
             <div className="landing-page-auction-new-node-image">item image? {allItems ? allItems[auction.auctionItemId].imageUrl : "Item Not Found"}</div>
 
             <Countdown
-                date={auction.endTime}>
+                date={auction.endTime}
+                onComplete={() => {setSwitchBool(!switchBool)}}>
+
+{/* ALSO HANDLE "STILL OPEN AUCTIONS, DEFINE WINNER, GIVE ITEM, ETC" */}
+
+
+
                 {/* {() => {
                     setSwitchBool(!switchBool)
                     return "<p>Auction Expired</p>"
