@@ -3,18 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 
-import { getAuctionsThunk } from "../../store/auction";
-import { getItemsThunk } from "../../store/item";
+import { getAuctionsThunk, closeAuctionThunk } from "../../store/auction";
+import { getItemsThunk, tradeItemThunk } from "../../store/item";
+import { getBidsThunk } from "../../store/bid";
+
 
 import OpenModalButton from "../OpenModalButton";
 import AuctionUpdateModal from "../AuctionUpdateModal";
 import AuctionDeleteModal from "../AuctionDeleteModal";
 
 import { centsToDollars } from "../aaaMiddleware";
-
 import { urlToImage } from "../aaaMiddleware";
-
 import { createAuctionThunk } from "../../store/auction";
+
+import { sortBidByTime } from "../aaaMiddleware";
 
 import Countdown from 'react-countdown';
 
@@ -30,6 +32,7 @@ function LandingPageAuctionList() {
     const dispatch = useDispatch();
     const allItems = useSelector(state => state.items)
     const allAuctions = useSelector(state => state.auctions)
+    const allBids = useSelector(state => state.bids)
     // const currentUser = useSelector(state => state.session.user)
     // const history = useHistory();
 
@@ -58,6 +61,7 @@ function LandingPageAuctionList() {
     useEffect(() => {
         dispatch(getAuctionsThunk());
         dispatch(getItemsThunk());
+        dispatch(getBidsThunk());
     }, [dispatch, switchBool])
 
 
@@ -191,6 +195,58 @@ function LandingPageAuctionList() {
         }
     }
 
+
+    function resolveAuction(resAuctionId) {
+
+        const thisAuction = allAuctions[resAuctionId];
+
+        if (thisAuction.auctionOpen == false) {
+            console.log(`Auction ${resAuctionId} is already closed! Skipping;`)
+            return;
+        }
+
+        const thisAuctionBidList = allBids ? Object.values(allBids).filter((bid) => {
+            return bid.auctionId == resAuctionId
+        }) : [];
+
+
+        if (!thisAuctionBidList.length) {
+            console.log(`Closing: No bids for ${resAuctionId}, setting auction to "Open: false`)
+            dispatch(closeAuctionThunk(thisAuction.id))
+            //TODO: update auction to open:False
+            return;
+        }
+
+        const sortedBidList = sortBidByTime(thisAuctionBidList)
+
+        const lastBid = sortedBidList.length ? sortedBidList[sortedBidList.length - 1] : "nothing?"
+
+        // console.log("\n\n\nlastBid found", lastBid)
+        // if (resThisAuction.auctionOpen == true) {
+        //     console.log("\n\n\nthis auction is open, with timer over! closing:")
+        // }
+
+        //trade item and close auction
+        //HERE YALL
+        dispatch(tradeItemThunk(thisAuction.auctionItemId,
+            {
+                lastKnownPriceCents : lastBid.bidAmountCents,
+                 ownerId: lastBid.bidderId
+            }
+        ))
+        .then(dispatch(closeAuctionThunk(thisAuction.id)))
+        .then(
+            // alert(congratsOrSorry(lastBid))
+            console.log(`Traded item for auction ${thisAuction.id} to user ${lastBid.bidderId}`)
+            )
+        .then(dispatch(setSwitchBool(!switchBool)))
+
+        console.log("\n\n\nthis auction is open, with timer over! closing:")
+    }
+
+
+
+
     function renderAuctionNew(auctionList) {
         return (
             <>
@@ -213,7 +269,11 @@ function LandingPageAuctionList() {
                 <div>
                 <Countdown
                     date={auction.endTime}
-                    onComplete={() => {setSwitchBool(!switchBool)}}>
+                    onComplete={() => {
+                        resolveAuction(auction.id)
+                        // (setSwitchBool(!switchBool))
+                    }
+                    }>
     {/* ALSO HANDLE "STILL OPEN AUCTIONS, DEFINE WINNER, GIVE ITEM, ETC" */}
                     <p>Auction Expired</p>
                 </Countdown>

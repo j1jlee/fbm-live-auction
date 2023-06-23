@@ -37,7 +37,34 @@ function centsToDollars(cents) {
     return `${String(cents).substring(0, String(cents).length - 2)}.${String(cents).substring(String(cents).length - 2)}`
 }
 
+function sortBidByTime(bids) {
+    const tempBidList = [...bids]
+
+    if (tempBidList.length <= 1) {
+        return tempBidList;
+    }
+
+    const sortedTempBidList = tempBidList.sort((a, b) => {
+        const aDate = new Date(a.timeOfBid);
+        const bDate = new Date(b.timeOfBid);
+
+        const aDateGetTime = aDate.getTime();
+        const bDateGetTime = bDate.getTime()
+
+        // console.log("in sortBidByTime, aDate, bdate", aDateGetTime, bDateGetTime)
 
 
+        if (aDateGetTime < bDateGetTime) {
+            return -1;
+        }
+        else if (aDateGetTime > bDateGetTime) {
+            return 1;
+        } else {
+            return 0;
+        }
+    })
+    return sortedTempBidList;
+}
 
-export { urlToImage, centsToDollars };
+
+export { urlToImage, centsToDollars, sortBidByTime};

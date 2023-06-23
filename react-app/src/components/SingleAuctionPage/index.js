@@ -226,23 +226,7 @@ function SingleAuctionPage() {
 
         console.log("\n\n\npre-finding highest bid", thisAuctionBidList)
 
-        // let highestBid = {bidAmountCents: 0};
-        // let latestBid = {timeOfBid: "Thu 01 Jan 1970 00:00:00 GMT"};
-        // for (let bid of thisAuctionBidList) {
-        //     console.log("individual bids,", bid)
 
-        //     if (bid.bidAmountCents > highestBid.bidAmountCents) {
-        //         highestBid = bid;
-        //     }
-        //     const bidDate = new Date(bid.timeOfBid);
-        //     const latestDate = new Date(latestBid.timeofBid);
-
-        //     if (bidDate.getTime() > latestDate.getTime()) {
-        //         latestBid = bid;
-        //     }
-        // }
-        // console.log("highest bid:", highestBid)
-        // console.log("latest bid:", latestBid)
         const lastBid = sortedBidList.length ? sortedBidList[sortedBidList.length - 1] : "nothing?"
 
         console.log("\n\n\nlastBid found", lastBid)
@@ -265,9 +249,6 @@ function SingleAuctionPage() {
             )
 
         console.log("\n\n\nthis auction is open, with timer over! closing:")
-
-
-
     }
 
     function congratsOrSorry(lastestBid) {
