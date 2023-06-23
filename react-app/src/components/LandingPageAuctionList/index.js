@@ -115,7 +115,14 @@ function LandingPageAuctionList() {
 
     function timeUTCtoLocal(utcDateTime) {
         const returnDateTime = new Date(utcDateTime);
-        return returnDateTime.toString();
+
+        // const tempDateTime = ''
+        /* const dateTimeStr = returnDateTime.toString();
+        return dateTimeStr.split(" ").slice(1, -1).join(" ")  */
+        const dateTimeStr = returnDateTime.toString();
+        // return dateTimeStr.split(" (").slice(0, -1).join(" ").split(" ").slice(1, -1).join(" ")
+        return dateTimeStr.split(":").slice(0, -1).join(":").split(" ").slice(1).join(" ")
+        // return returnDateTime.toString();
     }
 
     // function renderAuction(auctionList) {
@@ -176,9 +183,11 @@ function LandingPageAuctionList() {
 
         if (timeMilli < timeNowMilli) {
             //console.log("timeMilli, timenowMilli", timeMilli, timeNowMilli)
-            return "update-disabled";
+            return true;
+            // return "update-disabled";
         } else {
-            return ""
+            return false;
+            // return ""
         }
     }
 
@@ -198,20 +207,45 @@ function LandingPageAuctionList() {
 
             <div className="landing-page-auction-new-node-image">item image? {allItems ? allItems[auction.auctionItemId].imageUrl : "Item Not Found"}</div>
 
-            <Countdown
-                date={auction.endTime}
-                onComplete={() => {setSwitchBool(!switchBool)}}>
+            <div>
+            {pastTime(auction.startTime) ?
+                <>
+                <div>
+                <Countdown
+                    date={auction.endTime}
+                    onComplete={() => {setSwitchBool(!switchBool)}}>
+    {/* ALSO HANDLE "STILL OPEN AUCTIONS, DEFINE WINNER, GIVE ITEM, ETC" */}
+                    <p>Auction Expired</p>
+                </Countdown>
 
-{/* ALSO HANDLE "STILL OPEN AUCTIONS, DEFINE WINNER, GIVE ITEM, ETC" */}
+                </div>
+                <br></br>
+                </>
 
+            :
+                <>
+                <p className="landing-page-auction-node-start">Starting at: {timeUTCtoLocal(auction.startTime)}</p>
+                <div className="landing-page-hidden">
+                    <Countdown
+                            date={auction.startTime}
+                            onComplete={() => {setSwitchBool(!switchBool)}}
+                    >
+                         <div className="landing-page-inner-show">
+                         <Countdown
+                            date={auction.endTime}
+                            onComplete={() => {setSwitchBool(!switchBool)}}>
+                             <p>Auction Expired</p>
+                        </Countdown>
+                        </div>
 
+                    </Countdown>
 
-                {/* {() => {
-                    setSwitchBool(!switchBool)
-                    return "<p>Auction Expired</p>"
-                }} */}
-                <p>Auction Expired</p>
-            </Countdown>
+                </div>
+                </>
+
+        }
+            </div>
+
 
             <div>$ {centsToDollars(auction.startingBidCents)}</div>
             <div>{auction.auctionName}</div>
@@ -219,13 +253,13 @@ function LandingPageAuctionList() {
 
             </div>
 
-            <span className={pastTime(auction.startTime)}>
+            <span className={pastTime(auction.startTime) ? "update-disabled" : ""}>
             <OpenModalButton
             buttonText="Update Auction"
             modalComponent={<AuctionUpdateModal update_auction={auction} />} />
             </span>
 
-            <span className={pastTime(auction.startTime)}>
+            <span className={pastTime(auction.startTime) ? "update-disabled" : ""}>
             <OpenModalButton
             buttonText="Delete Auction"
             modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />

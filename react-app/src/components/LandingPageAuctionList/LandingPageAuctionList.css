@@ -37,11 +37,29 @@
     height: 90%;
 }
 
+.landing-page-auction-node-start {
+    font-size: smaller;
+    color: darkgray;
+}
+
+
 .landing-page-auction-new-node-image {
     height: 70%;
     width: 100%;
 }
 
+
 .update-disabled {
     visibility: collapse;
+}
+
+.landing-page-hidden > * {
+    /* visibility: hidden */
+    /* display:none; */
+    opacity: 0;
+    height: 0.1rem;
+}
+
+.landing-page-inner-show {
+    opacity: 100%;
 }

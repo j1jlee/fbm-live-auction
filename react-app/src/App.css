@@ -1,21 +1,31 @@
+/* 
+#root > * {
+    box-sizing: border-box;
+} */
 
 * {
     /* display: inline-block; */
     margin: 0;
 
     font-family: "Roboto", sans-serif;
+
+    /* box-sizing: border-box; */
 }
 
 .app-entire-wrapper {
     position: absolute;
+
+    /* display: flex; */
     height: 100%;
     width: 100%;
 }
 
 .app-just-page {
     /* background-color: beige; */
+    /* display: inline-block; */
 
     width: 100%;
+    /* height: 100%; */
 
     padding: 1rem;
 
@@ -44,6 +54,7 @@
 .app-navbar-two {
     /* position: fixed; */
     /* position: absolute; */
+    /* display: inline-block; */
 
     height: 100%;
     width: 20rem;
