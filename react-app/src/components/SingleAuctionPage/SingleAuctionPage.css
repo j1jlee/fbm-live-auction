@@ -38,7 +38,15 @@
 }
 .single-auction-bidfeed {
     overflow-y: scroll;
+    padding: 1rem;
+    box-shadow: inset lightgray 0px 0px 4px 4px;
 }
+
+.single-auction-bidfeed li {
+    list-style: none;
+
+}
+
 .single-auction-item {
 
 }
