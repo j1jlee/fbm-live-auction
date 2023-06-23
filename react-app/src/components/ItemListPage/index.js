@@ -61,14 +61,16 @@ function ItemListPage() {
             // {allItemsList ? allItemsList.map((item) => (
                 <>
                 <div className="item-list-node item-list-node-hover">
-                <ul onClick={() => history.push(`/items/${item.id}`)}>
-                <li key={item.id}>Item ID: {item.id}</li>
-                <li key={item.name}>Name: {item.name}</li>
-               <li key={item.description}>Description: {item.description}</li>
-               <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li>
+                <ul className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
+                {/* <li key={item.id}>Item ID: {item.id}</li> */}
+                <li key={item.name}>{item.name}</li>
+                {/* <li key={item.name}>Name: {item.name}</li> */}
+               <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
+               <li key={item.lastKnownPriceCents}>Last Price: {item.lastKnownPriceCents}</li>
                <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
                <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
                </ul>
+               <span>
                <OpenModalButton
                     buttonText="Update Item"
                     modalComponent={<ItemUpdateModal update_item={item}/>}
@@ -78,6 +80,8 @@ function ItemListPage() {
                     buttonText="Delete Item"
                     modalComponent={<ItemDeleteModal itemId={item.id}/>}
                 />
+                </span>
+
 
                 </div> {/* end of item list node */}
 
@@ -92,11 +96,15 @@ function ItemListPage() {
             // {allItemsList ? allItemsList.map((item) => (
                 <>
                 <div className="item-list-node item-list-node-hover">
-                <ul onClick={() => history.push(`/items/${item.id}`)}>
-                <li key={item.id}>Item ID: {item.id}</li>
-                <li key={item.name}>Name: {item.name}</li>
-               <li key={item.description}>Description: {item.description}</li>
-               <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li>
+                <ul className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
+                {/* <li key={item.id}>Item ID: {item.id}</li> */}
+                <li key={item.name}>{item.name}</li>
+                {/* <li key={item.name}>Name: {item.name}</li> */}
+               {/* <li key={item.description}>Description: {item.description}</li> */}
+               <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
+
+               <li key={item.lastKnownPriceCents}>Last Price: {item.lastKnownPriceCents}</li>
+               {/* <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li> */}
                <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
                <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
                </ul>

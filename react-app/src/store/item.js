@@ -4,6 +4,7 @@ const GET_ITEMS = "session/GET_ITEMS";
 const UPDATE_ITEM = "session/UPDATE_ITEM";
 const DELETE_ITEM = "session/DELETE_ITEM";
 
+const TRADE_ITEM = "session/TRADE_ITEM";
 
 const getItems = (items) => ({
     type: GET_ITEMS,
@@ -25,6 +26,10 @@ const deleteItem = (itemId) => ({
     payload: itemId
 })
 
+const tradeItem = (item) => ({
+    type: TRADE_ITEM,
+    payload: item
+})
 
 //thunk here
 export const getItemsThunk = () => async (dispatch) => {
@@ -58,6 +63,32 @@ export const createItemThunk = (item) => async (dispatch) => {
         return errors;
     }
 }
+
+export const tradeItemThunk = (itemId, updateObj) => async (dispatch) => {
+    console.log("at trade item thunk")
+    const {lastKnownPriceCents, ownerId} = updateObj;
+
+    const response = await fetch(`/api/items/${itemId}/trade`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(updateObj)
+    })
+
+    if (response.ok) {
+        const tradedItem = await response.json();
+
+        console.log("traded item?", tradedItem)
+
+        dispatch(updateItem(tradedItem))
+        // dispatch(tradeItem(tradedItem))
+        return tradedItem;
+    } else {
+        const errors = await response.json();
+        console.log('\n\n\nerrors from update item thunk')
+        return errors;
+    }
+}
+
 
 export const updateItemThunk = (item, oldItemId) => async (dispatch) => {
     //item here is an object containing JUST the attributes to change

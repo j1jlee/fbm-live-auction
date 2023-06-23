@@ -22,6 +22,7 @@
 
 .landing-page-auction-node:hover {
     background-color: lightgray;
+    border-radius: 5px;
     cursor: pointer;
 }
 

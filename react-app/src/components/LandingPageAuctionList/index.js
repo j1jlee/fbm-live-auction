@@ -74,7 +74,7 @@ function LandingPageAuctionList() {
         return tempList;
     }
 
-    const demoSubmit = () => {
+    const demoSubmit = (demoSellerId) => {
 
         const timeNow = new Date();
         const timePlusMinute = new Date(timeNow.getTime() + 60000);
@@ -89,7 +89,7 @@ function LandingPageAuctionList() {
           startTime: timeNowString,
           endTime: timePlusMinuteString,
           auctionItemId: allItemsList[0].id,
-          sellerId: 2
+          sellerId: demoSellerId
         }
 
         dispatch(createAuctionThunk(demoAuction));
@@ -265,6 +265,12 @@ function LandingPageAuctionList() {
             modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
             </span>
 
+            <span className={pastTime(auction.endTime) ? "" : "update-disabled"}>
+            <OpenModalButton
+            buttonText="Delete Auction"
+            modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
+            </span>
+
             </div>
 
 
@@ -284,13 +290,16 @@ function LandingPageAuctionList() {
 
         <h2>Today's picks</h2>
         <div>
-            <button onClick={() => demoSubmit()}>Create Demo Auction</button>
+            <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button>
         </div>
         <div className="landing-page-auction-wrapper">
             {renderAuctionNew(sortedAuctionsCurrent)}
             {/* {renderAuction(sortedAuctionsCurrent)} */}
         </div>
 
+        <br></br>
+        <hr></hr>
+        <br></br>
 
         <h2>Past Auctions:</h2>
         <div className="landing-page-auction-wrapper">

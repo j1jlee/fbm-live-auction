@@ -4,6 +4,7 @@ from app.models import db, Item
 
 from app.forms.create_item_form import createItemForm
 from app.forms.update_item_form import updateItemForm
+from app.forms.trade_item_form import tradeItemForm
 
 item_routes = Blueprint('items', __name__)
 
@@ -42,6 +43,29 @@ def delete_single_item(id):
 
     return {"message": f"Item {item_name} successfully deleted"}
 
+@item_routes.route('/<int:id>/trade', methods=["PUT"])
+@login_required
+def trade_item(id):
+    form = tradeItemForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    trade_item = Item.query.get(id)
+
+    if trade_item is None:
+        return {"error": f"Item {id} not found to trade"}, 404
+
+    if form.validate_on_submit():
+        data = form.data
+        trade_item.lastKnownPriceCents = data['lastKnownPriceCents']
+        trade_item.ownerId = data['ownerId']
+
+        db.session.commit()
+        return trade_item.to_dict()
+
+    return { "errors": "Unknown error in trade item"}
+
+
+
 @item_routes.route('/<int:id>', methods=["PUT"])
 # @item_routes.route('/<int:id>', methods=["UPDATE"])
 @login_required
@@ -55,10 +79,7 @@ def update_single_item(id):
     print("at form")
 
     form['csrf_token'].data = request.cookies['csrf_token']
-
-
     print("form data csrf token")
-
 
     # print("request data", request.data)
     edit_item = Item.query.get(id)

@@ -22,8 +22,20 @@ function LoginFormModal() {
     }
   };
 
-  const handleDemoUser = async (e) => {
-    await dispatch(login('demo@aa.io', 'password'))
+  const handleDemoUser = async (demoUserId) => {
+      switch (demoUserId) {
+        case 1:
+          await dispatch(login('demo@aa.io', 'password'));
+          break;
+        case 2:
+          await dispatch(login('marnie@aa.io', 'password'))
+          break;
+        case 3:
+          await dispatch(login('bobbie@aa.io', 'password'))
+          break;
+        default:
+          console.log("Demo login not working?")
+      }
     closeModal()
   }
 
@@ -57,7 +69,11 @@ function LoginFormModal() {
         <button type="submit">Log In</button>
       </form>
 
-        <Link to='/' onClick={handleDemoUser}>Demo User</Link>
+        <Link to='/' onClick={() => handleDemoUser(1)}>Demo User 1</Link>
+        <span>___</span>
+        <Link to='/' onClick={() => handleDemoUser(2)}>Demo User 2</Link>
+        <span>___</span>
+        <Link to='/' onClick={() => handleDemoUser(3)}>Demo User 3</Link>
     </>
   );
 }

@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getAuctionsThunk } from "../../store/auction"
-import { getItemsThunk } from "../../store/item"
+import { getAuctionsThunk, closeAuctionThunk } from "../../store/auction"
+import { getItemsThunk, tradeItemThunk } from "../../store/item"
 import { getBidsThunk, createBidThunk, deleteJunkThunk } from "../../store/bid"
 
 import { useHistory } from "react-router-dom";
@@ -128,6 +128,9 @@ function SingleAuctionPage() {
     }
 
     function getHighestBid(bids) {
+        if (!thisAuction) {
+            return 0;
+        }
         let tempHighestBid = thisAuction.startingBidCents;
 
         // if (!bids) {
@@ -208,49 +211,74 @@ function SingleAuctionPage() {
         setAuctionOver(true);
 
         if (thisAuction.auctionOpen == false) {
-            console.log(`Auction ${thisAuction.auctionId} is already closed! Skipping;`)
+            console.log(`Auction ${resAuctionId} is already closed! Skipping;`)
             return;
         }
 
         if (!thisAuctionBidList.length) {
-            console.log(`Closing: No bids for ${thisAuction.auctionId}, setting auction to "Open: false`)
-
+            console.log(`Closing: No bids for ${resAuctionId}, setting auction to "Open: false`)
+            alert(`No one bid for the ${thisItem.name}! Returning to owner.`)
+            dispatch(closeAuctionThunk(thisAuction.id))
             //TODO: update auction to open:False
             return;
         }
 
 
         console.log("\n\n\npre-finding highest bid", thisAuctionBidList)
-        console.log("\n\n\npre-finding highest bid", thisAuctionBidList)
 
-        let highestBid = {bidAmountCents: 0};
-        let latestBid = {timeOfBid: "Thu 01 Jan 1970 00:00:00 GMT"};
-        for (let bid of thisAuctionBidList) {
-            console.log("individual bids,", bid)
+        // let highestBid = {bidAmountCents: 0};
+        // let latestBid = {timeOfBid: "Thu 01 Jan 1970 00:00:00 GMT"};
+        // for (let bid of thisAuctionBidList) {
+        //     console.log("individual bids,", bid)
 
-            if (bid.bidAmountCents > highestBid.bidAmountCents) {
-                highestBid = bid;
-            }
-            const bidDate = new Date(bid.timeOfBid);
-            const latestDate = new Date(latestBid.timeofBid);
+        //     if (bid.bidAmountCents > highestBid.bidAmountCents) {
+        //         highestBid = bid;
+        //     }
+        //     const bidDate = new Date(bid.timeOfBid);
+        //     const latestDate = new Date(latestBid.timeofBid);
 
-            if (bidDate.getTime() > latestDate.getTime()) {
-                latestBid = bid;
-            }
-        }
+        //     if (bidDate.getTime() > latestDate.getTime()) {
+        //         latestBid = bid;
+        //     }
+        // }
+        // console.log("highest bid:", highestBid)
+        // console.log("latest bid:", latestBid)
+        const lastBid = sortedBidList.length ? sortedBidList[sortedBidList.length - 1] : "nothing?"
 
-        console.log("highest bid:", highestBid)
-        console.log("latest bid:", latestBid)
-
+        console.log("\n\n\nlastBid found", lastBid)
         // if (resThisAuction.auctionOpen == true) {
         //     console.log("\n\n\nthis auction is open, with timer over! closing:")
         // }
+
+        //trade item and close auction
+        //HERE YALL
+        dispatch(tradeItemThunk(thisItem.id,
+            {
+                lastKnownPriceCents : lastBid.bidAmountCents,
+                 ownerId: lastBid.bidderId
+            }
+        ))
+        .then(dispatch(closeAuctionThunk(thisAuction.id)))
+        .then(
+            alert(congratsOrSorry(lastBid))
+            // console.log(`Traded item ${thisItem.id} ${thisItem.name} to user ${lastBid.bidderId}`)
+            )
+
         console.log("\n\n\nthis auction is open, with timer over! closing:")
 
 
 
     }
 
+    function congratsOrSorry(lastestBid) {
+        let message = "";
+        if (currentUser.id == lastestBid.bidderId) {
+            message = `Congrats! You just won the ${thisItem.name}! It's been added to your Item list.`
+        } else {
+            message = `Bidding is over! Sadly, seems like User ${lastestBid.bidderId} got away with the ${thisItem.name}! It's been added to their inventory; Better luck next time!`
+        }
+        return message;
+    }
     //END OF HELPER FUNCTIONS
     //
     //
@@ -321,7 +349,7 @@ function SingleAuctionPage() {
             tempErrors.bidInput = "Can't bid over six figures"
         }
 
-        const currentHighestBid = getHighestBid(thisAuctionBidList) //sortedBidList
+        const currentHighestBid = getHighestBid(thisAuctionBidList)//sortedBidList
 
         if (tempBidInput <= currentHighestBid) {
             tempErrors.currentHighestBid = `Must bid higher than ${centsToDollars(currentHighestBid)}`
@@ -353,7 +381,7 @@ function SingleAuctionPage() {
 
     // thisAuction ? console.log("\n\n\nThis auction starttime", thisAuction.startTime) : console.log("")
 
-    return (
+    return ( thisAuction ? (
         <>
         <h1>{thisAuction ? thisAuction.auctionName : ""}</h1>
 
@@ -380,7 +408,7 @@ function SingleAuctionPage() {
                     <Countdown
                         date={thisAuction.endTime}
                         // onComplete={resolveAuction(auctionId)}>
-                        onComplete={thisAuction && (() => resolveAuction(auctionId))}>
+                        onComplete={thisAuction && (() => resolveAuction(thisAuction.id))}>
                             <p>Auction Over!</p>
                     </Countdown>
                     :
@@ -398,7 +426,14 @@ function SingleAuctionPage() {
             : <p></p>}
             </div>
 
-            <div className="single-auction-highest">Highest Bid: {centsToDollars(getHighestBid(thisAuctionBidList))}</div>
+            <div className="single-auction-highest">Highest Bid: {centsToDollars(getHighestBid(thisAuctionBidList))}
+
+
+            {/* remove later */}
+            <button onClick={() => dispatch(closeAuctionThunk(thisAuction.id))}>Try closing</button>
+
+
+            </div>
            <div className="single-auction-bidform">
 
             {reasonBidDisabled() ?
@@ -433,7 +468,7 @@ function SingleAuctionPage() {
 
 
         </>
-    )
+    ) : <h1>Auction doesn't exist!</h1>)
 }
 
 export default SingleAuctionPage;

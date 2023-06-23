@@ -3,6 +3,7 @@ const CREATE_AUCTION = "session/CREATE_AUCTION";
 const GET_AUCTIONS = "session/GET_AUCTIONS";
 const UPDATE_AUCTION = "session/UPDATE_AUCTION";
 const DELETE_AUCTION = "session/DELETE_AUCTION";
+const CLOSE_AUCTION = "session/CLOSE_AUCTION"
 
 
 const getAuctions = (auctions) => ({
@@ -22,6 +23,11 @@ const updateAuction = (auction) => ({
 
 const deleteAuction = (auctionId) => ({
     type: DELETE_AUCTION,
+    payload: auctionId
+})
+
+const closeAuction = (auctionId) => ({
+    type: CLOSE_AUCTION,
     payload: auctionId
 })
 
@@ -92,6 +98,22 @@ export const updateAuctionThunk = (auction, oldAuctionId) => async (dispatch) =>
     }
 }
 
+export const closeAuctionThunk = (auctionId) => async (dispatch) => {
+    const response = await fetch(`/api/auctions/${auctionId}/close`, {
+        method: "PUT"})
+
+    if (response.ok) {
+        dispatch(closeAuction(auctionId));
+        console.log(`Auction ${auctionId} successfully closed?`)
+        return
+    }
+    else {
+        const errors = await response.json();
+        return errors;
+    }
+
+}
+
 export const deleteAuctionThunk = (auctionId) => async (dispatch) => {
     const response = await fetch(`/api/auctions/${auctionId}`, {
         method: "DELETE"})
@@ -128,6 +150,20 @@ export default function auctionReducer(state = initialState, action) {
 
             resState[action.payload.id] = action.payload;
             return resState;
+
+        case CLOSE_AUCTION:
+            const closeState = {...state};
+            const closeAuctionId = action.payload;
+
+            console.log("auction reducer, close auction Id", closeAuctionId)
+
+            try {
+                const closeAuction = closeState[closeAuctionId];
+                closeAuction.auctionOpen = false;
+            } catch (e) {
+                console.log(`Unable to close auction ${closeAuctionId}`, e)
+            }
+            return closeState;
 
         case DELETE_AUCTION:
             const delState = {...state};

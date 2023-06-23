@@ -23,8 +23,20 @@
     /* display: grid;
     width: 15rem; */
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-list-node-hover {
+
 }
 
 .item-list-node-hover:hover {
     background-color: lightgray;
+    border-radius: 5px;
+}
+
+.item-list-ul {
+    list-style: none;
 }

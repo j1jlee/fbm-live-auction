@@ -9,6 +9,8 @@ from dateutil import parser
 from app.forms.create_auction_form import createAuctionForm
 from app.forms.update_auction_form import updateAuctionForm
 
+from app.forms.close_auction_form import closeAuctionForm
+
 
 import os
 # hacky business
@@ -51,6 +53,30 @@ def delete_single_auction(id):
     db.session.commit()
 
     return {"message": f"Auction {auction_name} successfully deleted"}
+
+@auction_routes.route('/<int:id>/close', methods=["PUT"])
+# @auction_routes.route('/<int:id>', methods=["UPDATE"])
+@login_required
+def close_auction(id):
+    # form = closeAuctionForm()
+    # form['csrf_token'].data = request.cookies['csrf_token']
+
+    # print("request data", request.data)
+    closing_auction = Auction.query.get(id)
+
+    if closing_auction is None:
+        return {"error": f"Auction {id} not found to close"}, 404
+
+    print("\n\n\nClosing: ")
+
+    # if form.validate_on_submit():
+    #     data = form.data
+
+    closing_auction.auctionOpen = False
+    db.session.commit()
+
+    return closing_auction.to_dict()
+
 
 
 @auction_routes.route('/<int:id>', methods=["PUT"])

@@ -25,7 +25,7 @@ function ItemDetailPage() {
 
     // console.log("does this work? assistItemId", allItems.assistItemId)
 
-    return (item && (
+    return (item ? (
         <div className="item-list-node">
         <ul>
         <li key={item.id}>Item ID: {item.id}</li>
@@ -46,7 +46,7 @@ function ItemDetailPage() {
         /> */}
 
         </div>
-    ))
+    ) : <p>Item doesn't exist!</p>)
 }
 
 

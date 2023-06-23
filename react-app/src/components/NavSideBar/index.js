@@ -46,13 +46,13 @@ function NavSideBar({ isLoaded }){
                 />
             </li>
 
-            <li>
+            {/* <li>
 				<NavLink to="/test">Countdown Test</NavLink>
 			</li>
 
             <li>
 				<NavLink to="/test2">Socket Test</NavLink>
-			</li>
+			</li> */}
 
 
 		</ul>
