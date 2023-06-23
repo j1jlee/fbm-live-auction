@@ -7,6 +7,8 @@ import { getAuctionsThunk } from "../../store/auction"
 import { getItemsThunk } from "../../store/item"
 import { getBidsThunk, createBidThunk, deleteJunkThunk } from "../../store/bid"
 
+import { useHistory } from "react-router-dom";
+
 import Countdown from "react-countdown";
 
 import "./SingleAuctionPage.css"
@@ -54,6 +56,7 @@ function SingleAuctionPage() {
 
     const [bidInput, setBidInput] = useState(0);
     // const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
+    const [auctionOver, setAuctionOver] = useState(false);
     const [errors, setErrors] = useState({})
 
     console.log("BidLIst?", bidList)
@@ -66,7 +69,11 @@ function SingleAuctionPage() {
     console.log("thisAuction?", thisAuction)
 
 
-
+    // const history = useHistory();
+    // if (!currentUser) {
+    //     history.push("/");
+    //     alert("Logged out! Redirecting to Main Page.");
+    // }
     //
     //
     //HELPER FUNCTIONS
@@ -110,7 +117,7 @@ function SingleAuctionPage() {
 
         return ( bids.map((bid) => {
             let bidderVar = "You";
-            if (bid.bidderId !== currentUser.id) {
+            if (!currentUser || bid.bidderId !== currentUser.id) {
                 bidderVar = `User ${bid.bidderId}`
             }
 
@@ -166,22 +173,34 @@ function SingleAuctionPage() {
         return `${String(cents).substring(0, String(cents).length - 2)}.${String(cents).substring(String(cents).length - 2)}`
     }
 
+    function reasonBidDisabled() {
+        if (!currentUser) {
+            return ("Please login to participate in Bid");
+        }
+        if (currentUser.id == thisAuction.sellerId) {
+            return ("This is your auction! ")
+        }
+        if (auctionOver == true) {
+            return ("Cannot bid -- auction over!")
+        }
+        return ""
+    }
+
     function resolveAuction(resAuctionId) {
         // const resThisAuction = allAuctions ? allAuctions[auctionId] : ""
+        setAuctionOver(true);
 
         if (thisAuction.auctionOpen == false) {
             console.log(`Auction ${thisAuction.auctionId} is already closed! Skipping;`)
             return;
         }
 
-        // const resThisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : '';
+        if (!thisAuctionBidList.length) {
+            console.log(`Closing: No bids for ${thisAuction.auctionId}, setting auction to "Open: false`)
 
-        //just use thisitem
-
-        // const bidList = allBids ? Object.values(allBids) : [];
-        // const thisAuctionBidList = allBids ? Object.values(allBids).filter((bid) => {
-        //     return bid.auctionId == auctionId
-        // }) : [];
+            //TODO: update auction to open:False
+            return;
+        }
 
 
         console.log("\n\n\npre-finding highest bid", thisAuctionBidList)
@@ -341,12 +360,16 @@ function SingleAuctionPage() {
                 date={thisAuction.endTime}
                 // onComplete={resolveAuction(auctionId)}>
                 onComplete={thisAuction && (() => resolveAuction(auctionId))}>
-
+                    <p>Auction Over!</p>
             </Countdown> : <p></p>}
             </div>
 
-            <div className="single-auction-highest">HIGHEST BID BY WHOM</div>
+            <div className="single-auction-highest">Highest Bid: {centsToDollars(getHighestBid(thisAuctionBidList))}</div>
            <div className="single-auction-bidform">
+
+            {reasonBidDisabled() ?
+                <div className="single-auction-reason-block">{reasonBidDisabled()}</div> :
+            <>
             <form onSubmit={sendBid}>
                 <input
                     type="number"
@@ -361,6 +384,10 @@ function SingleAuctionPage() {
                    return <p key={error}>{error}</p>
                 }) : ""}
                 </div>
+            </>
+
+                }
+
 
            </div>
 

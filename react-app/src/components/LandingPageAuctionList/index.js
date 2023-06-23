@@ -14,6 +14,8 @@ import { centsToDollars } from "../aaaMiddleware";
 
 import { urlToImage } from "../aaaMiddleware";
 
+import { createAuctionThunk } from "../../store/auction";
+
 import Countdown from 'react-countdown';
 
 import "./LandingPageAuctionList.css"
@@ -33,6 +35,7 @@ function LandingPageAuctionList() {
 
     // const allItemsList = allItems ? Object.values(allItems) : []
     const allAuctionsList = allAuctions ? Object.values(allAuctions) : []
+    const allItemsList = allItems ? Object.values(allItems) : []
     const auctionsPassed = []
     const auctionsCurrent = []
 
@@ -42,7 +45,7 @@ function LandingPageAuctionList() {
         const nowTime = (new Date()).getTime();
         const auctionEndTime = new Date(auction.endTime);
         if (auctionEndTime.getTime() < nowTime) {
-            console.log("time is less?")
+            //console.log("time is less?")
             auctionsPassed.push(auction)
         } else {
             auctionsCurrent.push(auction)
@@ -70,6 +73,27 @@ function LandingPageAuctionList() {
 
         return tempList;
     }
+
+    const demoSubmit = () => {
+
+        const timeNow = new Date();
+        const timePlusMinute = new Date(timeNow.getTime() + 60000);
+
+        const timeNowString = timeNow.toString();
+        const timePlusMinuteString = timePlusMinute.toString();
+
+        const demoAuction = {
+          auctionName: "Demo Auction",
+          auctionDescription: "This is a demo auction!",
+          startingBidCents: 100,
+          startTime: timeNowString,
+          endTime: timePlusMinuteString,
+          auctionItemId: allItemsList[0].id,
+          sellerId: 2
+        }
+
+        dispatch(createAuctionThunk(demoAuction));
+      }
 
 
 
@@ -151,7 +175,7 @@ function LandingPageAuctionList() {
         const timeNowMilli = timeNow.getTime();
 
         if (timeMilli < timeNowMilli) {
-            console.log("timeMilli, timenowMilli", timeMilli, timeNowMilli)
+            //console.log("timeMilli, timenowMilli", timeMilli, timeNowMilli)
             return "update-disabled";
         } else {
             return ""
@@ -225,6 +249,9 @@ function LandingPageAuctionList() {
         {/* <h1>Auction List Page here!</h1> */}
 
         <h2>Today's picks</h2>
+        <div>
+            <button onClick={() => demoSubmit()}>Create Demo Auction</button>
+        </div>
         <div className="landing-page-auction-wrapper">
             {renderAuctionNew(sortedAuctionsCurrent)}
             {/* {renderAuction(sortedAuctionsCurrent)} */}

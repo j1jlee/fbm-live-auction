@@ -20,6 +20,17 @@
     grid-template-rows: 1fr .25fr .25fr 4fr;
 }
 
+.single-auction-reason-block {
+    display: flex;
+    height: 3rem;
+    width: 16rem;
+    /* border: 1px solid pink; */
+    background-color: lightgray;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .single-auction-image {
 

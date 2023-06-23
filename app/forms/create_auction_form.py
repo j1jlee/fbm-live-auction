@@ -14,7 +14,7 @@ class createAuctionForm(FlaskForm):
     auctionDescription = StringField("auctionDescription")
     auctionItemId = IntegerField("auctionItemId")
         #select in frontend
-    #sellerId
+    sellerId = IntegerField("sellerId")
     startingBidCents = IntegerField("startingBidCents")
     # startTime = DateTimeField("startTime")
     # endTime = DateTimeField("startTime")

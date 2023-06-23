@@ -255,6 +255,7 @@ def post_new_auction():
             startingBidCents = data['startingBidCents'],
             # startTime = data['startTime'],
             # endTime = data['endTime'],
+            sellerId = data['sellerId'],
 
             startTime = formatStartTime,
             endTime = formatEndTime,

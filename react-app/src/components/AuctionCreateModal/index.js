@@ -116,6 +116,27 @@ function AuctionCreateModal() {
       closeModal();
     }
 
+    // const demoSubmit = () => {
+
+    //   const timeNow = new Date();
+    //   // const timePlusMinute = new Date(timeNow.getTime() + 60000);
+
+    //   const demoAuction = {
+    //     auctionName: "Demo Auction",
+    //     auctionDescription: "This is a demo auction!",
+    //     startingBidCents: 100,
+    //     startTime: new Date(timeNow.getTime()),
+    //     endTime: new Date(timeNow.getTime() + 60000),
+    //     auctionItemId: allItemsList[0].id,
+    //     sellerId: 3
+    //   }
+
+    //   dispatch(createAuctionThunk(demoAuction));
+    // }
+
+
+
+
     // if (errors) {
     //     console.log("\n\n\n errors???", errors)
     //     errors.map((error) => {
