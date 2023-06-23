@@ -56,6 +56,7 @@ function SingleAuctionPage() {
 
     const [bidInput, setBidInput] = useState(0);
     // const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
+    const [auctionStarted, setAuctionStarted] = useState(false);
     const [auctionOver, setAuctionOver] = useState(false);
     const [errors, setErrors] = useState({})
 
@@ -180,10 +181,26 @@ function SingleAuctionPage() {
         if (currentUser.id == thisAuction.sellerId) {
             return ("This is your auction! ")
         }
+        if (auctionStarted == false) {
+            return ("Auction not started yet")
+        }
+
         if (auctionOver == true) {
             return ("Cannot bid -- auction over!")
         }
+
+        //     thisAuction ? console.log("\n\n\nThis auction starttime", thisAuction.startTime) : console.log("")
+
+
         return ""
+    }
+
+    function countDownToStart() {
+        const nowDateTime = new Date();
+
+        const startDateTime = Date(thisAuction.startTime);
+
+
     }
 
     function resolveAuction(resAuctionId) {
@@ -334,6 +351,8 @@ function SingleAuctionPage() {
     // console.log("current highest bid?", highestBid)
     // console.log("bidLogs?", bidLogs)
 
+    // thisAuction ? console.log("\n\n\nThis auction starttime", thisAuction.startTime) : console.log("")
+
     return (
         <>
         <h1>{thisAuction ? thisAuction.auctionName : ""}</h1>
@@ -356,12 +375,27 @@ function SingleAuctionPage() {
 
             <div className="single-auction-item-description">{thisItem ? thisItem.description : ''}</div>
             <div className="single-auction-countdown">
-            {thisAuction ? <Countdown
-                date={thisAuction.endTime}
-                // onComplete={resolveAuction(auctionId)}>
-                onComplete={thisAuction && (() => resolveAuction(auctionId))}>
-                    <p>Auction Over!</p>
-            </Countdown> : <p></p>}
+            {thisAuction ?
+                (auctionStarted ?
+                    <Countdown
+                        date={thisAuction.endTime}
+                        // onComplete={resolveAuction(auctionId)}>
+                        onComplete={thisAuction && (() => resolveAuction(auctionId))}>
+                            <p>Auction Over!</p>
+                    </Countdown>
+                    :
+                    (
+                    <>
+                    Auction Starting in:_
+                    <Countdown
+                        date={thisAuction.startTime}
+                        // onComplete={resolveAuction(auctionId)}>
+                        onComplete={thisAuction && (() => setAuctionStarted(true))}>
+                    </Countdown>
+                    </>
+                    )
+                )
+            : <p></p>}
             </div>
 
             <div className="single-auction-highest">Highest Bid: {centsToDollars(getHighestBid(thisAuctionBidList))}</div>
