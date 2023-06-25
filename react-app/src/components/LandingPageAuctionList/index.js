@@ -317,7 +317,7 @@ function LandingPageAuctionList() {
 
             <div>$ {centsToDollars(auction.startingBidCents)}</div>
             <div>{auction.auctionName}</div>
-            <div>{auction.auctionDescription}</div>
+            {/* <div>{auction.auctionDescription}</div> */}
 
             </div>
 
