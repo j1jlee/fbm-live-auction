@@ -1,4 +1,17 @@
 
+const imageHandle = (imageUrl) => {
+    return (
+        <img src={imageUrl}
+        alt={imageUrl}
+
+        // onError={(e)=> {
+        //     e.currentTarget.src="logo-icon-square.png"
+        // }}
+        style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"10px"}}
+
+        ></img>
+    )
+}
 
 const urlToImage = (imageUrl, sizeOption) => {
 
@@ -20,15 +33,19 @@ const urlToImage = (imageUrl, sizeOption) => {
             height = "225px";
             break;
         case 3:
-           //console.log("sizeoption??", sizeOption);
-
-            width = "490px";
-            height = "285px";
+            width = "100%";
+            height = "50%";
             break;
     }
 
     return (
-        <img src={imageUrl} alt={imageUrl} style={{width, height, objectFit:"cover", borderRadius:"10px"}} />
+        <img src={imageUrl}
+        alt={imageUrl}
+        style={{width, height, objectFit:"cover", borderRadius:"10px"}}
+
+        // onError={e => { e.currentTarget.src = "%PUBLIC_FOLDER%/logo-icon.square.png"}}
+
+        />
             // {width: {`${width}`}; height: ${height}; object-fit:cover;}}/>
     )
 }
@@ -67,4 +84,4 @@ function sortBidByTime(bids) {
 }
 
 
-export { urlToImage, centsToDollars, sortBidByTime};
+export { urlToImage, centsToDollars, sortBidByTime, imageHandle};

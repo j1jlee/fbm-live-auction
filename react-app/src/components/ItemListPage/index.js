@@ -16,7 +16,7 @@ import ItemDeleteModal from "../ItemDeleteModal";
 import ItemUpdateModal from "../ItemUpdateModal";
 import OpenModalButton from "../OpenModalButton";
 
-import { centsToDollars } from "../aaaMiddleware";
+import { centsToDollars, imageHandle } from "../aaaMiddleware";
 
 
 function ItemListPage() {
@@ -65,11 +65,16 @@ function ItemListPage() {
                 <div className="item-list-node item-list-node-hover">
                 <ul key={item.id} className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
                 {/* <li key={item.id}>Item ID: {item.id}</li> */}
+
+               <li key={item.imageUrl}>{imageHandle(item.imageUrl)}</li>
+               {/* <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li> */}
+
+
+
                 <li key={item.id + item.name}>{item.name}</li>
                 {/* <li key={item.name}>Name: {item.name}</li> */}
                <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
                <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li>
-               <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
                <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
                </ul>
                <span>

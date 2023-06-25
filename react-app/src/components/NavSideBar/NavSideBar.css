@@ -10,3 +10,7 @@
 .navsidebar-title {
     padding: 0.5rem;
 }
+
+.navsidebar-auction-icon {
+    color: var(--base-color);
+}

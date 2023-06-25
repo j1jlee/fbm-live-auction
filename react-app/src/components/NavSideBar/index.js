@@ -11,6 +11,7 @@ import "./NavSideBar.css";
 import OpenModalButton from '../OpenModalButton';
 
 
+
 function NavSideBar({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
 
@@ -24,7 +25,7 @@ function NavSideBar({ isLoaded }){
         <ul>
 
 			<li>
-				<NavLink exact to="/">Auctions</NavLink>
+				<NavLink exact to="/"><i class="fa-solid fa-shop navsidebar-auction-icon"></i> Auctions</NavLink>
 			</li>
             {sessionUser ? (
 			<li>
