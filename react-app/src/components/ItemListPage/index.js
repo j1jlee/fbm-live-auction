@@ -28,9 +28,14 @@ function ItemListPage() {
 
     const allItemsList = allItems ? Object.values(allItems) : []
 
-    const userItemsList = allItemsList ? allItemsList.filter((item) => item.ownerId === currentUser.id) : []
+    currentUser ? console.log("currentUser exists") : history.push("/");
 
-    const otherItemsList = allItemsList ? allItemsList.filter((item) => item.ownerId !== currentUser.id) : []
+
+
+
+    const userItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId === currentUser.id) : []
+
+    const otherItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId !== currentUser.id) : []
 
     // console.log("userItemsList?", userItemsList)
 
@@ -43,20 +48,19 @@ function ItemListPage() {
     // console.log("ALL ITEMS LIST", allItemsList)
 
     //redirect user to landing page if not logged in
-    currentUser ? console.log("currentUser exists") : history.push("/");
 
 
     return (
         <>
         <h2>Inventory</h2>
 
-        <div>
-        {/* <div className="item-list-container"> */}
+        {/* <div> */}
+        <div className={userItemsList.length ? "item-list-container" : "item-list-container-empty"}>
             {userItemsList.length ? userItemsList.map((item) => (
             // {allItemsList ? allItemsList.map((item) => (
                 <>
 
-                <div className="item-list-container">
+                {/* <div className="item-list-container"> */}
 
                 <div className="item-list-node item-list-node-hover">
                 <ul key={item.id} className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
@@ -82,7 +86,7 @@ function ItemListPage() {
 
 
                 </div> {/* end of item list node */}
-                </div> {/* end of item container */}
+                {/*</div> new end of item container*/}
                 </>
             )) :
                 <div>
@@ -97,7 +101,8 @@ function ItemListPage() {
 
                 </div>
             }
-        </div>
+       </div>
+       {/* original end to all items wrapper */}
 
         <h2>Other User's Items (Maybe you can win these in a future auction!)</h2>
         <div className="item-list-container">

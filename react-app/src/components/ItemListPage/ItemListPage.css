@@ -19,6 +19,12 @@
     grid-auto-flow: row;
 }
 
+.item-list-container-empty {
+    margin-top: 1rem;
+
+    width: 100%;
+}
+
 .item-list-node {
     /* display: grid;
     width: 15rem; */
