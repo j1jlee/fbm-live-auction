@@ -47,10 +47,12 @@
     opacity: 0.7;
 }
 
-.item.list-image-others:hover {
+.item-list-image-others:hover {
     opacity: 1.0;
-    /* transition: opacity 0.3s; */
+    transition: 0.2s;
 }
+
+
 
 .item-list-name {
     margin-top: 0.3rem;

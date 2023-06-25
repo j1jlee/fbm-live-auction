@@ -52,7 +52,7 @@ function ItemListPage() {
 
     return (
         <>
-        <h2>Inventory</h2>
+        <h2 className="item-list-inventory">Inventory</h2>
 
         {/* <div> */}
         <div className={userItemsList.length ? "item-list-container" : "item-list-container-empty"}>
