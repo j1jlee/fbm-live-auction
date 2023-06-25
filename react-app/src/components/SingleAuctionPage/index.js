@@ -413,8 +413,8 @@ function SingleAuctionPage() {
             <div className="single-auction-highest">Highest Bid: {centsToDollars(getHighestBid(thisAuctionBidList))}
 
 
-            {/* remove later */}
-            <button onClick={() => dispatch(closeAuctionThunk(thisAuction.id))}>Try closing</button>
+            {/* remove later
+            <button onClick={() => dispatch(closeAuctionThunk(thisAuction.id))}>Try closing</button> */}
 
 
             </div>

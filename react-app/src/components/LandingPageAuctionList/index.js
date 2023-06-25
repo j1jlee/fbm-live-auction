@@ -263,7 +263,7 @@ function LandingPageAuctionList() {
                 history.push(`/auction/${auction.id}`)
             }}>
 
-            <div className="landing-page-auction-new-node-image">
+            <div className= { pastTime(auction.endTime) ? "landing-page-auction-new-node-image landing-page-image-passed" : "landing-page-auction-new-node-image"}>
                 {/* item image? */}
                 {allItems ?
                 // allItems[auction.auctionItemId].imageUrl
@@ -321,22 +321,26 @@ function LandingPageAuctionList() {
 
             </div>
 
-            <span className={pastTime(auction.startTime) ? "update-disabled" : ""}>
+            <span className="landing-page-buttons">
+
+            <span className={pastTime(auction.startTime) ? "update-disabled" : "landing-page-update-button"}>
             <OpenModalButton
             buttonText="Update Auction"
             modalComponent={<AuctionUpdateModal update_auction={auction} />} />
             </span>
 
-            <span className={pastTime(auction.startTime) ? "update-disabled" : ""}>
+            <span className={pastTime(auction.startTime) ? "update-disabled" : "landing-page-delete-button"}>
             <OpenModalButton
             buttonText="Delete Auction"
             modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
             </span>
 
-            <span className={pastTime(auction.endTime) ? "" : "update-disabled"}>
+            <span className={pastTime(auction.endTime) ? "landing-page-delete-button-solo" : "update-disabled"}>
             <OpenModalButton
             buttonText="Delete Auction"
             modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
+            </span>
+
             </span>
 
             </div>

@@ -49,9 +49,50 @@
     width: 100%;
 }
 
+.landing-page-buttons {
+    /* background-color: pink; */
+    display: flex;
+    width: 100%;
+}
+
+.landing-page-buttons button {
+    width: 100%;
+    height: 2rem;
+}
+
+.landing-page-update-button {
+    width: 100%;
+}
+.landing-page-update-button button {
+    /* border-radius: 5px; */
+}
+
+.landing-page-delete-button {
+    width: 100%;
+}
+.landing-page-delete-button button {
+    /* border-radius: 5px; */
+}
+
+.landing-page-delete-button-solo {
+    width: 100%;
+}
+.landing-page-delete-button-solo button{
+    width: 100%;
+    /* border-radius: 5px; */
+}
+
+
+
+
+
+.landing-page-image-passed {
+    opacity: 0.3;
+}
 
 .update-disabled {
-    visibility: collapse;
+    /* visibility: collapse; */
+    display: none;
 }
 
 .landing-page-hidden > * {

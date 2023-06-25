@@ -4,9 +4,11 @@ const imageHandle = (imageUrl) => {
         <img src={imageUrl}
         alt={imageUrl}
 
-        // onError={(e)=> {
-        //     e.currentTarget.src="logo-icon-square.png"
-        // }}
+        onError={(e)=> {
+            e.currentTarget.src="https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/logo-icon-square.PNG";
+            e.currentTarget.style['opacity']="0.5"
+            e.currentTarget.style['width']="256px"
+        }}
         style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"10px"}}
 
         ></img>

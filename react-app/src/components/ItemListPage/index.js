@@ -71,19 +71,27 @@ function ItemListPage() {
 
 
 
-                <li key={item.id + item.name} className="item-list-name">{item.name}</li>
-                {/* <li key={item.name}>Name: {item.name}</li> */}
-               <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
-               <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li>
-               <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
+                <li key={item.id + item.name} className="item-list-name">{item.name.length > 30 ? item.name.substring(0, 27) + "..." : item.name}</li>
+                {/* <li key={item.id + item.name} className="item-list-name">{ite30name}</li> */}
+
+              {/* <li key={item.name}>Name: {item.name}</li> */}
+               <li key={item.lastKnownPriceCents} className="item-list-price">$ {centsToDollars(item.lastKnownPriceCents)}</li>
+               <li key={item.description}>{item.description.length > 50 ? item.description.substring(0, 50) + "..." : item.description}</li>
+
+               {/* <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li> */}
+               <br></br>
+
                </ul>
-               <span>
-               <OpenModalButton
-                    buttonText="Update Item"
-                    modalComponent={<ItemUpdateModal update_item={item}/>}
-                />
+               <span className="item-list-buttons">
 
                <OpenModalButton
+                    className="item-list-update-button"
+                    buttonText="Update Item"
+                    modalComponent={<ItemUpdateModal update_item={item}/>}
+                    />
+
+               <OpenModalButton
+                    className="item-list-delete-button"
                     buttonText="Delete Item"
                     modalComponent={<ItemDeleteModal itemId={item.id}/>}
                 />
@@ -117,16 +125,20 @@ function ItemListPage() {
                 <div className="item-list-node item-list-node-hover">
                 <ul className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
                 {/* <li key={item.id}>Item ID: {item.id}</li> */}
-               <li key={item.imageUrl} className="item-list-image">{imageHandle(item.imageUrl)}</li>
+               <li key={item.imageUrl} className="item-list-image item-list-image-others">{imageHandle(item.imageUrl)}</li>
                {/* <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li> */}
 
 
-                <li key={item.name}>{item.name}</li>
+                <li key={item.id + item.name} className="item-list-name">{item.name.length > 30 ? item.name.substring(0, 27) + "..." : item.name}</li>
+                {/* <li key={item.id + item.name} className="item-list-name">{item.name}</li> */}
+
                 {/* <li key={item.name}>Name: {item.name}</li> */}
                {/* <li key={item.description}>Description: {item.description}</li> */}
-               <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
+               <li key={item.lastKnownPriceCents} className="item-list-price">$ {centsToDollars(item.lastKnownPriceCents)}</li>
 
-               <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li>
+               <li key={item.description}>{item.description.length > 50 ? item.description.substring(0, 50) + "..." : item.description}</li>
+
+               {/* <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li> */}
                {/* <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li> */}
                <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
                </ul>
