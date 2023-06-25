@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired, Email, ValidationError
+from wtforms import StringField, IntegerField
+from wtforms.validators import DataRequired, Email, ValidationError, Length
 from app.models import User
 
 
@@ -19,9 +19,29 @@ def username_exists(form, field):
     if user:
         raise ValidationError('Username is already in use.')
 
+def custom_email(form, field):
+    email_input = field.data
+
+
+    email_split_at = email_input.split("@")
+
+    if len(email_split_at) == 1:
+        raise ValidationError("Email should include '@'")
+    if (len(email_split_at[1]) == 0 or
+        len(email_split_at[1].split('.')) == 1 or
+        len(email_split_at[1].split('.')[0]) == 0 or
+        len(email_split_at[1].split('.')[1]) == 0):
+        raise ValidationError("Email should contain 'domain.TLD' after '@'")
+
 
 class SignUpForm(FlaskForm):
     username = StringField(
-        'username', validators=[DataRequired(), username_exists])
-    email = StringField('email', validators=[DataRequired(), user_exists])
+        'username', validators=[DataRequired(), username_exists, Length(min=1, max=40)])
+    email = StringField('email', validators=[DataRequired(), user_exists, Length(min=5, max=255), custom_email])
+    # email = StringField('email', validators=[DataRequired(), user_exists, Length(min=5, max=255), Email()])
     password = StringField('password', validators=[DataRequired()])
+
+    firstname = StringField('firstname', validators=[DataRequired(), Length(min=1, max=20)])
+    lastname = StringField('lastname', validators=[DataRequired(), Length(min=1, max=20)])
+
+    cashCents = IntegerField('cashCents')

@@ -74,7 +74,7 @@ function AuctionCreateModal() {
         submitErrors.push({Time: "Please select a starting and ending date"})
     }
 
-    if (startDateTimeIntoObj.getTime() < timeNowMilli) {
+    if ((startDateTimeIntoObj.getTime() + 60000) < timeNowMilli) {
         submitErrors.push({startTime: "Starting time must be after current time"})
     }
 

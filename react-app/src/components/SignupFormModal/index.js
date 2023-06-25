@@ -8,6 +8,10 @@ function SignupFormModal() {
 	const dispatch = useDispatch();
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
+
+	const [firstname, setFirstname] = useState("");
+	const [lastname, setLastname] = useState("");
+
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState([]);
@@ -16,7 +20,10 @@ function SignupFormModal() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (password === confirmPassword) {
-			const data = await dispatch(signUp(username, email, password));
+
+			const cashCents = 10000;
+
+			const data = await dispatch(signUp(username, email, password, firstname, lastname, cashCents));
 			if (data) {
 				setErrors(data);
 			} else {
@@ -28,6 +35,8 @@ function SignupFormModal() {
 			]);
 		}
 	};
+
+	console.log("signup errors?", errors)
 
 	return (
 		<>
@@ -44,25 +53,52 @@ function SignupFormModal() {
 						type="text"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						required
+						// required
 					/>
 				</label>
+				<div>
+					{errors['email'] ? errors['email'] : ''}
+				</div>
+
+
 				<label>
 					Username
 					<input
 						type="text"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
-						required
+						// required
 					/>
 				</label>
+
+				<label>
+					First Name
+					<input
+						type="text"
+						value={firstname}
+						onChange={(e) => setFirstname(e.target.value)}
+						// required
+					/>
+				</label>
+
+				<label>
+					Last Name
+					<input
+						type="text"
+						value={lastname}
+						onChange={(e) => setLastname(e.target.value)}
+						// required
+					/>
+				</label>
+
+
 				<label>
 					Password
 					<input
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
-						required
+						// required
 					/>
 				</label>
 				<label>
@@ -71,7 +107,7 @@ function SignupFormModal() {
 						type="password"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
+						// required
 					/>
 				</label>
 				<button type="submit">Sign Up</button>

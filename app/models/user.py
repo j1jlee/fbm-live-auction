@@ -14,10 +14,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    firstname = db.Column(db.String(50), nullable=False)
-    lastname = db.Column(db.String(50), nullable=False)
+    firstname = db.Column(db.String(20), nullable=False)
+    lastname = db.Column(db.String(20), nullable=False)
 
-    cashCents = db.Column(db.Integer, default=0)
+    cashCents = db.Column(db.Integer, default=10000)
     items = db.relationship("Item", back_populates="owner")
 
     userAuctions = db.relationship("Auction", back_populates="seller")
@@ -40,5 +40,10 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+
+            'cashCents': self.cashCents
         }
