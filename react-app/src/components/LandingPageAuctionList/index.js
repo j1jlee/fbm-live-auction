@@ -15,6 +15,7 @@ import AuctionDeleteModal from "../AuctionDeleteModal";
 import { centsToDollars } from "../aaaMiddleware";
 import { urlToImage } from "../aaaMiddleware";
 import { createAuctionThunk } from "../../store/auction";
+import { createItemThunk } from "../../store/item";
 
 import { sortBidByTime } from "../aaaMiddleware";
 
@@ -35,7 +36,7 @@ function LandingPageAuctionList() {
     const allItems = useSelector(state => state.items)
     const allAuctions = useSelector(state => state.auctions)
     const allBids = useSelector(state => state.bids)
-    // const currentUser = useSelector(state => state.session.user)
+    const thisSession = useSelector(state => state.session)
     // const history = useHistory();
 
     // const allItemsList = allItems ? Object.values(allItems) : []
@@ -80,7 +81,7 @@ function LandingPageAuctionList() {
         return tempList;
     }
 
-    const demoSubmit = (demoSellerId) => {
+    const demoSubmit = async (demoSellerId) => {
 
         const timeNow = new Date();
         const timePlusMinute = new Date(timeNow.getTime() + 60000);
@@ -88,17 +89,34 @@ function LandingPageAuctionList() {
         const timeNowString = timeNow.toString();
         const timePlusMinuteString = timePlusMinute.toString();
 
-        const demoAuction = {
-          auctionName: "Demo Auction",
-          auctionDescription: "This is a demo auction!",
-          startingBidCents: 100,
-          startTime: timeNowString,
-          endTime: timePlusMinuteString,
-          auctionItemId: allItemsList[0].id,
-          sellerId: demoSellerId
+        const demoItem = {
+            name: "testItem",
+            description: "this is an item made for test auctions! Buyers beware",
+            lastKnownPriceCents: 9900,
+            imageUrl: "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/SCARF_1_resized.jpg",
+            ownerId: demoSellerId
         }
 
-        dispatch(createAuctionThunk(demoAuction));
+
+        const createDemoItem = await dispatch(createItemThunk(demoItem));
+
+        console.log("createDemoItem?", createDemoItem)
+
+        if (createDemoItem) {
+            console.log("trying to create demo auction")
+
+            const demoAuction = {
+              auctionName: "Demo Auction",
+              auctionDescription: "This is a demo auction!",
+              startingBidCents: 100,
+              startTime: timeNowString,
+              endTime: timePlusMinuteString,
+              auctionItemId: createDemoItem.id,
+            //   auctionItemId: allItemsList[0].id,
+              sellerId: demoSellerId
+            }
+            await dispatch(createAuctionThunk(demoAuction));
+        }
       }
 
 
@@ -197,6 +215,23 @@ function LandingPageAuctionList() {
         }
     }
 
+    //no current user, OR currentUser.id does NOT match auction.sellerId
+    function currentUserIsNotSeller(sellerAuction) {
+        const currentUser = thisSession.user;
+
+        if (!currentUser) {
+            console.log("currentUserIsSeller, currentUser doesn't exist/not logged in")
+            return true;
+        }
+
+        if (currentUser.id != sellerAuction.sellerId) {
+            console.log(`currentUserIsSeller, not seller, user id ${currentUser.id}, auction sellerId ${sellerAuction.sellerId}`);
+            return true;
+        }
+        return false;
+    }
+
+
 
     function resolveAuction(resAuctionId) {
 
@@ -265,8 +300,9 @@ function LandingPageAuctionList() {
 
             <div className= { pastTime(auction.endTime) ? "landing-page-auction-new-node-image landing-page-image-passed" : "landing-page-auction-new-node-image"}>
                 {/* item image? */}
-                {allItems ?
+                {allItems && auction.auctionItemId ?
                 // allItems[auction.auctionItemId].imageUrl
+
                     imageHandle(allItems[auction.auctionItemId].imageUrl)
 
                 : "Item Not Found"}</div>
@@ -282,7 +318,8 @@ function LandingPageAuctionList() {
                         // (setSwitchBool(!switchBool))
                     }
                     }>
-    {/* ALSO HANDLE "STILL OPEN AUCTIONS, DEFINE WINNER, GIVE ITEM, ETC" */}
+    {/* ALSO HANDLE "STILL OPEN AUCTIONS, DEFINE WINNER, GIVE ITEM, ETC"
+    DONE ABOVE WITH resolveAuction*/}
                     <p>Auction Expired</p>
                 </Countdown>
 
@@ -323,19 +360,19 @@ function LandingPageAuctionList() {
 
             <span className="landing-page-buttons">
 
-            <span className={pastTime(auction.startTime) ? "update-disabled" : "landing-page-update-button"}>
+            <span className={pastTime(auction.startTime) || currentUserIsNotSeller(auction) ? "update-disabled" : "landing-page-update-button"}>
             <OpenModalButton
             buttonText="Update Auction"
             modalComponent={<AuctionUpdateModal update_auction={auction} />} />
             </span>
 
-            <span className={pastTime(auction.startTime) ? "update-disabled" : "landing-page-delete-button"}>
+            <span className={pastTime(auction.startTime) || currentUserIsNotSeller(auction)? "update-disabled" : "landing-page-delete-button"}>
             <OpenModalButton
             buttonText="Delete Auction"
             modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
             </span>
 
-            <span className={pastTime(auction.endTime) ? "landing-page-delete-button-solo" : "update-disabled"}>
+            <span className={pastTime(auction.endTime) && !currentUserIsNotSeller(auction) ? "landing-page-delete-button-solo" : "update-disabled"}>
             <OpenModalButton
             buttonText="Delete Auction"
             modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />

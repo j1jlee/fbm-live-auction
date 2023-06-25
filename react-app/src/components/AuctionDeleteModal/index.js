@@ -11,7 +11,7 @@ function AuctionDeleteModal({auctionId}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const deleteAuction = dispatch(deleteAuctionThunk(auctionId))
+    const deleteAuction = await dispatch(deleteAuctionThunk(auctionId))
     if (deleteAuction) {
         console.log("delete failed?", deleteAuction)
     }

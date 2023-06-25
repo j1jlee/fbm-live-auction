@@ -31,7 +31,7 @@ function NavSideBar({ isLoaded }){
 			<li>
 				<NavLink exact to="/items">Items</NavLink>
 			</li>
-            ) : <li><a>Items Disabled</a></li> }
+            ) : <li><a id="navsidebar-items-disabled">Login to see Items</a></li> }
 
             <li>
                 <OpenModalButton

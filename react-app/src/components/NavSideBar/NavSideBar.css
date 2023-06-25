@@ -14,3 +14,7 @@
 .navsidebar-auction-icon {
     color: var(--base-color);
 }
+
+#navsidebar-items-disabled {
+    color: lightgray;
+}
