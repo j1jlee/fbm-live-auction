@@ -4,6 +4,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
 
+    grid-gap: 1rem;
+
     height: 100%;
 }
 .single-auction-left {
@@ -34,7 +36,7 @@
 
 
 .single-auction-image {
-
+    height: 15rem;
 }
 .single-auction-bidfeed {
     overflow-y: scroll;

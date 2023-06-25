@@ -11,6 +11,8 @@ import { useHistory } from "react-router-dom";
 
 import Countdown from "react-countdown";
 
+import { imageHandle } from "../aaaMiddleware";
+
 import "./SingleAuctionPage.css"
 
 //websocket???
@@ -371,7 +373,8 @@ function SingleAuctionPage() {
         <div className="single-auction-left">
             <div>{thisItem ? thisItem.name : ''} </div>
             <div className="single-auction-image">
-                IMAGE
+                {/* IMAGE */}
+                {imageHandle(thisItem.imageUrl)}
             </div>
             <div className="single-auction-bidfeed">
                 <ul>

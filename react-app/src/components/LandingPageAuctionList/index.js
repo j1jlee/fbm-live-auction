@@ -20,6 +20,8 @@ import { sortBidByTime } from "../aaaMiddleware";
 
 import Countdown from 'react-countdown';
 
+import { imageHandle } from "../aaaMiddleware";
+
 import "./LandingPageAuctionList.css"
 // import ItemCreateModal from "../ItemCreateModal";
 // import ItemDeleteModal from "../ItemDeleteModal";
@@ -261,7 +263,13 @@ function LandingPageAuctionList() {
                 history.push(`/auction/${auction.id}`)
             }}>
 
-            <div className="landing-page-auction-new-node-image">item image? {allItems ? allItems[auction.auctionItemId].imageUrl : "Item Not Found"}</div>
+            <div className="landing-page-auction-new-node-image">
+                {/* item image? */}
+                {allItems ?
+                // allItems[auction.auctionItemId].imageUrl
+                    imageHandle(allItems[auction.auctionItemId].imageUrl)
+
+                : "Item Not Found"}</div>
 
             <div>
             {pastTime(auction.startTime) ?
