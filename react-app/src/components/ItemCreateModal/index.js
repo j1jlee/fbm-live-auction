@@ -34,14 +34,19 @@ function ItemCreateModal() {
     }
 
     const validImageSuffix = ["png", "jpg", "jpeg", "gif", "tiff", "bmp"]
-    // console.log("itemimageurl", itemImageUrl)
-    // console.log("imageUrl.split(',')", itemImageUrl.split("."))
-    // console.log("suffix test", itemImageUrl.split(".")[1]);
-    // console.log("split length", itemImageUrl.split(".").length)
 
-    if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
+    const itemImageUrlSplit = itemImageUrl.split(".");
+    const itemImageUrlSuffix = itemImageUrlSplit[itemImageUrlSplit.length - 1]
+
+
+    if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrlSuffix) === -1) {
+    // if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
         // console.log("add the error, no . OR wrong suffix")
         submitErrors.push({itemImageUrl: "image URL should be format 'png', 'jpg', 'jpeg', 'gif', 'tiff', or 'bmp'"})
+    }
+
+    if (itemImageUrlSplit.length == 2 && itemImageUrlSplit[0].length === 0) {
+      submitErrors.push({itemImage: "image file should have a name (suffix with no name)"})
     }
 
 

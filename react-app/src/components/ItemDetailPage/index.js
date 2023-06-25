@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getItemsThunk } from "../../store/item";
 
+import { centsToDollars } from "../aaaMiddleware";
+
 function ItemDetailPage() {
 
     const dispatch = useDispatch();
@@ -27,11 +29,11 @@ function ItemDetailPage() {
 
     return (item ? (
         <div className="item-list-node">
-        <ul>
-        <li key={item.id}>Item ID: {item.id}</li>
-        <li key={item.name}>Name: {item.name}</li>
-       <li key={item.description}>Description: {item.description}</li>
-       <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li>
+        <ul key={item.id}>
+        <li key={"id" + item.id}>Item ID: {item.id}</li>
+        <li key={"name" + item.name}>Name: {item.name}</li>
+       <li key={"desc" + item.description}>Description: {item.description}</li>
+       <li key={item.lastKnownPriceCents}>lastKnownPrice: {centsToDollars(item.lastKnownPriceCents)}</li>
        <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
        <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
        </ul>

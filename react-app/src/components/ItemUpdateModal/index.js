@@ -24,6 +24,11 @@ function ItemUpdateModal({update_item}) {
     if (itemName.length === 0 || itemName.length > 100) {
       submitErrors.push({itemName: "Name length must be between 1 and 100 characters"})
     }
+
+
+    console.log("\n\n\nchecking for item description validation", itemDescription)
+    console.log("Length of itemdescription", itemDescription.length)
+
     if (itemDescription.length === 0 || itemDescription.length > 250) {
       submitErrors.push({itemName: "Description length must be between 1 and 250 characters"})
     }
@@ -33,15 +38,29 @@ function ItemUpdateModal({update_item}) {
     // }
 
     const validImageSuffix = ["png", "jpg", "jpeg", "gif", "tiff", "bmp"]
-    // console.log("itemimageurl", itemImageUrl)
-    // console.log("imageUrl.split(',')", itemImageUrl.split("."))
-    // console.log("suffix test", itemImageUrl.split(".")[1]);
-    // console.log("split length", itemImageUrl.split(".").length)
 
-    if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
+    // if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
+    //     // console.log("add the error, no . OR wrong suffix")
+    //     submitErrors.push({itemImageUrl: "image URL should be format 'png', 'jpg', 'jpeg', 'gif', 'tiff', or 'bmp'"})
+    // }
+
+    //brought over from create modal
+    const itemImageUrlSplit = itemImageUrl.split(".");
+    const itemImageUrlSuffix = itemImageUrlSplit[itemImageUrlSplit.length - 1]
+
+
+    if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrlSuffix) === -1) {
+    // if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
         // console.log("add the error, no . OR wrong suffix")
         submitErrors.push({itemImageUrl: "image URL should be format 'png', 'jpg', 'jpeg', 'gif', 'tiff', or 'bmp'"})
     }
+
+    if (itemImageUrlSplit.length == 2 && itemImageUrlSplit[0].length === 0) {
+      submitErrors.push({itemImage: "image file should have a name (suffix with no name)"})
+    }
+
+    //end of import
+
 
     if (submitErrors.length) {
         setErrors(submitErrors)

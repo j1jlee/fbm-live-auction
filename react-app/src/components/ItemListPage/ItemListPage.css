@@ -28,6 +28,11 @@
     align-items: center;
 }
 
+.item-list-no-items-button * {
+    /* background-color: gray;
+    color: pink; */
+}
+
 .item-list-node-hover {
 
 }

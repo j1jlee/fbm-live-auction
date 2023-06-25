@@ -16,6 +16,8 @@ import ItemDeleteModal from "../ItemDeleteModal";
 import ItemUpdateModal from "../ItemUpdateModal";
 import OpenModalButton from "../OpenModalButton";
 
+import { centsToDollars } from "../aaaMiddleware";
+
 
 function ItemListPage() {
 
@@ -48,25 +50,21 @@ function ItemListPage() {
         <>
         <h2>Inventory</h2>
 
-
-
-        {/* <div>
-        <OpenModalButton
-                    buttonText="Create New Item"
-                    modalComponent={<ItemCreateModal />}
-                />
-        </div> */}
-        <div className="item-list-container">
-            {userItemsList ? userItemsList.map((item) => (
+        <div>
+        {/* <div className="item-list-container"> */}
+            {userItemsList.length ? userItemsList.map((item) => (
             // {allItemsList ? allItemsList.map((item) => (
                 <>
+
+                <div className="item-list-container">
+
                 <div className="item-list-node item-list-node-hover">
-                <ul className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
+                <ul key={item.id} className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
                 {/* <li key={item.id}>Item ID: {item.id}</li> */}
-                <li key={item.name}>{item.name}</li>
+                <li key={item.id + item.name}>{item.name}</li>
                 {/* <li key={item.name}>Name: {item.name}</li> */}
                <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
-               <li key={item.lastKnownPriceCents}>Last Price: {item.lastKnownPriceCents}</li>
+               <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li>
                <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
                <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
                </ul>
@@ -84,9 +82,20 @@ function ItemListPage() {
 
 
                 </div> {/* end of item list node */}
-
+                </div> {/* end of item container */}
                 </>
-            )) : <li>No items listed</li>
+            )) :
+                <div>
+                <p>No items listed! Create a new Item, or try to win one from an auction!</p>
+
+                <div className="item-list-no-items-button">
+                <OpenModalButton
+                    buttonText="Create New Item"
+                    modalComponent={<ItemCreateModal />}
+                />
+                </div>
+
+                </div>
             }
         </div>
 
@@ -103,7 +112,7 @@ function ItemListPage() {
                {/* <li key={item.description}>Description: {item.description}</li> */}
                <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
 
-               <li key={item.lastKnownPriceCents}>Last Price: {item.lastKnownPriceCents}</li>
+               <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li>
                {/* <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li> */}
                <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
                <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
