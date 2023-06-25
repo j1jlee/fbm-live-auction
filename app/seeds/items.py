@@ -106,7 +106,7 @@ def seed_items():
             name = "Park Compound",
             description = "ABANDONED BEACH VACATION HOME SLASH RESEARCH SITE SLASH MILITARY COMPOUND. COMES WITH WATCHTOWER, SWIMMING POOL AND ANTI-BEHEMOTH ARTILERY SYSTEMS",
             lastKnownPriceCents = 1455000,
-            imageUrl = "https://github.com/j1jlee/fbm-live-auction/blob/main/images/HOTEL_2_resized.jpg",
+            imageUrl = "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/HOTEL_2_resized.jpg",
 
             owner = demo_user_3
             )

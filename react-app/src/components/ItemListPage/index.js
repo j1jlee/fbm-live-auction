@@ -66,12 +66,12 @@ function ItemListPage() {
                 <ul key={item.id} className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
                 {/* <li key={item.id}>Item ID: {item.id}</li> */}
 
-               <li key={item.imageUrl}>{imageHandle(item.imageUrl)}</li>
+               <li key={item.imageUrl} className="item-list-image">{imageHandle(item.imageUrl)}</li>
                {/* <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li> */}
 
 
 
-                <li key={item.id + item.name}>{item.name}</li>
+                <li key={item.id + item.name} className="item-list-name">{item.name}</li>
                 {/* <li key={item.name}>Name: {item.name}</li> */}
                <li key={item.description}>Description: {item.description.length > 40 ? item.description.substring(0, 40) + "..." : item.description}</li>
                <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li>
@@ -117,6 +117,10 @@ function ItemListPage() {
                 <div className="item-list-node item-list-node-hover">
                 <ul className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
                 {/* <li key={item.id}>Item ID: {item.id}</li> */}
+               <li key={item.imageUrl} className="item-list-image">{imageHandle(item.imageUrl)}</li>
+               {/* <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li> */}
+
+
                 <li key={item.name}>{item.name}</li>
                 {/* <li key={item.name}>Name: {item.name}</li> */}
                {/* <li key={item.description}>Description: {item.description}</li> */}
@@ -124,7 +128,6 @@ function ItemListPage() {
 
                <li key={item.lastKnownPriceCents}>Last Price: {centsToDollars(item.lastKnownPriceCents)}</li>
                {/* <li key={item.lastKnownPriceCents}>lastKnownPrice: {item.lastKnownPriceCents}</li> */}
-               <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
                <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
                </ul>
                {/* <OpenModalButton
