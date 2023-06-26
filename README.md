@@ -1,11 +1,9 @@
 # Marketplace Live Auction
 Marketplace Live Auction is a soft clone of FaceBook MarketPlace, and live auction sites such as <a href="https://www.auctionzip.com/online-auctions/">AuctionZip.com<a>
 
-The idea is to bring the excitement of live sales and auctions to a marketplace of used goods and antiques.
+The idea is to bring the excitement of live sales and items to a marketplace of used goods and antiquesitemndex
 
-## Index
-
-## Technologies Used
+## Tecitemes Used
 Javascript
 Python
 Flask
@@ -91,3 +89,49 @@ Users can refill their wallets to fund bids/auctions
 <a href="https://www.linkedin.com/in/joshua-lee-9573a0142/">LinkedIn</a>
 
 ## Endpoints
+
+## Frontend Routes
+- Login ('/login')
+- Signup ('/signup')
+- Auction List ('/')
+- Single Auction Page ('/auction/:auctionId')
+- Item List ('/items')
+- Item Details ('/items/:itemId')
+- About page ('/about')
+- How to Bid ('/howtobid')
+
+## Backend Routes
+
+### Users ('api/users')
+- GET all users (GET '/')
+- GET user by Id (GET '/:userId')
+
+### Auctions ('api/auctions')
+- GET all auctions (GET '/')
+- GET single auction (GET '/:auctionId')
+- Create new auction (POST '/new')
+        - Takes user input and creates new Auction item
+- DELETE auction (DELETE '/:auctionId')
+- Close auction (PUT '/"auctionId/close")
+        - Closes out current auction, sets auctionOpen attribute to False.
+- PUT auction (PUT '/auctionId')
+        - Updates name, description, starting Bid amount, and start/end times, depending on user input.
+
+### Items ('api/items')
+- GET all items (GET '/')
+- GET single item (GET '/:itemId')
+- Create new item (POST '/new')
+        - Takes user input and creates new Item entry
+- DELETE item (DELETE '/:itemId')
+- PUT item (PUT '/:itemId')
+        - Updates name, description, imageUrl, depending on user input.
+- Trade item (PUT '/:itemId/trade')
+        - Updates ownerId and lastKnownPriceCents based on Auction results.
+
+### Bids ('api/bids')
+- GET all bids (GET '/')
+- GET single bid (GET '/:bidId')
+- Create new bid (POST '/new')
+- DELETE bid (DELETE '/:bidId')
+- DELETE auction bids (DELETE '/auctions/:auctionId')
+        - Deletes all bids associated with an Auction
