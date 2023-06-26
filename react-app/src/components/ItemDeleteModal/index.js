@@ -14,7 +14,7 @@ function ItemDeleteModal({itemId}) {
     e.preventDefault();
     const deleteItem = dispatch(deleteItemThunk(itemId))
     if (deleteItem) {
-        console.log("delete failed?", deleteItem)
+        console.log("delete item", deleteItem)
     }
       closeModal();
     }

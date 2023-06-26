@@ -233,7 +233,7 @@ function LandingPageAuctionList() {
 
 
 
-    function resolveAuction(resAuctionId) {
+    async function resolveAuction(resAuctionId) {
 
         const thisAuction = allAuctions[resAuctionId];
 
@@ -249,7 +249,14 @@ function LandingPageAuctionList() {
 
         if (!thisAuctionBidList.length) {
             console.log(`Closing: No bids for ${resAuctionId}, setting auction to "Open: false`)
-            dispatch(closeAuctionThunk(thisAuction.id))
+            const noBidClose = await dispatch(closeAuctionThunk(resAuctionId))
+            // const noBidClose = await dispatch(closeAuctionThunk(thisAuction.id))
+
+            console.log("noBidClose", noBidClose)
+
+            setSwitchBool(!switchBool);
+            // const switchBoolAgain = await dispatch(setSwitchBool(!switchBool))
+            // console.log('switchBool', switchBoolAgain)
             //TODO: update auction to open:False
             return;
         }
@@ -271,12 +278,25 @@ function LandingPageAuctionList() {
                  ownerId: lastBid.bidderId
             }
         ))
-        .then(dispatch(closeAuctionThunk(thisAuction.id)))
-        .then(
-            // alert(congratsOrSorry(lastBid))
+
+        // FIX LATER
+        const closer = await dispatch(closeAuctionThunk(resAuctionId))
+        //DO NOT---
+        //DO NOT REMOVE THIS CONSOLE LOG
+        console.log("closer?", closer)
+        //DO NOT REMOVE THIS CONSOLE LOG
+
+
+        // await dispatch(closeAuctionThunk(thisAuction.id))
+        // await dispatch(setSwitchBool(!switchBool))
+
+
             console.log(`Traded item for auction ${thisAuction.id} to user ${lastBid.bidderId}`)
-            )
-        .then(dispatch(setSwitchBool(!switchBool)))
+        // .then(dispatch(closeAuctionThunk(thisAuction.id)))
+        // .then(dispatch(setSwitchBool(!switchBool)))
+
+
+        //     console.log(`Traded item for auction ${thisAuction.id} to user ${lastBid.bidderId}`)
 
         console.log("\n\n\nthis auction is open, with timer over! closing:")
     }

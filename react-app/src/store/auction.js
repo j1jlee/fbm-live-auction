@@ -105,7 +105,7 @@ export const closeAuctionThunk = (auctionId) => async (dispatch) => {
     if (response.ok) {
         dispatch(closeAuction(auctionId));
         console.log(`Auction ${auctionId} successfully closed?`)
-        return
+        return {"message": `successfully closed auction ${auctionId}`}
     }
     else {
         const errors = await response.json();

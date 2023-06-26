@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 //
-
+/* <i className="fa-solid fa-shop navsidebar-auction-icon"></i> */
 
 import ItemCreateModal from "../ItemCreateModal";
 import AuctionCreateModal from '../AuctionCreateModal';
@@ -25,7 +25,7 @@ function NavSideBar({ isLoaded }){
         <ul>
 
 			<li>
-				<NavLink exact to="/"><i class="fa-solid fa-shop navsidebar-auction-icon"></i> Auctions</NavLink>
+				<NavLink exact to="/"> Auctions</NavLink>
 			</li>
             {sessionUser ? (
 			<li>

@@ -27,35 +27,35 @@ function AuctionUpdateModal({update_auction}) {
 
     function timeToISO(time) {
         const timeNow = new Date();
-        console.log("time to ISO, timenow", timeNow)
+        // console.log("time to ISO, timenow", timeNow)
         const timeDiff = String(timeNow).split("GMT")[1].split(" ")[0]
         // const timeDiff = timeNow.split("GMT ")[1]
 
-        console.log("timeDiff", timeDiff)
+        // console.log("timeDiff", timeDiff)
 
         let posOrNeg = 1;
 
         if (timeDiff[0] === "-") {
-            console.log("negative offset?")
+            // console.log("negative offset?")
             posOrNeg = -1;
         }
         else if (timeDiff[0] === "+") {
-            console.log("positive offset?")
+            // console.log("positive offset?")
             posOrNeg = 1;
         }
 
         const hourOffset = parseInt(timeDiff.substring(1, 3));
         const minOffset = parseInt(timeDiff.substring(3, 5));
-        console.log("houroffset", hourOffset)
-        console.log("minoffset", minOffset)
+        // console.log("houroffset", hourOffset)
+        // console.log("minoffset", minOffset)
 
         const updateDT = new Date(time);
 
         updateDT.setHours(updateDT.getHours() + (hourOffset * posOrNeg))
         updateDT.setMinutes(updateDT.getMinutes() + (minOffset * posOrNeg))
 
-        console.log("pre work", updateDT)
-        console.log("function at work", updateDT.toISOString().slice(0,-8))
+        // console.log("pre work", updateDT)
+        // console.log("function at work", updateDT.toISOString().slice(0,-8))
         return updateDT.toISOString().slice(0,-8);
     }
 
@@ -126,7 +126,7 @@ function AuctionUpdateModal({update_auction}) {
 
     if (auctionStartingBidCents !== update_auction.startingBidCents) updateAuction.startingBidCents = auctionStartingBidCents;
 
-    console.log("presubmit, what is startTime and endTime", startTime, endTime)
+    // console.log("presubmit, what is startTime and endTime", startTime, endTime)
 
     if (startTime && startTime !== update_auction.startTime) updateAuction.startTime = startDateTimeIntoObj.toString();
     if (endTime && endTime !== update_auction.endTime) updateAuction.endTime = endDateTimeIntoObj.toString();
@@ -246,7 +246,7 @@ function AuctionUpdateModal({update_auction}) {
 
                     setStartTime(e.target.value)
 
-                    console.log("STARTTIME CHANGE", startTime)
+                    // console.log("STARTTIME CHANGE", startTime)
                     // console.log("typeof datetime local??", typeof startTime)
                     // console.log("datetime local??", startTime)
                     // console.log("into date?", Date(startTime))
