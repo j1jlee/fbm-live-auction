@@ -72,13 +72,13 @@ function SingleAuctionPage() {
     console.log("thisAuction?", thisAuction)
 
 
-    // const history = useHistory();
-    // if (!currentUser) {
-    //     history.push("/");
-    //     alert("Logged out! Redirecting to Main Page.");
-    // }
-    //
-    //
+    const history = useHistory();
+    if (!currentUser) {
+        history.push("/");
+        // alert("Logged out! Redirecting to Main Page.");
+    }
+
+
     //HELPER FUNCTIONS
     function sortBidByTime(bids) {
         const tempBidList = [...bids]
