@@ -40,9 +40,10 @@ function SignupFormModal() {
 
 	return (
 		<>
+		<div className="sign-up-modal">
 			<h1>Sign Up</h1>
 			<form onSubmit={handleSubmit}>
-				<ul>
+				<ul className="modal-errors">
 					{errors.map((error, idx) => (
 						<li key={idx}>{error}</li>
 					))}
@@ -56,9 +57,9 @@ function SignupFormModal() {
 						// required
 					/>
 				</label>
-				<div>
+				{/* <div>
 					{errors['email'] ? errors['email'] : ''}
-				</div>
+				</div> */}
 
 
 				<label>
@@ -110,8 +111,12 @@ function SignupFormModal() {
 						// required
 					/>
 				</label>
+				<div>
+					<br></br>
+				</div>
 				<button type="submit">Sign Up</button>
 			</form>
+		</div>
 		</>
 	);
 }
