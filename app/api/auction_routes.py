@@ -56,7 +56,7 @@ def delete_single_auction(id):
 
 @auction_routes.route('/<int:id>/close', methods=["PUT"])
 # @auction_routes.route('/<int:id>', methods=["UPDATE"])
-@login_required
+# @login_required
 def close_auction(id):
     # form = closeAuctionForm()
     # form['csrf_token'].data = request.cookies['csrf_token']

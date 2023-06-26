@@ -72,11 +72,11 @@ function SingleAuctionPage() {
     console.log("thisAuction?", thisAuction)
 
 
-    const history = useHistory();
-    if (!currentUser) {
-        history.push("/");
-        // alert("Logged out! Redirecting to Main Page.");
-    }
+    // const history = useHistory();
+    // if (!currentUser) {
+    //     history.push("/");
+    //     // alert("Logged out! Redirecting to Main Page.");
+    // }
 
 
     //HELPER FUNCTIONS
@@ -255,10 +255,14 @@ function SingleAuctionPage() {
 
     function congratsOrSorry(lastestBid) {
         let message = "";
-        if (currentUser.id == lastestBid.bidderId) {
-            message = `Congrats! You just won the ${thisItem.name}! It's been added to your Item list.`
-        } else {
-            message = `Bidding is over! Sadly, seems like User ${lastestBid.bidderId} got away with the ${thisItem.name}! It's been added to their inventory; Better luck next time!`
+        try {
+            if (currentUser.id == lastestBid.bidderId) {
+                message = `Congrats! You just won the ${thisItem.name}! It's been added to your Item list.`
+            } else {
+                message = `Bidding is over! Sadly, seems like User ${lastestBid.bidderId} got away with the ${thisItem.name}! It's been added to their inventory; Better luck next time!`
+            }
+        } catch {
+            message = `Bidding is over! User ${lastestBid.bidderId} won the ${thisItem.name}! It's been added to their inventory!`
         }
         return message;
     }
