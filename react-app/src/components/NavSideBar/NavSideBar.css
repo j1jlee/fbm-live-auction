@@ -18,3 +18,7 @@
 #navsidebar-items-disabled {
     color: lightgray;
 }
+
+.navsidebar-hidden {
+    display: none;
+}

@@ -13,9 +13,17 @@ import OpenModalButton from '../OpenModalButton';
 
 
 function NavSideBar({ isLoaded }){
-	const sessionUser = useSelector(state => state.session.user);
+    const sessionUser = useSelector(state => state.session.user);
 
     // console.log("nav sidebar!!! isLoaded??", isLoaded)
+    function noUserDisable() {
+        if (!sessionUser) {
+            return ("navsidebar-hidden")
+        }
+        else {
+            return ""
+        }
+    }
 
 	return (
 		<div className="navsidebar-wrapper">
@@ -33,14 +41,14 @@ function NavSideBar({ isLoaded }){
 			</li>
             ) : <li><a id="navsidebar-items-disabled">Login to see Items</a></li> }
 
-            <li>
+            <li className={noUserDisable()}>
                 <OpenModalButton
                     buttonText="+ Create New Item"
                     modalComponent={<ItemCreateModal />}
                 />
             </li>
 
-            <li>
+            <li className={noUserDisable()}>
                 <OpenModalButton
                     buttonText="+ Schedule New Auction"
                     modalComponent={<AuctionCreateModal />}
