@@ -2,9 +2,15 @@
 
 #how-to-ul {
     list-style: inside;
+    padding: 4px;
+}
+
+#how-to-ul li {
+    padding: 1rem;
 }
 
 #how-to-ul ul li {
     list-style: inside square;
     margin-left:  3rem;
+
 }

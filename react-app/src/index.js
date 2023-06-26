@@ -12,6 +12,9 @@ import AuctionTrackerProvider from "./context/AuctionTracker";
 
 import "./index.css";
 
+
+// import 'font-awesome/css/font-awesome.min.css';
+
 const store = configureStore();
 
 if (process.env.NODE_ENV !== "production") {
@@ -36,7 +39,7 @@ function Root() {
 			</Provider>
 
 			</AuctionTrackerProvider>
-			
+
 		</ModalProvider>
 	);
 }

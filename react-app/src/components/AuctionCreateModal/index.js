@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal"
 ;
 import { useHistory } from "react-router-dom";
 
 import { createAuctionThunk } from "../../store/auction"
+import { getItemsThunk } from "../../store/item";
 
 function AuctionCreateModal() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function AuctionCreateModal() {
   const [auctionItemId, setAuctionItemId] = useState(0);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+
 
   const currentUser = useSelector(state => state.session.user)
   const allItems = useSelector(state => state.items)
@@ -30,6 +32,10 @@ function AuctionCreateModal() {
   const { closeModal } = useModal();
 
   const history = useHistory();
+
+  useEffect(() => {
+    dispatch(getItemsThunk())
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,10 +61,10 @@ function AuctionCreateModal() {
     // }
 
 
-    console.log("\n\n\nstartTime???", startTime)
-    console.log("typeof startTime???", typeof startTime)
-    console.log("\n\n\nendTime???", endTime)
-    console.log("typeof endTime???", typeof endTime)
+    // console.log("\n\n\nstartTime???", startTime)
+    // console.log("typeof startTime???", typeof startTime)
+    // console.log("\n\n\nendTime???", endTime)
+    // console.log("typeof endTime???", typeof endTime)
 
     const timeNow = new Date();
     const timeNowMilli = timeNow.getTime();
@@ -66,9 +72,9 @@ function AuctionCreateModal() {
     const startDateTimeIntoObj = new Date(startTime);
     const endDateTimeIntoObj = new Date(endTime);
 
-    console.log("\n\n\nis this working??", startDateTimeIntoObj)
-    console.log("\n\n\ntypeof??", typeof startDateTimeIntoObj)
-    console.log("\n\n\ndate obj to string?????", startDateTimeIntoObj.toString())
+    // console.log("\n\n\nis this working??", startDateTimeIntoObj)
+    // console.log("\n\n\ntypeof??", typeof startDateTimeIntoObj)
+    // console.log("\n\n\ndate obj to string?????", startDateTimeIntoObj.toString())
 
     if (startTime == "" || endTime == "") {
         submitErrors.push({Time: "Please select a starting and ending date"})
@@ -147,11 +153,11 @@ function AuctionCreateModal() {
 
   return (
     <>
-      <div>
+      <div className="create-auction-modal">
       <h1>Create New Auction</h1>
       <form onSubmit={handleSubmit} method={"POST"}>
 
-        <ul>
+        <ul className="modal-errors">
           {errors.map((error) => {
             const errorEntry = Object.entries(error);
             return (<li>{errorEntry[0][1]}</li>)
@@ -179,6 +185,7 @@ function AuctionCreateModal() {
           Description
           <input
             // id="create-rename-input"
+            className="modal-description"
             type="textarea"
             value={auctionDescription}
             onChange={(e) => {
@@ -206,9 +213,12 @@ function AuctionCreateModal() {
         </label>
         </div>
 
+        <div>
         <label>
           Item to Auction
         </label>
+        </div>
+
             <select name="auctionItemId"
                 onChange={(e) => {
                     setAuctionItemId(e.target.value)
@@ -221,8 +231,10 @@ function AuctionCreateModal() {
 
             </select>
 
-        <label>
+        <div>
             Start Date
+        </div>
+        <label>
             <input
             // id="create-rename-input"
             type="datetime-local"
@@ -256,8 +268,9 @@ function AuctionCreateModal() {
             />
         </label>
 
-
-
+          <div>
+          <br></br>
+          </div>
 
         <button type="submit">Create Auction</button>
       </form>

@@ -21,4 +21,40 @@
 #modal-content {
   position: absolute;
   background-color:white;
+
+  padding: 1.5rem;
+  border-radius: 5px;
+
+
+}
+
+#modal-content input {
+  width: 100%;
+
+  padding: 0;
+  border: 1px solid darkgray;
+
+}
+
+#modal-content button {
+  width: 100%;
+  height: 2rem;
+  padding: 1px;
+
+  border: 1px solid darkgray;
+  border-radius: 5px;
+}
+
+.modal-description {
+  height: 3rem;
+}
+
+.create-auction-modal {
+
+}
+/* .create-auction-modal label {
+  margin: 1rem;
+} */
+.modal-errors {
+  color: red;
 }

@@ -81,11 +81,12 @@ function ItemCreateModal() {
 
   return (
     <>
-      <div>
-      <h1>Create New Item</h1>
-      <form onSubmit={handleSubmit} method={"POST"}>
+      <div id="item-create-modal">
+      <h1 id="item-create-title">Create New Item</h1>
+      <form id="item-create-form" onSubmit={handleSubmit} method={"POST"}>
 
-        <ul>
+        <ul className="modal-errors">
+        {/* <ul id="item-create-errors-ul"> */}
           {errors.map((error) => {
             const errorEntry = Object.entries(error);
             return (<li>{errorEntry[0][1]}</li>)
@@ -93,8 +94,11 @@ function ItemCreateModal() {
         </ul>
 
         <div>
-        <label>
           Item Name
+        </div>
+
+        <div>
+        <label>
           <input
             // id="create-rename-input"
             type="text"
@@ -109,9 +113,13 @@ function ItemCreateModal() {
         </div>
 
         <div>
+        Description
+        </div>
+
+        <div >
         <label>
-          Description
           <input
+          className="modal-description"
             // id="create-rename-input"
             type="textarea"
             value={itemDescription}
@@ -125,8 +133,11 @@ function ItemCreateModal() {
         </div>
 
         <div>
-        <label>
           Price
+        </div>
+
+        <div>
+        <label>
           <input
             // id="create-rename-input"
             type="number"
@@ -140,8 +151,11 @@ function ItemCreateModal() {
         </label>
         </div>
 
-        <label>
+        <div>
           Image URL
+        </div>
+
+        <label>
           <input
             // id="create-rename-input"
             type="text"
@@ -154,8 +168,13 @@ function ItemCreateModal() {
           />
         </label>
 
-
+          <div>
+            <br></br>
+          </div>
+      <div>
         <button type="submit">Create Item</button>
+      </div>
+
       </form>
 
       </div>

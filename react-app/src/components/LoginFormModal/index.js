@@ -66,14 +66,23 @@ function LoginFormModal() {
             required
           />
         </label>
+
+        <div>
+          <br></br>
+        </div>
+
         <button type="submit">Log In</button>
       </form>
 
+          <div className="login-form-demo-users">
         <Link to='/' onClick={() => handleDemoUser(1)}>Demo User 1</Link>
-        <span>___</span>
+
+
         <Link to='/' onClick={() => handleDemoUser(2)}>Demo User 2</Link>
-        <span>___</span>
+
+
         <Link to='/' onClick={() => handleDemoUser(3)}>Demo User 3</Link>
+          </div>
     </>
   );
 }

@@ -19,6 +19,11 @@ import AaSocketTestTwo from "./components/AaSocketTestTwo";
 import AboutPage from "./components/AboutPage";
 import HowToBidPage from "./components/HowToBidPage";
 
+//will this even work?
+import '@fortawesome/fontawesome-svg-core/styles.css'
+
+
+
 import "./App.css"
 
 

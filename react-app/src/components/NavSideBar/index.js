@@ -54,9 +54,9 @@ function NavSideBar({ isLoaded }){
                 <NavLink exact to="/howtobid">How To Bid</NavLink>
             </li>
             <li>
-                <NavLink exact to="/About">About</NavLink>
+                <NavLink exact to="/about">About</NavLink>
             </li>
-            
+
 
             {/* <li>
 				<NavLink to="/test">Countdown Test</NavLink>
