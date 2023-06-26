@@ -37,7 +37,7 @@ def seed_items():
             )
     doge_toast = Item(
             name = "Blessed Dog Toast",
-            description = "The blessed god toast is a result of a holy anomaly, nothing short of a miracle. The owner was making a normal breakfast, using a mundane, no-gimmick toaster, when the visage of their dear departed Shiba Inu caramelized itself onto the breaded surface. Take part in this miracle (with generous bids) today!",
+            description = "The blessed dog toast is a result of a holy anomaly, nothing short of a miracle. The owner was making a normal breakfast, using a mundane, no-gimmick toaster, when the visage of their dear departed Shiba Inu caramelized itself onto the breaded surface. Take part in this miracle (with generous bids) today!",
             lastKnownPriceCents = 7777700, #so, $77,777
             imageUrl = "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/TOAST_1_resized.jpg",
 

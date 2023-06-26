@@ -1,0 +1,10 @@
+
+
+#how-to-ul {
+    list-style: inside;
+}
+
+#how-to-ul ul li {
+    list-style: inside square;
+    margin-left:  3rem;
+}

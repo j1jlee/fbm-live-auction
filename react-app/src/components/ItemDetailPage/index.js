@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import { getItemsThunk } from "../../store/item";
 
-import { centsToDollars } from "../aaaMiddleware";
+import { centsToDollars, imageHandle } from "../aaaMiddleware";
+
+import "./ItemDetailPage.css";
 
 function ItemDetailPage() {
 
@@ -28,14 +29,32 @@ function ItemDetailPage() {
     // console.log("does this work? assistItemId", allItems.assistItemId)
 
     return (item ? (
-        <div className="item-list-node">
+        <>
+        <h2>Item Details</h2>
+        <br></br>
+        <div className='item-detail-grid'>
+
+        <div className="item-detail-picture">
+            {/* <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li> */}
+            {imageHandle(item.imageUrl)}
+        </div>
+
+
+
+        <div className="item-detail-list">
         <ul key={item.id}>
-        <li key={"id" + item.id}>Item ID: {item.id}</li>
-        <li key={"name" + item.name}>Name: {item.name}</li>
-       <li key={"desc" + item.description}>Description: {item.description}</li>
-       <li key={item.lastKnownPriceCents}>lastKnownPrice: {centsToDollars(item.lastKnownPriceCents)}</li>
-       <li key={item.imageUrl}>imageUrl: {item.imageUrl}</li>
-       <li key={"owner" + item.ownerId}>ownerId: {item.ownerId}</li>
+        {/* <li key={"id" + item.id}>Item ID: {item.id}</li> */}
+        <li key={"name"}>Item Name:</li>
+        <li>{item.name}</li>
+        <br></br>
+       <li key={"desc"}>Description:</li>
+       <li>{item.description}</li>
+        <br></br>
+       <li key={item.lastKnownPriceCents}>Last Known Price:</li>
+       <li> $ {centsToDollars(item.lastKnownPriceCents)}</li>
+        <br></br>
+       <li key={"owner" + item.ownerId}>Current Owner Id: </li>
+       <li> {item.ownerId}</li>
        </ul>
        {/* <OpenModalButton
             buttonText="Update Item"
@@ -48,6 +67,9 @@ function ItemDetailPage() {
         /> */}
 
         </div>
+
+        </div>
+        </>
     ) : <p>Item doesn't exist!</p>)
 }
 

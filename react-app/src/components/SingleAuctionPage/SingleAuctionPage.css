@@ -4,12 +4,17 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
 
-    grid-gap: 1rem;
+    grid-gap: 2rem;
 
     height: 100%;
+    max-width: 65rem;
 }
 .single-auction-left {
     height: 100%;
+
+    max-width: 100%;
+    /* width: 25rem; */
+
 
     display: grid;
     grid-template-rows: .5fr 3fr 5fr;
@@ -17,6 +22,9 @@
 }
 .single-auction-right {
     height: 100%;
+
+    max-width: 100%;
+    /* width: 45rem; */
 
     display: grid;
     grid-template-rows: 1fr .25fr .25fr 4fr;

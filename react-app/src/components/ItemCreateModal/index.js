@@ -25,8 +25,8 @@ function ItemCreateModal() {
     if (itemName.length === 0 || itemName.length > 100) {
       submitErrors.push({itemName: "Name length must be between 1 and 100 characters"})
     }
-    if (itemDescription.length === 0 || itemDescription.length > 250) {
-      submitErrors.push({itemName: "Description length must be between 1 and 250 characters"})
+    if (itemDescription.length === 0 || itemDescription.length > 350) {
+      submitErrors.push({itemName: "Description length must be between 1 and 350 characters"})
     }
     if (itemPrice <= 0) {
         submitErrors.push({itemPrice: "Price must be greater than 0.00"

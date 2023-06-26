@@ -47,6 +47,17 @@ function NavSideBar({ isLoaded }){
                 />
             </li>
 
+            <br></br>
+            <hr></hr>
+            <br></br>
+            <li>
+                <NavLink exact to="/howtobid">How To Bid</NavLink>
+            </li>
+            <li>
+                <NavLink exact to="/About">About</NavLink>
+            </li>
+            
+
             {/* <li>
 				<NavLink to="/test">Countdown Test</NavLink>
 			</li>

@@ -29,8 +29,8 @@ function ItemUpdateModal({update_item}) {
     console.log("\n\n\nchecking for item description validation", itemDescription)
     console.log("Length of itemdescription", itemDescription.length)
 
-    if (itemDescription.length === 0 || itemDescription.length > 250) {
-      submitErrors.push({itemName: "Description length must be between 1 and 250 characters"})
+    if (itemDescription.length === 0 || itemDescription.length > 350) {
+      submitErrors.push({itemName: "Description length must be between 1 and 350 characters"})
     }
     // if (itemPrice <= 0) {
     //     submitErrors.push({itemPrice: "Price must be greater than 0.00"

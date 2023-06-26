@@ -16,6 +16,9 @@ import SingleAuctionPage from "./components/SingleAuctionPage";
 import AaCountdownTest from "./components/AaCountdownTest";
 import AaSocketTestTwo from "./components/AaSocketTestTwo";
 
+import AboutPage from "./components/AboutPage";
+import HowToBidPage from "./components/HowToBidPage";
+
 import "./App.css"
 
 
@@ -56,12 +59,18 @@ function App() {
             <ItemListPage />
           </Route>
 
-          <Route path="/test">
+          <Route path="/about">
+             <AboutPage />
+          </Route>
+          <Route path="/howtobid">
+             <HowToBidPage />
+          </Route>
+          {/* <Route path="/test">
              <AaCountdownTest />
           </Route>
           <Route path="/test2">
              <AaSocketTestTwo />
-          </Route>
+          </Route> */}
 
           <Route exact path="/auction/:auctionId" >
             <SingleAuctionPage />
