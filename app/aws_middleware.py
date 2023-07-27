@@ -5,7 +5,8 @@ import uuid
 
 BUCKET_NAME = os.environ.get("S3_BUCKET")
 S3_LOCATION = f"https://{BUCKET_NAME}.s3.amazonaws.com/"
-ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif"}
+ALLOWED_EXTENSIONS = { "png", "jpg", "jpeg", "gif", "tiff", "bmp"}
+# ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif", "tiff", "bmp"}
 
 s3 = boto3.client(
    "s3",
@@ -41,3 +42,23 @@ def upload_file_to_s3(file, acl="public-read"):
         return {"errors": str(e)}
 
     return {"url": f"{S3_LOCATION}{file.filename}"}
+
+
+def delete_file_s3(filename, acl="public-read"):
+    try:
+        response = s3.delete_object(
+        # response = s3.delete_fileobj(
+            #file,
+            Bucket=BUCKET_NAME,
+            Key=filename,
+            # ExtraArgs={
+            #     "ACL": acl,
+            #     "ContentType": file.content_type
+            # }
+        )
+    except Exception as e:
+        # in case the our s3 upload fails
+        return {"errors": str(e)}
+
+    return response
+    # return {"url": f"{S3_LOCATION}{file.filename}"}

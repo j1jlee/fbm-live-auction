@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
+from flask_wtf.file import FileField
 from wtforms.validators import DataRequired, ValidationError
 # from app.models import Item
 
@@ -10,6 +11,8 @@ class createItemForm(FlaskForm):
     lastKnownPriceCents = IntegerField("lastKnownPriceCents")
     imageUrl = StringField("imageUrl")
     ownerId = IntegerField("ownerId")
+
+    image = FileField("image")
 
 """ def user_exists(form, field):
     # Checking if user exists

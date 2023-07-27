@@ -1,0 +1,28 @@
+
+
+.about-visible {
+    color: green;
+}
+
+.about-animation {
+    animation: about-anim 3s linear 0s 1;
+
+    color: pink;
+    opacity: 0;
+}
+
+.about-invisible {
+    opacity: 0;
+}
+
+@keyframes about-anim {
+    0% {
+        opacity: 0;
+       }
+    50% {
+        opacity: 1;
+        }
+    100% {
+        opacity: 0;
+        }
+}

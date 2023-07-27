@@ -1,7 +1,43 @@
 // import { FontAwesomeIcon } from 'react-fontawesome'
 import { FontAwesomeIcon, faAlternateGitHub } from '@fortawesome/react-fontawesome'
 
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { testDeleteAWSThunk } from '../../store/item';
+
+import './AboutPage.css';
+
 function AboutPage() {
+
+    const [ flashText, setFlashText ] = useState(false)
+    const [ cssTest, setCssTest ] = useState("about-visible")
+    const [ testInput, setTestInput ] = useState("")
+
+    const dispatch = useDispatch();
+
+
+    const updateClick = (e) => {
+        e.preventDefault();
+
+        console.log("update here");
+        const tempSwitch = flashText;
+        setFlashText(!tempSwitch);
+
+        console.log("flashText?", flashText)
+    }
+
+    const deleteHandle = (e) => {
+        e.preventDefault();
+
+        console.log("delete handle");
+        dispatch(testDeleteAWSThunk(testInput))
+
+
+    }
+
+
+
 
 
     return (
@@ -31,6 +67,36 @@ function AboutPage() {
             <li>Flask</li>
             <li>SQLAlchemy/Postgres</li>
         </ul>
+
+        <br></br>
+        <hr></hr>
+
+        <button onClick={updateClick}>Test Update Text</button>
+
+
+        <div className={cssTest}>
+            testing
+        </div>
+
+        <br></br>
+
+        <form onSubmit={deleteHandle} method={"POST"}>
+            <label>
+                enter filename
+            </label>
+            <input
+                type="text"
+                value={testInput}
+                onChange={(e) => {
+                    setTestInput(e.target.value)
+                }}
+            />
+
+        <button type="submit">delete file</button>
+        </form>
+
+
+
         </>
     )
 }

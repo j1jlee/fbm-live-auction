@@ -1,3 +1,5 @@
+import { faPray } from "@fortawesome/free-solid-svg-icons";
+
 // constants
 const CREATE_ITEM = "session/CREATE_ITEM";
 const GET_ITEMS = "session/GET_ITEMS";
@@ -5,6 +7,8 @@ const UPDATE_ITEM = "session/UPDATE_ITEM";
 const DELETE_ITEM = "session/DELETE_ITEM";
 
 const TRADE_ITEM = "session/TRADE_ITEM";
+
+// const TEST_DELETE_AWS = "session/TEST_DELETE_AWS";
 
 const getItems = (items) => ({
     type: GET_ITEMS,
@@ -31,7 +35,32 @@ const tradeItem = (item) => ({
     payload: item
 })
 
+
+
+
+
 //thunk here
+
+export const testDeleteAWSThunk = (testInput) => async (dispatch) => {
+
+    console.log("\n\n\nat testDelete thunk, testINput", testInput)
+    const formData = new FormData();
+
+    formData.append("testInput", testInput)
+
+    const response = await fetch("/api/items/aws_delete_test",
+    {
+        method: "POST",
+        // headers: {"Content-Type": "application/json"},
+        body: formData
+        // body: JSON.stringify(testInput)
+    })
+
+    if (response.ok) {
+        return "great job everybody, go home"
+    }
+}
+
 export const getItemsThunk = () => async (dispatch) => {
     const response = await fetch("/api/items/");
     if (response.ok) {
@@ -46,12 +75,37 @@ export const getItemsThunk = () => async (dispatch) => {
 }
 
 export const createItemThunk = (item) => async (dispatch) => {
+
+    console.log("\n\n\nat createItemThunk, item", item)
+
+
+    // const response = await fetch("/api/items/new",
+    // {
+    //     method: "POST",
+    //     headers: {"Content-Type": "application/json"},
+    //     body: JSON.stringify(item)
+    // })
+
+    const { name, description, lastKnownPriceCents, imageUrl, ownerId, image } = item;
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('lastKnownPriceCents', lastKnownPriceCents);
+    formData.append('imageUrl', imageUrl)
+    formData.append('ownerId', ownerId)
+    formData.append('image', image)
+
+
+
     const response = await fetch("/api/items/new",
     {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(item)
+        //headers: {"Content-Type": "multipart/form-data"},
+        body: formData
     })
+
+
 
     if (response.ok) {
         const newItem = await response.json();

@@ -6,6 +6,13 @@ from app.forms.create_item_form import createItemForm
 from app.forms.update_item_form import updateItemForm
 from app.forms.trade_item_form import tradeItemForm
 
+from app.aws_middleware import (
+    upload_file_to_s3, allowed_file, get_unique_filename)
+
+from app.aws_middleware import delete_file_s3
+from app.forms.aws_test_form import awsTestForm
+
+
 item_routes = Blueprint('items', __name__)
 
 
@@ -150,14 +157,59 @@ def post_new_item():
     form['csrf_token'].data = request.cookies['csrf_token']
     #THE KEY IS CSRF_TOKEN, NOT CSRF-TOKEN
 
+    # try:
+    #     print('\n\n\n\request.files?', request.files.args)
+    # except:
+    #     print('\n\n\nno request files? request?', request)
+
+    # image = request.files["image"]
+
+    # if image:
+    #     print('image', image)
+
+
     if form.validate_on_submit():
         data = form.data
+
+        # try:
+        #     print("\n\n\n\ndoes image come out of form??", data['image'])
+        # except:
+        #     print("image doesn't come out of from i guess", data)
+
+        #image handling first
+
+        uploadImageUrl = ''
+
+        if data['image']:
+            image = data['image']
+
+            if not allowed_file(image.filename):
+                form.errors['image_backend'] = "Image filetype not permitted"
+
+            image.filename = get_unique_filename(image.filename)
+            upload = upload_file_to_s3(image)
+
+            if "url" not in upload:
+                # if the dictionary doesn't have a url key
+                # it means that there was an error when we tried to upload
+                # so we send back that error message
+                return upload, 400
+
+            uploadImageUrl = upload['url']
+
+        else:
+            uploadImageUrl = data['imageUrl']
+
+
         new_item = Item(
             name = data['name'],
             description = data['description'],
             lastKnownPriceCents = data['lastKnownPriceCents'],
-            imageUrl = data['imageUrl'],
+            imageUrl = uploadImageUrl,
+            # imageUrl = data['imageUrl'],
             ownerId = data['ownerId']
+
+
         )
 
         db.session.add(new_item)
@@ -165,7 +217,7 @@ def post_new_item():
         return new_item.to_dict()
 
     if form.errors:
-        return {"errors" : form.errors}
+        return {"errors" : form.errors}, 400
 
 
 @item_routes.route('/post_test', methods=["POST"])
@@ -182,3 +234,30 @@ def item_post_test():
     post_data = (request.get_json(force=True))
     print(post_data)
     return {"message": post_data}
+
+@item_routes.route('/aws_delete_test', methods=["POST"])
+def item_aws_delete_test():
+    print("at AWS delete test, ")
+
+    # form = awsTestForm()
+    form = awsTestForm(csrf_enabled=True)
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        data = form.data
+
+        bTestInput = data['testInput']
+
+        print("\n\n\nbTestINput???", bTestInput)
+
+        try:
+            deleteAttempt = delete_file_s3(bTestInput)
+            print(deleteAttempt)
+            return "backend AWS delete successful"
+        except Exception as e:
+            print(f"some errors, {e}")
+            return e
+
+
+    if form.errors:
+        return {"errors" : form.errors}, 400

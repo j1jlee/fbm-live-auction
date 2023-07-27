@@ -12,11 +12,28 @@ function ItemCreateModal() {
   const [itemPrice, setItemPrice] = useState(0.00);
   const [itemImageUrl, setItemImageUrl] = useState("");
 
+  const [image, setImage] = useState(null)
+
   const currentUser = useSelector(state => state.session.user)
 
   const { closeModal } = useModal();
 
+  const updateFile = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log("file?", file)
+      setImage(file)
+    } else {
+      console.log("file cancelled?")
+      setImage(null)
+    };
+  };
+
+
   const handleSubmit = async (e) => {
+
+    console.log("handleSubmit, createitem")
+
     e.preventDefault();
     setErrors([]);
 
@@ -61,8 +78,12 @@ function ItemCreateModal() {
         description: itemDescription || "No description",
         lastKnownPriceCents: parseInt(itemPrice * 100),
         imageUrl: itemImageUrl,
-        ownerId: currentUser.id
+        ownerId: currentUser.id,
+
+        image: image
     };
+
+    console.log("newItem, before createItemThunk", newItem)
 
       const result = dispatch(createItemThunk(newItem));
       if (result) {
@@ -167,6 +188,14 @@ function ItemCreateModal() {
             //   required
           />
         </label>
+
+        <div>
+          Image Upload
+        </div>
+        <label>
+          <input type="file" onChange={updateFile} />
+        </label>
+
 
           <div>
             <br></br>
