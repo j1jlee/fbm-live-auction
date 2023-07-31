@@ -185,6 +185,7 @@ def post_new_item():
 
             if not allowed_file(image.filename):
                 form.errors['image_backend'] = "Image filetype not permitted"
+                return {"errors" : form.errors}, 400
 
             temp_filename = get_unique_filename(image.filename)
             image.filename = temp_filename
@@ -211,8 +212,6 @@ def post_new_item():
             imageUrl = uploadImageUrl,
             # imageUrl = data['imageUrl'],
             ownerId = data['ownerId']
-
-
         )
 
         db.session.add(new_item)

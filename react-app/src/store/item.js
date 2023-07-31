@@ -92,9 +92,12 @@ export const createItemThunk = (item) => async (dispatch) => {
     formData.append('name', name);
     formData.append('description', description);
     formData.append('lastKnownPriceCents', lastKnownPriceCents);
-    formData.append('imageUrl', imageUrl ? imageUrl : '')
+    formData.append('imageUrl', imageUrl)
     formData.append('ownerId', ownerId)
-    formData.append('image', image ? image : null)
+
+    if (image) {
+        formData.append('image', image)
+    }
 
 
 
