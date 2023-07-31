@@ -186,7 +186,10 @@ def post_new_item():
             if not allowed_file(image.filename):
                 form.errors['image_backend'] = "Image filetype not permitted"
 
-            image.filename = get_unique_filename(image.filename)
+            temp_filename = get_unique_filename(image.filename)
+            image.filename = temp_filename
+            #prevent infinite recursion??
+
             upload = upload_file_to_s3(image)
 
             if "url" not in upload:
