@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 
 import { createItemThunk } from "../../store/item"
+
+import './ItemCreateModal.css'
 
 function ItemCreateModal() {
   const dispatch = useDispatch();
@@ -12,11 +14,22 @@ function ItemCreateModal() {
   const [itemPrice, setItemPrice] = useState(0.00);
   const [itemImageUrl, setItemImageUrl] = useState("");
 
+  const [selectUploadBool, setSelectUploadBool] = useState(true);
+  const [selectURLBool, setSelectURLBool] = useState(false);
+
+  //const [awsOrUrl, setAwsOrUrl] = useState(true);
+
+
   const [image, setImage] = useState(null)
 
   const currentUser = useSelector(state => state.session.user)
 
   const { closeModal } = useModal();
+
+
+  // useEffect(() => {
+
+  // }, [selectUploadBool, selectURLBool])
 
   const updateFile = (e) => {
     const file = e.target.files[0];
@@ -29,6 +42,18 @@ function ItemCreateModal() {
     };
   };
 
+
+  const clickImageUpload = async () => {
+      console.log("clicked AWS image upload tab");
+      setSelectUploadBool(true);
+      setSelectURLBool(false);
+  }
+
+  const clickImageUrl = async () => {
+      console.log("clicked URL tab");
+      setSelectUploadBool(false);
+      setSelectURLBool(true);
+  }
 
   const handleSubmit = async (e) => {
 
@@ -50,37 +75,67 @@ function ItemCreateModal() {
     })
     }
 
-    const validImageSuffix = ["png", "jpg", "jpeg", "gif", "tiff", "bmp"]
 
-    const itemImageUrlSplit = itemImageUrl.split(".");
-    const itemImageUrlSuffix = itemImageUrlSplit[itemImageUrlSplit.length - 1]
+    //image url check, should apply ONLY IF selectURLBool is true
+    //
+    if (selectURLBool) {
+        const validImageSuffix = ["png", "jpg", "jpeg", "gif", "tiff", "bmp"]
+
+        const itemImageUrlSplit = itemImageUrl.split(".");
+        const itemImageUrlSuffix = itemImageUrlSplit[itemImageUrlSplit.length - 1]
+
+        try {
+            const urlBeforeExtension = itemImageUrlSplit[itemImageUrlSplit.length - 2];
+            let potentialFileName = urlBeforeExtension.split('/');
+            potentialFileName = potentialFileName[potentialFileName.length - 1]
 
 
-    if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrlSuffix) === -1) {
-    // if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
-        // console.log("add the error, no . OR wrong suffix")
-        submitErrors.push({itemImageUrl: "image URL should be format 'png', 'jpg', 'jpeg', 'gif', 'tiff', or 'bmp'"})
+          if (!potentialFileName.trim().length) {
+              submitErrors.push({itemImageUrl: "Image filename cannot be empty/consist of only blank spaces"})
+            }
+        } catch {}
+
+        if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrlSuffix) === -1) {
+        // if (itemImageUrl.split(".").length === 1 || validImageSuffix.indexOf(itemImageUrl.split(".")[1]) === -1) {
+            // console.log("add the error, no . OR wrong suffix")
+            submitErrors.push({itemImageUrl: "image URL should be format 'png', 'jpg', 'jpeg', 'gif', 'tiff', or 'bmp'"})
+        }
+
+        // if (itemImageUrlSplit.length == 2 && itemImageUrlSplit[0].length === 0) {
+        //   submitErrors.push({itemImage: "image file should have a name (suffix with no name)"})
+        // }
     }
 
-    if (itemImageUrlSplit.length == 2 && itemImageUrlSplit[0].length === 0) {
-      submitErrors.push({itemImage: "image file should have a name (suffix with no name)"})
-    }
+
+    //if selectUploadBool is true, then ignore URL check
+    // imageUrl should be sent out as null
+    // only validation error here should be if image===null, then push to submitErrors
+
 
 
     if (submitErrors.length) {
+
+        console.log("\n\n\nsubmitErrors", submitErrors)
         setErrors(submitErrors)
         return;
     }
+
+    const submitImage = selectUploadBool ? image : null;
+    const submitImageUrl = selectURLBool ? itemImageUrl : '';
+
+    //selectUploadBool, selectURLBool
 
 
     const newItem = {
         name: itemName,
         description: itemDescription || "No description",
         lastKnownPriceCents: parseInt(itemPrice * 100),
-        imageUrl: itemImageUrl,
         ownerId: currentUser.id,
 
-        image: image
+        // imageUrl: itemImageUrl,
+        // image: image
+        imageUrl: submitImageUrl,
+        image: submitImage,
     };
 
     console.log("newItem, before createItemThunk", newItem)
@@ -172,11 +227,39 @@ function ItemCreateModal() {
         </label>
         </div>
 
-        <div>
-          Image URL
-        </div>
+        <br></br>
 
-        <label>
+        <div className="item-create-image-wrapper">
+            <div className="item-create-image-tabs">
+                <span className={"item-create-image-upload " +
+                      (selectUploadBool ? "item-create-selected" :
+                                        "item-create-deselected")}
+
+                      onClick={clickImageUpload}
+                                        >
+                  Upload Image
+                </span>
+
+                <span className={"item-create-image-url " +
+                      (selectURLBool ? "item-create-selected" :
+                                "item-create-deselected")}
+
+                      onClick={clickImageUrl}
+                                >
+                  URL
+                </span>
+            </div>
+
+
+        <div className="item-create-image-input">
+        {/* image upload */}
+        <label className={selectUploadBool ? "" : "item-create-hide"}>
+          <input type="file" onChange={updateFile} />
+        </label>
+
+
+          {/* image URL */}
+        <label className={selectURLBool ? "" : "item-create-hide"}>
           <input
             // id="create-rename-input"
             type="text"
@@ -188,13 +271,14 @@ function ItemCreateModal() {
             //   required
           />
         </label>
-
-        <div>
-          Image Upload
         </div>
-        <label>
-          <input type="file" onChange={updateFile} />
-        </label>
+
+        </div>
+
+
+
+
+
 
 
           <div>
