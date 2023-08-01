@@ -140,7 +140,8 @@ function ItemCreateModal() {
 
     console.log("newItem, before createItemThunk", newItem)
 
-      const result = await dispatch(createItemThunk(newItem));
+      const result = dispatch(createItemThunk(newItem));
+      // const result = await dispatch(createItemThunk(newItem));
       if (result && result.errors) {
         setErrors(result.errors)
       }
