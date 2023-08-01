@@ -212,9 +212,13 @@ def post_new_item():
 
             print("\n\n\nbackend 4: upload successful?", upload)
 
-            if upload.errors:
-                form.errors['upload_file_to_s3'] = upload.errors
-                return { "errors" : form.errors}, 400
+            try:
+                if upload['errors']:
+                    form.errors['upload_file_to_s3'] = upload['errors']
+                    return { "errors" : form.errors}, 400
+            except Exception as e:
+                print("Errors keying into upload['errors']?", e)
+                pass
 
             if "url" not in upload:
                 # if the dictionary doesn't have a url key

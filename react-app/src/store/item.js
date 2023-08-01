@@ -111,6 +111,8 @@ export const createItemThunk = (item) => async (dispatch) => {
 
 
     if (response.ok) {
+        //console.log("new item, response ok?")
+
         const newItem = await response.json();
         dispatch(createItem(newItem))
         return newItem;

@@ -44,8 +44,8 @@ def upload_file_to_s3(file, acl="public-read"):
         # in case the our s3 upload fails
         print("aws_middleware: did file even come in?", file)
         print("BUCKET_NAME", BUCKET_NAME)
-        # print("is there file.filename?", file.filename)
-        # print("is there content_type?", file.content_type)
+        print("is there file.filename?", file.filename)
+        print("is there content_type?", file.content_type)
 
         return {"errors": str(e)}
 
