@@ -163,7 +163,7 @@ function ItemCreateModal() {
 
         <ul className="modal-errors">
         {/* <ul id="item-create-errors-ul"> */}
-          {errors.map((error) => {
+          {errors.length && errors.map((error) => {
             const errorEntry = Object.entries(error);
             return (<li>{errorEntry[0][1]}</li>)
         })}
