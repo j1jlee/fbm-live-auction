@@ -159,14 +159,16 @@ function ItemCreateModal() {
     <>
       <div id="item-create-modal">
       <h1 id="item-create-title">Create New Item</h1>
-      <form id="item-create-form" onSubmit={handleSubmit} method={"POST"}>
+      <form id="item-create-form" onSubmit={handleSubmit}>
+      {/* <form id="item-create-form" onSubmit={handleSubmit} method={"POST"}> */}
 
         <ul className="modal-errors">
         {/* <ul id="item-create-errors-ul"> */}
-          {errors.length && errors.map((error) => {
+          {errors.length ? errors.map((error) => {
             const errorEntry = Object.entries(error);
             return (<li>{errorEntry[0][1]}</li>)
-        })}
+        })
+            : ""}
         </ul>
 
         <div>
