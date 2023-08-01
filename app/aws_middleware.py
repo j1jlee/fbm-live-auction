@@ -48,7 +48,7 @@ def upload_file_to_s3(file, acl="public-read"):
 
 
         s3.upload_fileobj(
-        file.stream,
+        file,
         BUCKET_NAME,
         # file.filename,
         file.filename,
@@ -57,16 +57,7 @@ def upload_file_to_s3(file, acl="public-read"):
             "ContentType": file.content_type
         }
         )
-        # s3.upload_fileobj(
-        #     file,
-        #     BUCKET_NAME,
-        #     # file.filename,
-        #     file.filename,
-        #     ExtraArgs={
-        #         "ACL": acl,
-        #         "ContentType": file.content_type
-        #     }
-        # )
+
     except Exception as e:
         # in case the our s3 upload fails
         print("aws_middleware: did file even come in?", file)
@@ -98,3 +89,13 @@ def delete_file_s3(filename, acl="public-read"):
 
     return response
     # return {"url": f"{S3_LOCATION}{file.filename}"}
+
+def test_get_s3(filename, acl="public-read"):
+    try:
+        response = s3.get_object(
+            Bucket=BUCKET_NAME,
+            Key=filename,
+        )
+    except Exception as e:
+        return {"errors": str(e)}
+    return response

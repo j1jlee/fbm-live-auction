@@ -7,7 +7,7 @@ from app.forms.update_item_form import updateItemForm
 from app.forms.trade_item_form import tradeItemForm
 
 from app.aws_middleware import (
-    upload_file_to_s3, allowed_file, get_unique_filename)
+    upload_file_to_s3, allowed_file, get_unique_filename, test_get_s3)
 
 from app.aws_middleware import delete_file_s3
 from app.forms.aws_test_form import awsTestForm
@@ -289,6 +289,36 @@ def item_aws_delete_test():
             deleteAttempt = delete_file_s3(bTestInput)
             print(deleteAttempt)
             return "backend AWS delete successful"
+        except Exception as e:
+            print(f"some errors, {e}")
+            return e
+
+
+    if form.errors:
+        return {"errors" : form.errors}, 400
+
+
+@item_routes.route('/aws_get_test', methods=["POST"])
+def item_aws_get_test():
+    print("at AWS get test, ")
+
+    # form = awsTestForm()
+    form = awsTestForm(csrf_enabled=True)
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        data = form.data
+
+        getTestInput = data['testInput']
+
+        print("\n\n\nget TestINput???", getTestInput)
+
+        try:
+            getAttempt = test_get_s3(getTestInput)
+            print("\n\n\ngetattempt??")
+            print(getAttempt)
+            print("backend AWS get successful")
+            return str(getAttempt)
         except Exception as e:
             print(f"some errors, {e}")
             return e

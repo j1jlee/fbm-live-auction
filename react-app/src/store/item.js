@@ -60,6 +60,28 @@ export const testDeleteAWSThunk = (testInput) => async (dispatch) => {
         return "great job everybody, go home"
     }
 }
+export const testGetAWSThunk = (testInput) => async (dispatch) => {
+
+    console.log("\n\n\nat testDelete thunk, testINput", testInput)
+    const formData = new FormData();
+
+    formData.append("testInput", testInput)
+
+    const response = await fetch("/api/items/aws_get_test",
+    {
+        method: "POST",
+        // headers: {"Content-Type": "application/json"},
+        body: formData
+        // body: JSON.stringify(testInput)
+    })
+
+    if (response.ok) {
+    
+        return "great job everybody, get success"
+    }
+}
+
+
 
 export const getItemsThunk = () => async (dispatch) => {
     const response = await fetch("/api/items/");

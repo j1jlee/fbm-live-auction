@@ -4,7 +4,7 @@ import { FontAwesomeIcon, faAlternateGitHub } from '@fortawesome/react-fontaweso
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { testDeleteAWSThunk } from '../../store/item';
+import { testDeleteAWSThunk, testGetAWSThunk } from '../../store/item';
 
 import './AboutPage.css';
 
@@ -13,6 +13,8 @@ function AboutPage() {
     const [ flashText, setFlashText ] = useState(false)
     const [ cssTest, setCssTest ] = useState("about-visible")
     const [ testInput, setTestInput ] = useState("")
+
+    const [ getInput,setGetInput ] = useState('');
 
     const dispatch = useDispatch();
 
@@ -32,8 +34,13 @@ function AboutPage() {
 
         console.log("delete handle");
         dispatch(testDeleteAWSThunk(testInput))
+    }
 
+    const getHandle = (e) => {
+        e.preventDefault();
 
+        console.log("get handle");
+        dispatch(testGetAWSThunk(getInput))
     }
 
 
@@ -93,6 +100,21 @@ function AboutPage() {
             />
 
         <button type="submit">delete file</button>
+        </form>
+
+        <form onSubmit={getHandle} method={"POST"}>
+            <label>
+                enter filename to get
+            </label>
+            <input
+                type="text"
+                value={getInput}
+                onChange={(e) => {
+                    setGetInput(e.target.value)
+                }}
+            />
+
+        <button type="submit">get file</button>
         </form>
 
 
