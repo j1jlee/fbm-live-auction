@@ -214,6 +214,9 @@ def post_new_item():
 
             try:
                 if upload['errors']:
+                    print("upload['errors], exiting early")
+                    print(upload['errors'])
+
                     form.errors['upload_file_to_s3'] = upload['errors']
                     return { "errors" : form.errors}, 400
             except Exception as e:
