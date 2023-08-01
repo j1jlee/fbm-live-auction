@@ -196,7 +196,7 @@ def post_new_item():
                 print("\n\n\nbackend 2b: filetype not permitted, exiting")
 
                 form.errors['image_backend'] = "Image filetype not permitted"
-                return {"errors" : form.errors}, 400
+                #return {"errors" : form.errors}, 400
 
 
             print("\n\n\nbackend 3: pre-unique filename")
@@ -218,7 +218,7 @@ def post_new_item():
                     print(upload['errors'])
 
                     form.errors['upload_file_to_s3'] = upload['errors']
-                    return { "errors" : form.errors}, 400
+                    #return { "errors" : form.errors}, 400
             except Exception as e:
                 print("Errors keying into upload['errors']?", e)
                 pass
@@ -227,6 +227,7 @@ def post_new_item():
                 # if the dictionary doesn't have a url key
                 # it means that there was an error when we tried to upload
                 # so we send back that error message
+                print("url not in upload, returning error")
                 return upload, 400
 
             uploadImageUrl = upload['url']

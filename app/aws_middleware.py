@@ -30,11 +30,24 @@ def upload_file_to_s3(file, acl="public-read"):
     print("\n\n\nat upload file helper")
 
     try:
+        print("open file in binary read mode?")
+        fileBin = open(file, 'rb')
+        #print("filebin?", fileBin)
+        print("fileBin.read?", fileBin.read())
+        fileBin.read()
+    except Exception as e:
+        print("opening this file doesn't work", e)
+        pass
+
+    temp_filename = file.filename
+
+    try:
         print("\n\n\nuploading file")
         s3.upload_fileobj(
             file,
             BUCKET_NAME,
-            file.filename,
+            # file.filename,
+            temp_filename,
             ExtraArgs={
                 "ACL": acl,
                 "ContentType": file.content_type
