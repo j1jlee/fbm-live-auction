@@ -154,6 +154,8 @@ def post_new_item():
     # print("what is form[csrf-token]?", form['csrf-token'])
     # # print("does form have key 'csrf-token??", form.get_json(force=True))
 
+
+
     form['csrf_token'].data = request.cookies['csrf_token']
     #THE KEY IS CSRF_TOKEN, NOT CSRF-TOKEN
 
@@ -167,8 +169,10 @@ def post_new_item():
     # if image:
     #     print('image', image)
 
-
+    print("\n\n\nbackend 1: form validation")
     if form.validate_on_submit():
+
+        print("\n\n\nbackend 1: form validated")
         data = form.data
 
         # try:
@@ -181,17 +185,32 @@ def post_new_item():
         uploadImageUrl = ''
 
         if data['image']:
+
+            print("\n\n\nbackend 2: image?")
             image = data['image']
 
+            print("\n\n\nbackend 2: image:", image)
+
             if not allowed_file(image.filename):
+
+                print("\n\n\nbackend 2b: filetype not permitted, exiting")
+
                 form.errors['image_backend'] = "Image filetype not permitted"
                 return {"errors" : form.errors}, 400
 
+
+            print("\n\n\nbackend 3: pre-unique filename")
+
             temp_filename = get_unique_filename(image.filename)
             image.filename = temp_filename
-            #prevent infinite recursion??
 
+
+            print("\n\n\nbackend 3: unique filename", image.filename)
+
+            print("\n\n\nbackend 4: pre-upload", image)
             upload = upload_file_to_s3(image)
+
+            print("\n\n\nbackend 4: upload successful?", upload)
 
             if "url" not in upload:
                 # if the dictionary doesn't have a url key
@@ -202,6 +221,8 @@ def post_new_item():
             uploadImageUrl = upload['url']
 
         else:
+            print("\n\n\nbackend 4b: skipping all that, data.image doesn't exist, taking imageUrl", data['imageUrl'])
+
             uploadImageUrl = data['imageUrl']
 
 
