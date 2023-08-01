@@ -30,35 +30,50 @@ def upload_file_to_s3(file, acl="public-read"):
     print("\n\n\nat upload file helper")
 
     try:
-        print("open file in binary read mode?")
-        fileBin = open(file, 'rb')
-        #print("filebin?", fileBin)
-        print("fileBin.read?", fileBin.read())
-        fileBin.read()
+        print("file.content_type?", file.content_type)
+        # print("open file in binary read mode?")
+        # fileBin = open(file, 'rb')
+        # #print("filebin?", fileBin)
+        # print("fileBin.read?", fileBin.read())
+        # fileBin.read()
     except Exception as e:
         print("opening this file doesn't work", e)
         pass
 
-    temp_filename = file.filename
+    # temp_filename = file.filename
 
     try:
         print("\n\n\nuploading file")
+        #will this work?
+
+
         s3.upload_fileobj(
-            file,
-            BUCKET_NAME,
-            # file.filename,
-            temp_filename,
-            ExtraArgs={
-                "ACL": acl,
-                "ContentType": file.content_type
-            }
+        file.stream,
+        BUCKET_NAME,
+        # file.filename,
+        file.filename,
+        ExtraArgs={
+            "ACL": acl,
+            "ContentType": file.content_type
+        }
         )
+        # s3.upload_fileobj(
+        #     file,
+        #     BUCKET_NAME,
+        #     # file.filename,
+        #     file.filename,
+        #     ExtraArgs={
+        #         "ACL": acl,
+        #         "ContentType": file.content_type
+        #     }
+        # )
     except Exception as e:
         # in case the our s3 upload fails
         print("aws_middleware: did file even come in?", file)
         print("BUCKET_NAME", BUCKET_NAME)
         print("is there file.filename?", file.filename)
         print("is there content_type?", file.content_type)
+        print('errors?', str(e))
 
         return {"errors": str(e)}
 
