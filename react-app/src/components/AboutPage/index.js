@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 
 import { testDeleteAWSThunk, testGetAWSThunk } from '../../store/item';
 
+// import { frontend_test_get_s3 } from '../aaAwsFrontendTest'
+
 import './AboutPage.css';
 
 function AboutPage() {
@@ -15,6 +17,7 @@ function AboutPage() {
     const [ testInput, setTestInput ] = useState("")
 
     const [ getInput,setGetInput ] = useState('');
+    // const [ getFront, setGetFront ] = useState('');
 
     const dispatch = useDispatch();
 
@@ -42,6 +45,14 @@ function AboutPage() {
         console.log("get handle");
         dispatch(testGetAWSThunk(getInput))
     }
+
+    // const handleFront = (e) => {
+    //     e.preventDefault();
+
+    //     const frontFormData = new FormData();
+
+    //     frontFormData.append()
+    // }
 
 
 
@@ -117,6 +128,21 @@ function AboutPage() {
         <button type="submit">get file</button>
         </form>
 
+
+        {/* <form onSubmit={getHandle} method={"POST"}>
+            <label>
+                get test frontend
+            </label>
+            <input
+                type="text"
+                value={getFront}
+                onChange={(e) => {
+                    setGetFront(e.target.value)
+                }}
+            />
+
+        <button type="submit">get file</button>
+        </form> */}
 
 
         </>
