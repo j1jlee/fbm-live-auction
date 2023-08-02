@@ -59,6 +59,8 @@ function SingleAuctionPage() {
     const [bidInput, setBidInput] = useState(0);
     const [chatMessage, setChatMessage] = useState("");
 
+    const [chatLog, setChatLog] = useState([]);
+
     // const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
     const [auctionStarted, setAuctionStarted] = useState(false);
     const [auctionOver, setAuctionOver] = useState(false);
@@ -73,7 +75,7 @@ function SingleAuctionPage() {
     console.log("thisItem?", thisItem)
     console.log("thisAuction?", thisAuction)
 
-
+    console.log("chatLog?", chatLog)
     // const history = useHistory();
     // if (!currentUser) {
     //     history.push("/");
@@ -303,8 +305,27 @@ function SingleAuctionPage() {
         socket.on("chatEvent", (chat) => {
             console.log("\n\n\nCHAT?", chat)
 
+
             if (chat.socketAuctionId == auctionId) {
                 console.log("socketAuctionId matches auctionId, adding to current chatlog")
+
+                // let currentChatLog = [...chatLog]
+                // currentChatLog.push(chat)
+
+                // console.log("pre setChatLog, currentChatLog", currentChatLog)
+
+                //thank you, set state documentation
+                //https://legacy.reactjs.org/docs/react-component.html#setstate
+
+                setChatLog((chatLog) => {
+                    let currentChatLog = [...chatLog]
+                    currentChatLog.push(chat)
+
+                    //console.log("pre setChatLog, currentChatLog", currentChatLog)
+                    return currentChatLog;
+                });
+                // }currentChatLog);
+
             }
         })
         // when component unmounts, disconnect
@@ -379,7 +400,14 @@ function SingleAuctionPage() {
     const sendChat = (e) => {
         e.preventDefault();
 
+        if (chatMessage.length) {
+            setChatMessage('');
 
+            socket.emit("chatEvent", { socketAuctionId: thisAuction.id, chatterId: currentUser.id, chatMessage:chatMessage, timeOfBid:(new Date()).toString() })
+
+        }
+
+        return;
     }
 
 
@@ -410,7 +438,7 @@ function SingleAuctionPage() {
             </div>
 
             <div className="single-auction-chat-wrapper">
-            <form onSubmit={sendBid}>
+            <form onSubmit={sendChat}>
                 <input
                     type="textbox"
                     value={chatMessage}
@@ -472,7 +500,9 @@ function SingleAuctionPage() {
             </form>
                 <div>
                 {Object.values(errors).length ? Object.values(errors).map((error) => {
-                   return <p key={error}>{error}</p>
+                   return <p key={error}className="single-auction-error">
+                            {error}
+                        </p>
                 }) : ""}
                 </div>
             </>
