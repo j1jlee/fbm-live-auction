@@ -4,39 +4,26 @@ import { useModal } from "../../context/Modal"
 ;
 import { useHistory } from "react-router-dom";
 
-import { createAuctionThunk } from "../../store/auction"
-import { getItemsThunk } from "../../store/item";
+import { editWalletThunk } from "../../store/session";
+import { dollarsNumToCents } from "../aaaMiddleware";
+
+import './AddToWalletModal.css';
 
 function AddToWalletModal() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState([]);
-  const [auctionName, setAuctionName] = useState("");
-  const [auctionDescription, setAuctionDescription] = useState("");
-  //should auctionOpen be an available switch?
-  const [startingBidCents, setStartingBidCents] = useState(0.00);
-  const [auctionItemId, setAuctionItemId] = useState(0);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-
 
   const currentUser = useSelector(state => state.session.user)
-  const allItems = useSelector(state => state.items)
 
-  const allItemsList = allItems ? Object.values(allItems) : []
-  const myItemsList = allItemsList.filter((item) => {
-    return item.ownerId === currentUser.id
-  })
+  const [cardName, setCardName] = useState(`${currentUser.firstname} ${currentUser.lastname}` || '')
+  const [cardNumber, setCardNumber] = useState("0000111100001111");
+  const [cardMonth, setCardMonth] = useState("00");
+  const [cardYear, setCardYear] = useState("00");
+  const [addAmount, setAddAmount] = useState(0);
 
-//   console.log("\n\n\nmyItemsList?", myItemsList)
-console.log("in add wallet modal");
 
   const { closeModal } = useModal();
-
   const history = useHistory();
-
-  useEffect(() => {
-    dispatch(getItemsThunk())
-  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,55 +31,19 @@ console.log("in add wallet modal");
 
     const submitErrors = [];
 
-    if (auctionName.length === 0 || auctionName.length > 200) {
-      submitErrors.push({auctionName: "Name length must be between 1 and 200 characters"})
-    }
-    if (auctionDescription.length === 0 || auctionDescription.length > 300) {
-      submitErrors.push({itemName: "Description length must be between 1 and 300 characters"})
-    }
-    if (startingBidCents <= 0) {
-        submitErrors.push({itemPrice: "Starting Bid must be greater than $0.00"
-    })
-    }
-
-    // const validImageSuffix = ["png", "jpg", "jpeg", "gif", "tiff", "bmp"]
-    // if (auctionImageUrl.split(".").length === 1 || validImageSuffix.indexOf(auctionImageUrl.split(".")[1]) === -1) {
-    //     // console.log("add the error, no . OR wrong suffix")
-    //     submitErrors.push({auctionImageUrl: "image URL should be format 'png', 'jpg', 'jpeg', 'gif', 'tiff', or 'bmp'"})
+    // if (auctionName.length === 0 || auctionName.length > 200) {
+    //   submitErrors.push({auctionName: "Name length must be between 1 and 200 characters"})
     // }
-
-
-    // console.log("\n\n\nstartTime???", startTime)
-    // console.log("typeof startTime???", typeof startTime)
-    // console.log("\n\n\nendTime???", endTime)
-    // console.log("typeof endTime???", typeof endTime)
-
-    const timeNow = new Date();
-    const timeNowMilli = timeNow.getTime();
-
-    const startDateTimeIntoObj = new Date(startTime);
-    const endDateTimeIntoObj = new Date(endTime);
-
-    // console.log("\n\n\nis this working??", startDateTimeIntoObj)
-    // console.log("\n\n\ntypeof??", typeof startDateTimeIntoObj)
-    // console.log("\n\n\ndate obj to string?????", startDateTimeIntoObj.toString())
-
-    if (startTime == "" || endTime == "") {
-        submitErrors.push({Time: "Please select a starting and ending date"})
+    if (addAmount < 1) {
+      submitErrors.push({addAmount: "Amount to Add must be greater than 1.00"})
     }
 
-    if ((startDateTimeIntoObj.getTime() + 60000) < timeNowMilli) {
-        submitErrors.push({startTime: "Starting time must be after current time"})
+    if (submitErrors.length &&
+        (cardNumber.length < 16 ||
+          cardMonth.length < 2 ||
+          cardYear.length < 2)) {
+      submitErrors.push({otherErrors: "Please fill out inputs (optional)"})
     }
-
-    if (startDateTimeIntoObj.getTime() > endDateTimeIntoObj.getTime()) {
-        submitErrors.push({endTime: "Ending time must be later than starting time"})
-    }
-
-    if (auctionItemId === 0) {
-        submitErrors.push({auctionItemId: "Please select an Item to auction"})
-    }
-
 
 
     if (submitErrors.length) {
@@ -100,113 +51,110 @@ console.log("in add wallet modal");
         return;
     }
 
-
-    const newAuction = {
-       auctionName,
-       auctionDescription,
-       startingBidCents: startingBidCents * 100,
-    //    startTime,
-    //    endTime,
-        startTime: startDateTimeIntoObj.toString(),
-        endTime: endDateTimeIntoObj.toString(),
-       auctionItemId,
-       sellerId: currentUser.id
-
-    };
-
-      const result = dispatch(createAuctionThunk(newAuction));
-      if (result) {
-        setErrors(result.errors)
-      }
-
+      dispatch(editWalletThunk(currentUser.id, dollarsNumToCents(addAmount)))
+      
       history.push("/");
       closeModal();
     }
 
-    // const demoSubmit = () => {
+    //.replace(/[^0-9]/, '')}
+    const processCardNumber = (cardInput) => {
+      return cardInput.trim().replace(/[^0-9]/, '')
+    }
 
-    //   const timeNow = new Date();
-    //   // const timePlusMinute = new Date(timeNow.getTime() + 60000);
-
-    //   const demoAuction = {
-    //     auctionName: "Demo Auction",
-    //     auctionDescription: "This is a demo auction!",
-    //     startingBidCents: 100,
-    //     startTime: new Date(timeNow.getTime()),
-    //     endTime: new Date(timeNow.getTime() + 60000),
-    //     auctionItemId: allItemsList[0].id,
-    //     sellerId: 3
-    //   }
-
-    //   dispatch(createAuctionThunk(demoAuction));
-    // }
-
-
-
-
-    // if (errors) {
-    //     console.log("\n\n\n errors???", errors)
-    //     errors.map((error) => {
-    //         console.log("ERROR", Object.entries(error))
-    //         console.log("ERROR", Object.entries(error)[0][1])
-    //     })
-    // }
+    const preventNegative = (numInput) => {
+      if (numInput < 0) return 0;
+      else return numInput;
+    }
 
   return (
     <>
-      <div className="create-auction-modal">
-      <h1>Create New Auction</h1>
+      {/* <h1>Add Funds to Wallet</h1> */}
+
+
+        <h1 className="wallet-title">Add Funds to Wallet</h1>
+
       <form onSubmit={handleSubmit} method={"POST"}>
 
-        <ul className="modal-errors">
-          {errors.map((error) => {
-            const errorEntry = Object.entries(error);
-            return (<li>{errorEntry[0][1]}</li>)
-        })}
+      <div className="wallet-card-wrapper">
+
+        <ul className="modal-errors wallet-modal-errors">
+          { errors.length ?
+              errors.map((error) => {
+              const errorEntry = Object.entries(error);
+              return (<li>{errorEntry[0][1]}</li>)
+          })
+            :
+            (<>
+            <h2 className="wallet-card-title">Card Information</h2>
+            <br></br>
+            </>)
+        }
+
+
         </ul>
 
         <div>
         <label>
-          Auction Name
+          Card Number
+          <input
+            className="wallet-number-input"
+            type="text"
+            value={cardNumber}
+            maxlength="16"
+            onChange={(e) => {
+              const tempCardNum = e.target.value;
+              setCardNumber(processCardNumber(tempCardNum))
+              }
+            }
+            //   required
+          />
+        </label>
+        </div>
+
+        <div className="wallet-date">
+              <p>Name on Card</p>
+          <div className="wallet-date-inner">
+        <p>GOOD THRU</p>
+        <label>
           <input
             // id="create-rename-input"
             type="text"
-            value={auctionName}
+            value={cardMonth}
+            maxlength="2"
             onChange={(e) => {
-              setAuctionName(e.target.value)
+              setCardMonth(processCardNumber(e.target.value))
               }
             }
             //   required
           />
         </label>
-        </div>
-
-        <div>
+            <span>/</span>
         <label>
-          Description
           <input
             // id="create-rename-input"
-            className="modal-description"
-            type="textarea"
-            value={auctionDescription}
+            type="text"
+            value={cardYear}
+            maxLength="2"
             onChange={(e) => {
-              setAuctionDescription(e.target.value)
+              setCardYear(processCardNumber(e.target.value));
               }
             }
             //   required
           />
         </label>
+          </div>
         </div>
 
         <div>
         <label>
-          Starting Bid
+          {/* Name on Card */}
           <input
-            // id="create-rename-input"
-            type="number"
-            value={startingBidCents}
+            className="wallet-name"
+            type="text"
+            value={cardName.toUpperCase()}
             onChange={(e) => {
-              setStartingBidCents(e.target.value)
+              setCardName(e.target.value)
               }
             }
             //   required
@@ -214,69 +162,43 @@ console.log("in add wallet modal");
         </label>
         </div>
 
-        <div>
-        <label>
-          Item to Auction
-        </label>
-        </div>
 
-            <select name="auctionItemId"
-                onChange={(e) => {
-                    setAuctionItemId(e.target.value)
-                }
-                }>
-                <option value={""}>-Select Item-</option>
-                {myItemsList.map((myItem) => (
-                    <option value={myItem.id}>{myItem.name}</option>
-                ))}
+      </div> {/* end of credit card wrapper */}
 
-            </select>
 
-        <div>
-            Start Date
-        </div>
-        <label>
-            <input
-            // id="create-rename-input"
-            type="datetime-local"
-            value={startTime}
-            onChange={(e) => {
-                setStartTime(e.target.value)
-                // console.log("typeof datetime local??", typeof startTime)
-                // console.log("datetime local??", startTime)
-                // console.log("into date?", Date(startTime))
-                // const timeTest = new Date(startTime)
-                // const timeNowTest = new Date()
-                // console.log("into date getTime()?", timeTest.getTime())
-                // console.log("now getTime()", timeNowTest.getTime())
-                }
-            }
-            //   required
-            />
-        </label>
 
-        <label>
-            End Date
-            <input
-            // id="create-rename-input"
-            type="datetime-local"
-            value={endTime}
-            onChange={(e) => {
-                setEndTime(e.target.value)
-                }
-            }
-            //   required
-            />
-        </label>
-
-          <div>
           <br></br>
+          <hr></hr>
+          <br></br>
+          <div className="wallet-amount-outer">
+          <div className="wallet-amount-inner">
+
+            <label className="wallet-amount-label">
+              Amount to Add:
+            </label>
+
+            <br></br>
+            <div className="wallet-amount-add">
+            <input
+              type="number"
+              value={addAmount}
+              onChange={(e) => {
+                setAddAmount(preventNegative(e.target.value))
+                }
+              }
+              //   required
+            />
+          USD
+            </div>
+          </div>
           </div>
 
-        <button type="submit">Create Auction</button>
+            <br></br>
+        <button type="submit">Add to Wallet</button>
       </form>
 
-      </div>
+
+
     </>
   );
 }

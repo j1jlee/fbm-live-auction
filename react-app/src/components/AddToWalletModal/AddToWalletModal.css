@@ -1,0 +1,120 @@
+
+
+.wallet-card-wrapper * {
+    /* box-sizing: border-box; */
+}
+
+.wallet-card-wrapper {
+    box-sizing: border-box;
+
+    width: 20.25rem;
+    height: 12.75rem;
+
+    background-image: linear-gradient(to bottom right, navy, plum);
+    border-radius: 7px;
+
+    padding: 1.5rem;
+
+    color: white;
+    text-shadow: 2px 1px 3px black;
+}
+
+.wallet-card-wrapper input {
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+
+    color: white;
+    text-shadow: 2px 2px 2px black;
+}
+
+.wallet-date {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0.4rem 0;
+}
+
+.wallet-date p {
+    align-self: flex-end;
+}
+
+.wallet-card-title {
+    color: plum;
+    text-shadow: 2px 2px 2px black;
+}
+
+
+
+
+.wallet-date-inner {
+    display: flex;
+    width: 50%;
+    height: 100%;
+
+    font-size: smaller;
+
+    align-items: center;
+}
+
+.wallet-date-inner p {
+    margin: 0 0.5rem;
+}
+
+.wallet-date-inner span {
+    font-size: larger;
+    display: flex;
+    align-items: center;
+}
+
+.wallet-date-inner input {
+    display: flex;
+    width: 2rem;
+    height: 100%;
+
+    font-family: "Victor Mono", monospace;
+    font-size: larger;
+}
+
+
+.wallet-modal-errors {
+    font-size: smaller;
+    height: 2rem;
+}
+
+
+.wallet-name {
+    font-family: "Victor Mono", monospace;
+    font-size: larger;
+}
+
+.wallet-number-input {
+    font-size: larger;
+}
+
+.wallet-amount-add {
+    display: flex;
+}
+
+.wallet-amount-add input {
+    text-align: right;
+}
+
+.wallet-title {
+    font-weight: 600;
+}
+
+.wallet-amount-outer {
+    display: flex;
+    /* width: 100%; */
+
+    justify-content: end;
+}
+
+.wallet-amount-inner {
+    width: 50%;
+}
+
+.wallet-amount-label {
+padding-bottom: 0.7rem;
+}

@@ -66,7 +66,6 @@ export const testGetAWSThunk = (testInput) => async (dispatch) => {
     const formData = new FormData();
 
     formData.append("testInput", testInput)
-
     const response = await fetch("/api/items/aws_get_test",
     {
         method: "POST",
@@ -76,7 +75,7 @@ export const testGetAWSThunk = (testInput) => async (dispatch) => {
     })
 
     if (response.ok) {
-    
+
         return "great job everybody, get success"
     }
 }

@@ -148,3 +148,12 @@
   display: inline-flex;
   align-items: bottom;
 }
+
+.wallet-add-funds-button:hover {
+  /* background-color: pink; */
+  cursor: pointer;
+}
+
+/* .wallet-add-funds-button {
+  background-color: pink;
+} */
