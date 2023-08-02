@@ -38,7 +38,11 @@ function AddToWalletModal() {
       submitErrors.push({addAmount: "Amount to Add must be greater than 1.00"})
     }
 
-    if (submitErrors.length &&
+    if (addAmount > 99999) {
+      submitErrors.push({excessive: "Cannot add more than five figures"})
+    }
+
+    if (submitErrors.length === 1 &&
         (cardNumber.length < 16 ||
           cardMonth.length < 2 ||
           cardYear.length < 2)) {
@@ -52,7 +56,7 @@ function AddToWalletModal() {
     }
 
       dispatch(editWalletThunk(currentUser.id, dollarsNumToCents(addAmount)))
-      
+
       history.push("/");
       closeModal();
     }

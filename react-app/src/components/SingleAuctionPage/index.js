@@ -57,6 +57,8 @@ function SingleAuctionPage() {
     const thisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : ''
 
     const [bidInput, setBidInput] = useState(0);
+    const [chatMessage, setChatMessage] = useState("");
+
     // const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
     const [auctionStarted, setAuctionStarted] = useState(false);
     const [auctionOver, setAuctionOver] = useState(false);
@@ -296,7 +298,14 @@ function SingleAuctionPage() {
                 dispatch(getBidsThunk())
             }
             return;
+        })
 
+        socket.on("chatEvent", (chat) => {
+            console.log("\n\n\nCHAT?", chat)
+
+            if (chat.socketAuctionId == auctionId) {
+                console.log("socketAuctionId matches auctionId, adding to current chatlog")
+            }
         })
         // when component unmounts, disconnect
         return (() => {
@@ -336,6 +345,13 @@ function SingleAuctionPage() {
             tempErrors.bidInput = "Can't bid over six figures"
         }
 
+        const walletAmount = currentUser.cashCents;
+
+        if (tempBidInput > walletAmount) {
+            tempErrors.walletAmount = "Can't bid more than amount in wallet"
+        }
+
+
         const currentHighestBid = getHighestBid(thisAuctionBidList)//sortedBidList
 
         if (tempBidInput <= currentHighestBid) {
@@ -359,6 +375,13 @@ function SingleAuctionPage() {
         setBidInput(0);
         return;
     }
+
+    const sendChat = (e) => {
+        e.preventDefault();
+
+
+    }
+
 
     // console.log("all auctions?", allAuctions)
     // console.log("this auction?", thisAuction)
@@ -384,6 +407,17 @@ function SingleAuctionPage() {
                 <ul>
                 {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>}
                 </ul>
+            </div>
+
+            <div className="single-auction-chat-wrapper">
+            <form onSubmit={sendBid}>
+                <input
+                    type="textbox"
+                    value={chatMessage}
+                    onChange={(e) => {setChatMessage(e.target.value)}}
+                />
+                <button type="submit">Send Chat</button>
+            </form>
             </div>
         </div>
 

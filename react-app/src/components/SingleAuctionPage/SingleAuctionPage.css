@@ -4,6 +4,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
 
+
     grid-gap: 2rem;
 
     height: 100%;
@@ -17,7 +18,7 @@
 
 
     display: grid;
-    grid-template-rows: .5fr 3fr 5fr;
+    grid-template-rows: .5fr 3fr 2fr 2fr 1fr;
 
 }
 .single-auction-right {
