@@ -521,13 +521,14 @@ function SingleAuctionPage() {
             </div>
 
             <div className="single-auction-chat-wrapper">
-            <form onSubmit={sendChat}>
+            <form onSubmit={sendChat} className="single-auction-chat-form">
                 <input
+                    className="single-auction-chat-input"
                     type="textbox"
                     value={chatMessage}
                     onChange={(e) => {setChatMessage(e.target.value)}}
                 />
-                <button type="submit">Send Chat</button>
+                <button type="submit" className="single-auction-chat-button">Send Chat</button>
             </form>
             </div>
         </div>
@@ -574,12 +575,13 @@ function SingleAuctionPage() {
             <>
             <form onSubmit={sendBid}>
                 <input
+                    className="single-auction-bidform-input"
                     type="number"
                     step="0.01"
                     value={bidInput}
                     onChange={updateBidInput}
                 />
-                <button type="submit">Send Bid</button>
+                <button type="submit" className="single-auction-bid-button">Send Bid</button>
             </form>
                 <div>
                 {Object.values(errors).length ? Object.values(errors).map((error) => {

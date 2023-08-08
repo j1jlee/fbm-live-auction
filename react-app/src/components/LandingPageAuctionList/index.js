@@ -66,11 +66,47 @@ function LandingPageAuctionList() {
     const sortedAuctionsCurrent = auctionsCurrent.length ? sortAuctions(auctionsCurrent) : [];
     const sortedAuctionsPassed = auctionsPassed.length ? sortAuctions(auctionsPassed) : [];
 
+
+
     useEffect(() => {
+        // open socket connection
+        // create websocket
+        socket = io();
+
+        //create websocket DEFINE what EVENT does?
+        socket.on("newAuctionEvent", (newAuction) => {
+            //setMessages(messages => [...messages, chat])
+            console.log("new auction, refresh all", newAuction);
+
+            dispatch(getAuctionsThunk())
+            .then(setSwitchBool(!switchBool));
+            // dispatch(getAuctionsThunk())
+            // (setSwitchBool(() => {
+            //     dispatch(getAuctionsThunk());
+            //     return !switchBool;
+            // }));
+        })
+        // when component unmounts, disconnect
+        return (() => {
+            socket.disconnect()
+        })
+    }, [])
+
+    useEffect(() => {
+
         dispatch(getAuctionsThunk())
         .then(dispatch(getItemsThunk()))
         .then(dispatch(getBidsThunk()));
+
+        // socket.emit("newAuctionEvent", { note: "create auction thunk auction refresh"});
     }, [dispatch, switchBool])
+
+    // useEffect(() => {
+    //     console.log("\n\n\ndoes this work? create auction thunk");
+
+    //     socket.emit("newAuctionEvent", { note: "create auction thunk auction refresh"})
+    // }, [createAuctionThunk])
+
 
 
     function sortAuctions(auctionList) {
@@ -120,7 +156,9 @@ function LandingPageAuctionList() {
             //   auctionItemId: allItemsList[0].id,
               sellerId: demoSellerId
             }
-            await dispatch(createAuctionThunk(demoAuction));
+            dispatch(createAuctionThunk(demoAuction))
+            .then(socket.emit("newAuctionEvent", { note: "new auction refresh"}));
+            // await dispatch(createAuctionThunk(demoAuction));
         }
       }
 
@@ -459,3 +497,5 @@ function LandingPageAuctionList() {
 
 
 export default LandingPageAuctionList;
+
+export { socket };

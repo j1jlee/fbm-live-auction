@@ -7,6 +7,8 @@ import { useHistory } from "react-router-dom";
 import { createAuctionThunk } from "../../store/auction"
 import { getItemsThunk } from "../../store/item";
 
+import { socket } from "../LandingPageAuctionList";
+
 function AuctionCreateModal() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState([]);
@@ -119,6 +121,9 @@ function AuctionCreateModal() {
       }
 
       history.push("/");
+
+      socket.emit("newAuctionEvent", { note: "\n\n\nnew auction from auction create modal"})
+
       closeModal();
     }
 

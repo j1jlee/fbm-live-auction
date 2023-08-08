@@ -4,6 +4,19 @@
     /* box-sizing: border-box; */
 }
 
+.wallet-amount-label {
+    font-weight: 600;
+}
+
+.wallet-add-button {
+    background-color: var(--auction-button-purple);
+    color: white;
+    font-weight: 600;
+    text-shadow: 2px 1px 3px black;
+
+
+}
+
 .wallet-card-wrapper {
     box-sizing: border-box;
 

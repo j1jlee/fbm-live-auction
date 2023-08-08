@@ -198,7 +198,7 @@ function AddToWalletModal() {
           </div>
 
             <br></br>
-        <button type="submit">Add to Wallet</button>
+        <button type="submit" className="wallet-add-button">Add to Wallet</button>
       </form>
 
 
