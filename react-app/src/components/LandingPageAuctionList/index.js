@@ -64,7 +64,7 @@ function LandingPageAuctionList() {
     }) : console.log("");
 
     const sortedAuctionsCurrent = auctionsCurrent.length ? sortAuctions(auctionsCurrent) : [];
-    const sortedAuctionsPassed = auctionsPassed.length ? sortAuctions(auctionsPassed) : [];
+    const sortedAuctionsPassed = auctionsPassed.length ? sortAuctionsReverse(auctionsPassed) : [];
 
 
 
@@ -120,6 +120,19 @@ function LandingPageAuctionList() {
         })
 
         return tempList;
+    }
+
+    function sortAuctionsReverse(auctionList) {
+        const reverseTempList = [...auctionList];
+
+        reverseTempList.sort((a, b) => {
+            const aTime = (new Date(a.endTime)).getTime();
+            const bTime = (new Date(b.endTime)).getTime();
+
+            return bTime - aTime;
+        })
+
+        return reverseTempList;
     }
 
     const demoSubmit = async (demoSellerId) => {
@@ -427,8 +440,9 @@ function LandingPageAuctionList() {
 
 
             <div>$ {centsToDollars(auction.startingBidCents)}</div>
-            <div>{auction.auctionName}</div>
-            {/* <div>{auction.auctionDescription}</div> */}
+            {/* <div>{auction.auctionName}</div> */}
+            <div>{auction.auctionName.length > 30 ? auction.auctionName.substring(0, 25) + "..." : auction.auctionName}</div>
+
 
             </div>
 

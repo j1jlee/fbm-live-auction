@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
+import NotFoundPage from "./components/NotFoundPage";
+
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import NavSideBar from "./components/NavSideBar";
@@ -85,6 +87,11 @@ function App() {
           <Route exact path="/">
             <LandingPageAuctionList />
           </Route>
+
+          <Route path="/">
+            <NotFoundPage />
+          </Route>
+
         </Switch>
       )}
       </div>

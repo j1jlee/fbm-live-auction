@@ -19,11 +19,16 @@ function SignupFormModal() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		setErrors([]);
+
+
+
 		if (password === confirmPassword) {
 
 			const cashCents = 10000;
 
-			const data = await dispatch(signUp(username, email, password, firstname, lastname, cashCents));
+			const data = await dispatch(signUp(username.trim(), email.trim(), password.trim(), firstname.trim(), lastname.trim(), cashCents));
 			if (data) {
 				setErrors(data);
 			} else {

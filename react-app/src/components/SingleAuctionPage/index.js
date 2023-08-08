@@ -317,6 +317,13 @@ function SingleAuctionPage() {
         console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
         console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
 
+        if (!thisItem) {
+            console.log(`item doesn't exist at close time of auction ${thisAuction.id}, closing:`);
+            dispatch(closeAuctionThunk(thisAuction.id))
+            .then(alert("Item doesn't exist at close of auction! Item must have been erroneously deleted. Closing auction."))
+
+            return;
+        }
 
         dispatch(tradeItemThunk(thisItem.id,
             {
@@ -503,7 +510,7 @@ function SingleAuctionPage() {
 
     return ( thisAuction ? (
         <>
-        <h1>{thisAuction ? thisAuction.auctionName : ""}</h1>
+        <h1 className="single-auction-title">{thisAuction ? thisAuction.auctionName : ""}</h1>
 
         <div className="single-auction-grid">
 

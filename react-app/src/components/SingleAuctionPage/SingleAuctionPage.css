@@ -1,5 +1,8 @@
 
 
+.single-auction-title {
+    overflow-wrap: anywhere;
+}
 
 .single-auction-bid-button {
     background-color: #77b9d1;
@@ -96,6 +99,7 @@
 
 .single-auction-image {
     height: 15rem;
+    margin: 0.5rem 0;
 }
 .single-auction-bidfeed {
     overflow-y: scroll;

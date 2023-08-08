@@ -33,7 +33,8 @@ function ItemListPage() {
 
 
 
-    const userItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId === currentUser.id) : []
+    const userItemsList = allItemsList && currentUser ? (allItemsList.filter((item) => item.ownerId === currentUser.id)).reverse() : []
+    // const userItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId === currentUser.id) : []
 
     const otherItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId !== currentUser.id) : []
 
