@@ -23,7 +23,12 @@ import Countdown from 'react-countdown';
 
 import { imageHandle } from "../aaaMiddleware";
 
+
 import "./LandingPageAuctionList.css"
+import { io } from 'socket.io-client';
+let socket;
+
+
 // import ItemCreateModal from "../ItemCreateModal";
 // import ItemDeleteModal from "../ItemDeleteModal";
 // import ItemUpdateModal from "../ItemUpdateModal";
@@ -62,9 +67,9 @@ function LandingPageAuctionList() {
     const sortedAuctionsPassed = auctionsPassed.length ? sortAuctions(auctionsPassed) : [];
 
     useEffect(() => {
-        dispatch(getAuctionsThunk());
-        dispatch(getItemsThunk());
-        dispatch(getBidsThunk());
+        dispatch(getAuctionsThunk())
+        .then(dispatch(getItemsThunk()))
+        .then(dispatch(getBidsThunk()));
     }, [dispatch, switchBool])
 
 
@@ -311,6 +316,9 @@ function LandingPageAuctionList() {
 
            {auctionList.map((auction) => (
             <>
+            {() => console.log("\n\n\ndumb", auction)}
+
+
             <div className="landing-page-auction-node"
             >
 
@@ -318,12 +326,22 @@ function LandingPageAuctionList() {
                 history.push(`/auction/${auction.id}`)
             }}>
 
+            {/* {() => {
+                console.log("\n\n\nauction?", auction)
+            }}
+            {() => {
+                console.log("\n\n\nauction.endTime?", auction.endTime)
+            }} */}
+
             <div className= { pastTime(auction.endTime) ? "landing-page-auction-new-node-image landing-page-image-passed" : "landing-page-auction-new-node-image"}>
+
                 {/* item image? */}
-                {allItems && auction.auctionItemId ?
+                {allItems ?
                 // allItems[auction.auctionItemId].imageUrl
-                        (allItems[auction.auctionItemId].imageUrl && imageHandle(allItems[auction.auctionItemId].imageUrl))
-                : "Item Not Found"}</div>
+                        (allItems[auction.auctionItemId] ? imageHandle(allItems[auction.auctionItemId].imageUrl) : imageHandle('none'))
+
+                        : "Item Not Found"}</div>
+
 
             <div>
             {pastTime(auction.startTime) ?
@@ -401,6 +419,7 @@ function LandingPageAuctionList() {
             </div>
 
 
+
             </>
            ))
             }
@@ -420,7 +439,9 @@ function LandingPageAuctionList() {
             <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button>
         </div>
         <div className="landing-page-auction-wrapper">
-            {renderAuctionNew(sortedAuctionsCurrent)}
+            {sortedAuctionsCurrent.length ? renderAuctionNew(sortedAuctionsCurrent)
+            :
+            "No current auctions!"}
             {/* {renderAuction(sortedAuctionsCurrent)} */}
         </div>
 
@@ -430,7 +451,7 @@ function LandingPageAuctionList() {
 
         <h2>Past Auctions:</h2>
         <div className="landing-page-auction-wrapper">
-            {renderAuctionNew(sortedAuctionsPassed)}
+            {sortedAuctionsPassed.length && renderAuctionNew(sortedAuctionsPassed)}
         </div>
         </>
     )

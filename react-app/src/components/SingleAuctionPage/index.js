@@ -307,15 +307,15 @@ function SingleAuctionPage() {
 
 
 
-        // const finalSellerCashCents = finalSeller.cashCents;
-        // const finalBuyerCashCents = finalBuyer.cashCents;
-        // console.log("final seller?", finalSeller)
-        // console.log("final buyer?", finalBuyer)
-        // console.log("finalBidAMount?", finalBidAmount)
-        // console.log("finalseller cashcents?", finalSeller.cashCents)
-        // console.log("finalbuyer cashcents?", finalBuyer.cashCents)
-        // console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
-        // console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
+        const finalSellerCashCents = finalSeller.cashCents;
+        const finalBuyerCashCents = finalBuyer.cashCents;
+        console.log("final seller?", finalSeller)
+        console.log("final buyer?", finalBuyer)
+        console.log("finalBidAMount?", finalBidAmount)
+        console.log("finalseller cashcents?", finalSeller.cashCents)
+        console.log("finalbuyer cashcents?", finalBuyer.cashCents)
+        console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
+        console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
 
 
         dispatch(tradeItemThunk(thisItem.id,

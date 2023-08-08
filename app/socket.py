@@ -48,3 +48,7 @@ def handle_chat(data):
 @socketio.on("bidEvent")
 def handle_bid(data):
     emit("bidEvent", data, broadcast=True)
+
+@socketio.on("newAuctionEvent")
+def handle_new_auction(data):
+    emit("newAuctionEvent", data, broadcast=True)
