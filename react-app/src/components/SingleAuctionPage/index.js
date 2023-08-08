@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuctionsThunk, closeAuctionThunk } from "../../store/auction"
 import { getItemsThunk, tradeItemThunk } from "../../store/item"
 import { getBidsThunk, createBidThunk, deleteJunkThunk } from "../../store/bid"
+import { editWalletThunk, getUserThunk } from "../../store/session";
 
 import { useHistory } from "react-router-dom";
 
@@ -70,6 +71,8 @@ function SingleAuctionPage() {
     console.log("pre sort thisauctionbidlist?", thisAuctionBidList)
     const sortedBidList = sortBidByTime(thisAuctionBidList)
 
+    const testBidChatList = sortBidByTime([...thisAuctionBidList, ...chatLog])
+    console.log("test testBidChatList", testBidChatList)
 
     console.log("sortedBidList?", sortedBidList)
     console.log("thisItem?", thisItem)
@@ -124,14 +127,70 @@ function SingleAuctionPage() {
 
         return ( bids.map((bid) => {
             let bidderVar = "You";
+            let youOrOther = "single-auction-you"
             if (!currentUser || bid.bidderId !== currentUser.id) {
                 bidderVar = `User ${bid.bidderId}`
+                youOrOther = "single-auction-other"
             }
 
-            return (<li>{bidderVar} bid {centsToDollars(bid.bidAmountCents)}</li>)
+            return (<li className="youOrOther">{bidderVar} bid {centsToDollars(bid.bidAmountCents)}</li>)
 
         }))
     }
+
+    function bidChatMapper(entries) {
+        if (!entries) {
+            return (<li>No bids yet!</li>)
+        }
+
+        if (entries.length === 0) {
+            return (<li>No current bids!</li>);
+        }
+
+        return ( entries.map((entry) => {
+            let userLabel = "You";
+            let auctionEntryClass = "single-auction-bid-you"
+            let additionalMessage = "--You're in the lead!"
+
+            if (entry.bidderId) {
+                if (!currentUser || currentUser.id === thisAuction.sellerId) {
+                    userLabel = `User ${entry.bidderId}`;
+                    auctionEntryClass = "single-auction-bid-neutral"
+                    additionalMessage = "";
+                }
+                else if (entry.bidderId !== currentUser.id) {
+                    userLabel = `User ${entry.bidderId}`
+                    auctionEntryClass = "single-auction-bid-other"
+                    additionalMessage = "--Hurry, bid again!"
+                }
+                return (<li className={auctionEntryClass}>{userLabel} bid {centsToDollars(entry.bidAmountCents)} {additionalMessage}</li>)
+
+            } else if (entry.chatterId) {
+                if (!currentUser || entry.chatterId !== currentUser.id) {
+                    userLabel = `User ${entry.chatterId}`
+                }
+
+                return (<li>{userLabel}: {entry.chatMessage}</li>)
+            }
+        }))
+
+    }
+
+    // function chatMapper(chatlog) {
+    //     for (let chat of chatlog) {
+    //         //console.log("chatmapper?", chat)
+
+    //         let chatterVar = "You";
+    //         if (!currentUser || chat.chatterId !== currentUser.id) {
+    //             chatterVar = `User ${chat.chatterId}`;
+    //         }
+
+    //         console.log(`${chatterVar}: ${chat.chatMessage}`)
+    //     }
+    // }
+
+    //chatMapper(chatLog);
+
 
     function getHighestBid(bids) {
         if (!thisAuction) {
@@ -212,7 +271,7 @@ function SingleAuctionPage() {
 
     }
 
-    function resolveAuction(resAuctionId) {
+    async function resolveAuction(resAuctionId) {
         // const resThisAuction = allAuctions ? allAuctions[auctionId] : ""
         setAuctionOver(true);
 
@@ -242,12 +301,33 @@ function SingleAuctionPage() {
 
         //trade item and close auction
         //HERE YALL
+        const finalSeller = await dispatch(getUserThunk(thisAuction.sellerId));
+        const finalBuyer = await dispatch(getUserThunk(lastBid.bidderId));
+        const finalBidAmount = lastBid.bidAmountCents;
+
+
+
+        // const finalSellerCashCents = finalSeller.cashCents;
+        // const finalBuyerCashCents = finalBuyer.cashCents;
+        // console.log("final seller?", finalSeller)
+        // console.log("final buyer?", finalBuyer)
+        // console.log("finalBidAMount?", finalBidAmount)
+        // console.log("finalseller cashcents?", finalSeller.cashCents)
+        // console.log("finalbuyer cashcents?", finalBuyer.cashCents)
+        // console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
+        // console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
+
+
         dispatch(tradeItemThunk(thisItem.id,
             {
                 lastKnownPriceCents : lastBid.bidAmountCents,
                  ownerId: lastBid.bidderId
             }
         ))
+        .then(dispatch(editWalletThunk(finalSeller.id, (finalBidAmount))))
+        .then(dispatch(editWalletThunk(finalBuyer.id, finalBidAmount * -1)))
+        // .then(dispatch(editWalletThunk(finalSeller.id, (finalSeller.cashCents + finalBidAmount))))
+        // .then(dispatch(editWalletThunk(finalBuyer.id, (finalBuyer.cashCents - finalBidAmount))))
         .then(dispatch(closeAuctionThunk(thisAuction.id)))
         .then(
             alert(congratsOrSorry(lastBid))
@@ -262,6 +342,8 @@ function SingleAuctionPage() {
         try {
             if (currentUser.id == lastestBid.bidderId) {
                 message = `Congrats! You just won the ${thisItem.name}! It's been added to your Item list.`
+            } else if (currentUser.id = thisAuction.sellerId) {
+                message = `Your item ${thisItem.name} has just been won by User ${lastestBid.bidderId}! The bid amount $${centsToDollars(lastestBid.bidAmountCents)} has been added to your wallet!`
             } else {
                 message = `Bidding is over! Sadly, seems like User ${lastestBid.bidderId} got away with the ${thisItem.name}! It's been added to their inventory; Better luck next time!`
             }
@@ -429,11 +511,12 @@ function SingleAuctionPage() {
             <div>{thisItem ? thisItem.name : ''} </div>
             <div className="single-auction-image">
                 {/* IMAGE */}
-                {imageHandle(thisItem.imageUrl)}
+                {thisItem ? imageHandle(thisItem.imageUrl) : ''}
             </div>
             <div className="single-auction-bidfeed">
                 <ul>
-                {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>}
+                {testBidChatList ? bidChatMapper(testBidChatList) : <li>None yet!</li>}
+                {/* {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>} */}
                 </ul>
             </div>
 

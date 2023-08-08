@@ -322,9 +322,7 @@ function LandingPageAuctionList() {
                 {/* item image? */}
                 {allItems && auction.auctionItemId ?
                 // allItems[auction.auctionItemId].imageUrl
-
-                    imageHandle(allItems[auction.auctionItemId].imageUrl)
-
+                        (allItems[auction.auctionItemId].imageUrl && imageHandle(allItems[auction.auctionItemId].imageUrl))
                 : "Item Not Found"}</div>
 
             <div>

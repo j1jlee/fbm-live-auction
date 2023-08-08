@@ -74,3 +74,18 @@
 .single-auction-bidform {
 
 }
+
+.single-auction-bid-you {
+    color: #427646;
+    font-weight: 600;
+}
+
+.single-auction-bid-other {
+    color: #C54E57;
+    font-weight: 600;
+}
+
+.single-auction-bid-neutral {
+    font-weight: 600;
+    color: darkgray;
+}
