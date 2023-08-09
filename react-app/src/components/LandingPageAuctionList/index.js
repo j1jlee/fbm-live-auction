@@ -311,6 +311,8 @@ function LandingPageAuctionList() {
             console.log("noBidClose", noBidClose)
 
             setSwitchBool(!switchBool);
+
+            socket.emit("newAuctionEvent", { note: "no bid close refresh"})
             // const switchBoolAgain = await dispatch(setSwitchBool(!switchBool))
             // console.log('switchBool', switchBoolAgain)
             //TODO: update auction to open:False
@@ -342,6 +344,7 @@ function LandingPageAuctionList() {
         console.log("closer?", closer)
         //DO NOT REMOVE THIS CONSOLE LOG
 
+        
 
         // await dispatch(closeAuctionThunk(thisAuction.id))
         // await dispatch(setSwitchBool(!switchBool))
