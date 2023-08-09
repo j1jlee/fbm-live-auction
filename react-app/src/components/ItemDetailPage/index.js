@@ -18,7 +18,7 @@ function ItemDetailPage() {
     const dispatch = useDispatch();
     const { itemId } = useParams();
 
-    console.log("itemId?", itemId)
+    // console.log("itemId?", itemId)
 
     useEffect(() => {
         dispatch(getItemsThunk())
@@ -29,7 +29,7 @@ function ItemDetailPage() {
 
     const item = allItems ? allItems[itemId] : "";
 
-    console.log("Item?", item)
+    // console.log("Item?", item)
 
     // console.log("does this work? assistItemId", allItems.assistItemId)
 

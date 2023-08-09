@@ -25,24 +25,24 @@ function AboutPage() {
     const updateClick = (e) => {
         e.preventDefault();
 
-        console.log("update here");
+        // console.log("update here");
         const tempSwitch = flashText;
         setFlashText(!tempSwitch);
 
-        console.log("flashText?", flashText)
+        // console.log("flashText?", flashText)
     }
 
     const deleteHandle = (e) => {
         e.preventDefault();
 
-        console.log("delete handle");
+        // console.log("delete handle");
         dispatch(testDeleteAWSThunk(testInput))
     }
 
     const getHandle = (e) => {
         e.preventDefault();
 
-        console.log("get handle");
+        // console.log("get handle");
         dispatch(testGetAWSThunk(getInput))
     }
 

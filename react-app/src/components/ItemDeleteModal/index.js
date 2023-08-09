@@ -15,9 +15,9 @@ function ItemDeleteModal({itemId}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const deleteItem = dispatch(deleteItemThunk(itemId))
-    if (deleteItem) {
-        console.log("delete item", deleteItem)
-    }
+    // if (deleteItem) {
+    //     console.log("delete item", deleteItem)
+    // }
       history.push('/items');
       closeModal();
     }

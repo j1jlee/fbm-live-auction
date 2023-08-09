@@ -36,30 +36,30 @@ function ItemCreateModal() {
   const updateFile = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log("file?", file)
+      // console.log("file?", file)
       setImage(file)
     } else {
-      console.log("file cancelled?")
+      // console.log("file cancelled?")
       setImage(null)
     };
   };
 
 
   const clickImageUpload = async () => {
-      console.log("clicked AWS image upload tab");
+      // console.log("clicked AWS image upload tab");
       setSelectUploadBool(true);
       setSelectURLBool(false);
   }
 
   const clickImageUrl = async () => {
-      console.log("clicked URL tab");
+      // console.log("clicked URL tab");
       setSelectUploadBool(false);
       setSelectURLBool(true);
   }
 
   const handleSubmit = async (e) => {
 
-    console.log("handleSubmit, createitem")
+    // console.log("handleSubmit, createitem")
 
     e.preventDefault();
     setErrors([]);
@@ -117,7 +117,7 @@ function ItemCreateModal() {
 
     if (submitErrors.length) {
 
-        console.log("\n\n\nsubmitErrors", submitErrors)
+        // console.log("\n\n\nsubmitErrors", submitErrors)
         setErrors(submitErrors)
         return;
     }
@@ -140,7 +140,7 @@ function ItemCreateModal() {
         image: submitImage,
     };
 
-    console.log("newItem, before createItemThunk", newItem)
+    // console.log("newItem, before createItemThunk", newItem)
 
       const result = await dispatch(createItemThunk(newItem));
       // const result = await dispatch(createItemThunk(newItem));
@@ -148,7 +148,7 @@ function ItemCreateModal() {
         setErrors(result.errors)
       }
 
-      console.log("\n\n\nredirect to items?", result)
+      // console.log("\n\n\nredirect to items?", result)
       history.push(`/items/${result.id}`);
       closeModal();
     }

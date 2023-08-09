@@ -93,7 +93,7 @@ function ItemUpdateModal({update_item}) {
     //   closeModal();
     // }
     if (Object.entries(updateItem).length === 0) {
-        console.log("No changes detected");
+        // console.log("No changes detected");
         closeModal();
         return;
     }

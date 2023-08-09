@@ -28,8 +28,9 @@ function ItemListPage() {
 
     const allItemsList = allItems ? Object.values(allItems) : []
 
-    currentUser ? console.log("currentUser exists") : history.push("/");
+    // currentUser ? console.log("currentUser exists") : history.push("/");
 
+    if (!currentUser) history.push("/");
 
 
 

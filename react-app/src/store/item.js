@@ -43,7 +43,7 @@ const tradeItem = (item) => ({
 
 export const testDeleteAWSThunk = (testInput) => async (dispatch) => {
 
-    console.log("\n\n\nat testDelete thunk, testINput", testInput)
+    // console.log("\n\n\nat testDelete thunk, testINput", testInput)
     const formData = new FormData();
 
     formData.append("testInput", testInput)
@@ -62,7 +62,7 @@ export const testDeleteAWSThunk = (testInput) => async (dispatch) => {
 }
 export const testGetAWSThunk = (testInput) => async (dispatch) => {
 
-    console.log("\n\n\nat testDelete thunk, testINput", testInput)
+    // console.log("\n\n\nat testDelete thunk, testINput", testInput)
     const formData = new FormData();
 
     formData.append("testInput", testInput)
@@ -97,7 +97,7 @@ export const getItemsThunk = () => async (dispatch) => {
 
 export const createItemThunk = (item) => async (dispatch) => {
 
-    console.log("\n\n\nat createItemThunk, item", item)
+    // console.log("\n\n\nat createItemThunk, item", item)
 
 
     // const response = await fetch("/api/items/new",
@@ -139,13 +139,13 @@ export const createItemThunk = (item) => async (dispatch) => {
         return newItem;
     } else {
         const errors = await response.json();
-        console.log("\n\n\nerrors from create item thunk", errors)
+        // console.log("\n\n\nerrors from create item thunk", errors)
         return errors;
     }
 }
 
 export const tradeItemThunk = (itemId, updateObj) => async (dispatch) => {
-    console.log("at trade item thunk")
+    // console.log("at trade item thunk")
     const {lastKnownPriceCents, ownerId} = updateObj;
 
     const response = await fetch(`/api/items/${itemId}/trade`, {
@@ -157,14 +157,14 @@ export const tradeItemThunk = (itemId, updateObj) => async (dispatch) => {
     if (response.ok) {
         const tradedItem = await response.json();
 
-        console.log("traded item?", tradedItem)
+        // console.log("traded item?", tradedItem)
 
         dispatch(updateItem(tradedItem))
         // dispatch(tradeItem(tradedItem))
         return tradedItem;
     } else {
         const errors = await response.json();
-        console.log('\n\n\nerrors from update item thunk')
+        // console.log('\n\n\nerrors from update item thunk')
         return errors;
     }
 }
@@ -173,8 +173,8 @@ export const tradeItemThunk = (itemId, updateObj) => async (dispatch) => {
 export const updateItemThunk = (item, oldItemId) => async (dispatch) => {
     //item here is an object containing JUST the attributes to change
     //oldItemId refers to the item we're updating
-    console.log("at update item thunk, item", item)
-    console.log("thunk, item.id??", oldItemId)
+    // console.log("at update item thunk, item", item)
+    // console.log("thunk, item.id??", oldItemId)
 
     const response = await fetch(`/api/items/${oldItemId}`, {
         method: "PUT",
@@ -189,13 +189,13 @@ export const updateItemThunk = (item, oldItemId) => async (dispatch) => {
     if (response.ok) {
         const editedItem = await response.json();
 
-        console.log("edited item?", editedItem)
+        // console.log("edited item?", editedItem)
 
         dispatch(updateItem(editedItem))
         return editedItem;
     } else {
         const errors = await response.json();
-        console.log('\n\n\nerrors from update item thunk')
+        // console.log('\n\n\nerrors from update item thunk')
         return errors;
     }
 }
@@ -242,7 +242,7 @@ export default function itemReducer(state = initialState, action) {
         case GET_ITEMS:
             const newItems = {}
 
-            console.log("action?", action)
+            // console.log("action?", action)
             if (action.payload.length) {
                 action.payload.forEach((item) => {
                     newItems[item.id] = item
@@ -252,7 +252,7 @@ export default function itemReducer(state = initialState, action) {
         case CREATE_ITEM:
             const resState = {...state};
 
-            console.log("item?", action.payload);
+            // console.log("item?", action.payload);
 
             resState[action.payload.id] = action.payload;
             return resState;
@@ -260,13 +260,13 @@ export default function itemReducer(state = initialState, action) {
             const delState = {...state};
             const deleteItemId = action.payload;
 
-            console.log("delete item id", deleteItemId)
+            // console.log("delete item id", deleteItemId)
 
             try {
                 delete delState[deleteItemId];
-                console.log("item successfully deleted; store")
+                // console.log("item successfully deleted; store")
             } catch (e) {
-                console.log("unable to delete item; store");
+                // console.log("unable to delete item; store");
             }
             return delState;
 
@@ -274,13 +274,13 @@ export default function itemReducer(state = initialState, action) {
             const updateState = {...state};
             const updateItem = action.payload;
 
-            console.log(`store, updating item ${updateItem.name}`)
+            // console.log(`store, updating item ${updateItem.name}`)
 
             try {
                 updateState[updateItem.id] = updateItem;
-                console.log(`item ${updateItem.name} successfully updated; store`)
+                // console.log(`item ${updateItem.name} successfully updated; store`)
             } catch {
-                console.log("Unable to update item; store")
+                // console.log("Unable to update item; store")
             }
             return updateState;
 

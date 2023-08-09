@@ -48,7 +48,7 @@ export const getAuctionsThunk = () => async (dispatch) => {
 
 export const createAuctionThunk = (auction) => async (dispatch) => {
 
-    console.log("\n\n\nAt create auction thunk")
+    // console.log("\n\n\nAt create auction thunk")
 
 
     const response = await fetch("/api/auctions/new",
@@ -65,7 +65,7 @@ export const createAuctionThunk = (auction) => async (dispatch) => {
         return newAuction;
     } else {
         const errors = await response.json();
-        console.log("\n\n\nerrors from create auction thunk", errors)
+        // console.log("\n\n\nerrors from create auction thunk", errors)
         return errors;
     }
 }
@@ -73,8 +73,8 @@ export const createAuctionThunk = (auction) => async (dispatch) => {
 export const updateAuctionThunk = (auction, oldAuctionId) => async (dispatch) => {
     //auction here is an object containing JUST the attributes to change
     //oldAuctionId refers to the auction we're updating
-    console.log("at update auction thunk, auction", auction)
-    console.log("thunk, auction.id??", oldAuctionId)
+    // console.log("at update auction thunk, auction", auction)
+    // console.log("thunk, auction.id??", oldAuctionId)
 
     const response = await fetch(`/api/auctions/${oldAuctionId}`, {
         method: "PUT",
@@ -87,13 +87,13 @@ export const updateAuctionThunk = (auction, oldAuctionId) => async (dispatch) =>
     if (response.ok) {
         const editedAuction = await response.json();
 
-        console.log("edited auction?", editedAuction)
+        // console.log("edited auction?", editedAuction)
 
         dispatch(updateAuction(editedAuction))
         return editedAuction;
     } else {
         const errors = await response.json();
-        console.log('\n\n\nerrors from update auction thunk')
+        // console.log('\n\n\nerrors from update auction thunk')
         return errors;
     }
 }
@@ -104,7 +104,7 @@ export const closeAuctionThunk = (auctionId) => async (dispatch) => {
 
     if (response.ok) {
         dispatch(closeAuction(auctionId));
-        console.log(`Auction ${auctionId} successfully closed?`)
+        // console.log(`Auction ${auctionId} successfully closed?`)
         return {"message": `successfully closed auction ${auctionId}`}
     }
     else {
@@ -135,7 +135,7 @@ export default function auctionReducer(state = initialState, action) {
         case GET_AUCTIONS:
             const newAuctions = {}
 
-            console.log("action?", action)
+            // console.log("action?", action)
             if (action.payload.length) {
                 action.payload.forEach((auction) => {
                     newAuctions[auction.id] = auction
@@ -146,7 +146,7 @@ export default function auctionReducer(state = initialState, action) {
         case CREATE_AUCTION:
             const resState = {...state};
 
-            console.log("auction?", action.payload);
+            // console.log("auction?", action.payload);
 
             resState[action.payload.id] = action.payload;
             return resState;
@@ -155,7 +155,7 @@ export default function auctionReducer(state = initialState, action) {
             const closeState = {...state};
             const closeAuctionId = action.payload;
 
-            console.log("auction reducer, close auction Id", closeAuctionId)
+            // console.log("auction reducer, close auction Id", closeAuctionId)
 
             try {
                 const closeAuction = closeState[closeAuctionId];
@@ -169,11 +169,11 @@ export default function auctionReducer(state = initialState, action) {
             const delState = {...state};
             const deleteAuctionId = action.payload;
 
-            console.log("delete auction id", deleteAuctionId)
+            // console.log("delete auction id", deleteAuctionId)
 
             try {
                 delete delState[deleteAuctionId];
-                console.log("auction successfully deleted; store")
+                // console.log("auction successfully deleted; store")
             } catch (e) {
                 console.log("unable to delete auction; store", e);
             }
@@ -183,13 +183,13 @@ export default function auctionReducer(state = initialState, action) {
             const updateState = {...state};
             const updateAuction = action.payload;
 
-            console.log(`store, updating auction ${updateAuction.name}`)
+            // console.log(`store, updating auction ${updateAuction.name}`)
 
             try {
                 updateState[updateAuction.id] = updateAuction;
-                console.log(`auction ${updateAuction.name} successfully updated; store`)
+                // console.log(`auction ${updateAuction.name} successfully updated; store`)
             } catch {
-                console.log("Unable to update auction; store")
+                // console.log("Unable to update auction; store")
             }
             return updateState;
 

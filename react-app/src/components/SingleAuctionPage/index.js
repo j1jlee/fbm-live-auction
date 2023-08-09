@@ -309,16 +309,16 @@ function SingleAuctionPage() {
 
         const finalSellerCashCents = finalSeller.cashCents;
         const finalBuyerCashCents = finalBuyer.cashCents;
-        console.log("final seller?", finalSeller)
-        console.log("final buyer?", finalBuyer)
-        console.log("finalBidAMount?", finalBidAmount)
-        console.log("finalseller cashcents?", finalSeller.cashCents)
-        console.log("finalbuyer cashcents?", finalBuyer.cashCents)
-        console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
-        console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
+        // console.log("final seller?", finalSeller)
+        // console.log("final buyer?", finalBuyer)
+        // console.log("finalBidAMount?", finalBidAmount)
+        // console.log("finalseller cashcents?", finalSeller.cashCents)
+        // console.log("finalbuyer cashcents?", finalBuyer.cashCents)
+        // console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
+        // console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
 
         if (!thisItem) {
-            console.log(`item doesn't exist at close time of auction ${thisAuction.id}, closing:`);
+            // console.log(`item doesn't exist at close time of auction ${thisAuction.id}, closing:`);
             dispatch(closeAuctionThunk(thisAuction.id))
             .then(alert("Item doesn't exist at close of auction! Item must have been erroneously deleted. Closing auction."))
 
@@ -341,7 +341,7 @@ function SingleAuctionPage() {
             // console.log(`Traded item ${thisItem.id} ${thisItem.name} to user ${lastBid.bidderId}`)
             )
 
-        console.log("\n\n\nthis auction is open, with timer over! closing:")
+        // console.log("\n\n\nthis auction is open, with timer over! closing:")
     }
 
     function congratsOrSorry(lastestBid) {
@@ -369,11 +369,11 @@ function SingleAuctionPage() {
         socket = io();
         //receiving
         socket.on("bidEvent", (bid) => {
-            console.log("\n\n\nBID?", bid)
+            // console.log("\n\n\nBID?", bid)
 
             if (bid.socketAuctionId == auctionId) {
                 //trigger refresh?
-                console.log("socketAuctionId matches auctionId, refresh")
+                // console.log("socketAuctionId matches auctionId, refresh")
 
                 // const tempBool = boolSwitch;
                 setBoolSwitch(!boolSwitch)
@@ -392,11 +392,11 @@ function SingleAuctionPage() {
         })
 
         socket.on("chatEvent", (chat) => {
-            console.log("\n\n\nCHAT?", chat)
+            // console.log("\n\n\nCHAT?", chat)
 
 
             if (chat.socketAuctionId == auctionId) {
-                console.log("socketAuctionId matches auctionId, adding to current chatlog")
+                // console.log("socketAuctionId matches auctionId, adding to current chatlog")
 
                 // let currentChatLog = [...chatLog]
                 // currentChatLog.push(chat)
@@ -439,9 +439,9 @@ function SingleAuctionPage() {
         setErrors({});
         const tempErrors = {};
 
-        console.log("\n\n\nstarting sendBid, tempErrors should be empty", tempErrors)
+        // console.log("\n\n\nstarting sendBid, tempErrors should be empty", tempErrors)
 
-        console.log("bidInput before?", bidInput)
+        // console.log("bidInput before?", bidInput)
 
         const tempBidInput = bidInput * 100;
 
@@ -477,7 +477,7 @@ function SingleAuctionPage() {
         const sendBid = newBid();
 
         dispatch(createBidThunk(sendBid))
-        .then(console.log("bid creating?"))
+        // .then(console.log("bid creating?"))
         .then(socket.emit("bidEvent", { socketAuctionId: thisAuction.id, bidderId: currentUser.id, bidAmount: parseInt(bidInput * 100), localHighestBid: tempBidInput})
         )
 

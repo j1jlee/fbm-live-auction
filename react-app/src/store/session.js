@@ -100,7 +100,7 @@ export const signUp = (username, email, password, firstname, lastname, cashCents
 export const getUserThunk = (userId) => async (dispatch) => {
 	const response = await fetch(`/api/users/${userId}`);
 
-	console.log("\n\n\ngetUserThunk response?", response)
+	// console.log("\n\n\ngetUserThunk response?", response)
 
 	if (response.ok) {
 		const data = await response.json();

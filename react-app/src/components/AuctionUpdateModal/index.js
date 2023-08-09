@@ -135,7 +135,7 @@ function AuctionUpdateModal({update_auction}) {
 
 
     if (Object.entries(updateAuction).length === 0) {
-        console.log("No changes detected");
+        // console.log("No changes detected");
         closeModal();
         return;
     }

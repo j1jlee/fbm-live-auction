@@ -76,7 +76,7 @@ function LandingPageAuctionList() {
         //create websocket DEFINE what EVENT does?
         socket.on("newAuctionEvent", (newAuction) => {
             //setMessages(messages => [...messages, chat])
-            console.log("new auction, refresh all", newAuction);
+            // console.log("new auction, refresh all", newAuction);
 
             dispatch(getAuctionsThunk())
             .then(setSwitchBool(!switchBool));
@@ -112,7 +112,7 @@ function LandingPageAuctionList() {
         ${Math.floor(Math.random() * 1000)}
         ${['a', 'b', 'c', 'd', 'e'][Math.floor(Math.random() * 5)]}`;
 
-        console.log(`\n\n\nresText for auction ${auctionId}, ${resText}`);
+        // console.log(`\n\n\nresText for auction ${auctionId}, ${resText}`);
         return resText;
     }
 
@@ -161,10 +161,10 @@ function LandingPageAuctionList() {
 
         const createDemoItem = await dispatch(createItemThunk(demoItem));
 
-        console.log("createDemoItem?", createDemoItem)
+        // console.log("createDemoItem?", createDemoItem)
 
         if (createDemoItem) {
-            console.log("trying to create demo auction")
+            // console.log("trying to create demo auction")
 
             const demoAuction = {
               auctionName: "Demo Auction",
@@ -186,7 +186,7 @@ function LandingPageAuctionList() {
 
     // currentUser ? console.log("currentUser exists") : history.push("/");
 
-    console.log("all items at auction?", allItems)
+    // console.log("all items at auction?", allItems)
 
     const testTime = "Thu, 20 Jul 2023 16:30:00 GMT"
     const testDateTime = new Date(testTime)
@@ -283,12 +283,12 @@ function LandingPageAuctionList() {
         const currentUser = thisSession.user;
 
         if (!currentUser) {
-            console.log("currentUserIsSeller, currentUser doesn't exist/not logged in")
+            // console.log("currentUserIsSeller, currentUser doesn't exist/not logged in")
             return true;
         }
 
         if (currentUser.id != sellerAuction.sellerId) {
-            console.log(`currentUserIsSeller, not seller, user id ${currentUser.id}, auction sellerId ${sellerAuction.sellerId}`);
+            // console.log(`currentUserIsSeller, not seller, user id ${currentUser.id}, auction sellerId ${sellerAuction.sellerId}`);
             return true;
         }
         return false;
@@ -301,7 +301,7 @@ function LandingPageAuctionList() {
         const thisAuction = allAuctions[resAuctionId];
 
         if (thisAuction.auctionOpen == false) {
-            console.log(`Auction ${resAuctionId} is already closed! Skipping;`)
+            // console.log(`Auction ${resAuctionId} is already closed! Skipping;`)
             return;
         }
 
@@ -311,11 +311,11 @@ function LandingPageAuctionList() {
 
 
         if (!thisAuctionBidList.length) {
-            console.log(`Closing: No bids for ${resAuctionId}, setting auction to "Open: false`)
+            // console.log(`Closing: No bids for ${resAuctionId}, setting auction to "Open: false`)
             const noBidClose = await dispatch(closeAuctionThunk(resAuctionId))
             // const noBidClose = await dispatch(closeAuctionThunk(thisAuction.id))
 
-            console.log("noBidClose", noBidClose)
+            // console.log("noBidClose", noBidClose)
 
             setSwitchBool(!switchBool);
 

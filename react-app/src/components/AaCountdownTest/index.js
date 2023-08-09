@@ -2,7 +2,7 @@
 import Countdown from 'react-countdown';
 
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { io } from 'socket.io-client';
 let socket;
@@ -34,7 +34,7 @@ function AaCountdownTest() {
         //create websocket DEFINE what EVENT does?
         socket.on("chatEvent", (chat) => {
             //setMessages(messages => [...messages, chat])
-            console.log("CHAT 1?", chat)
+            // console.log("CHAT 1?", chat)
             if (chat.chatNum) {
                 if (chat.chatNum == 1) {
                     setMessages(messages => [...messages, chat])

@@ -48,7 +48,7 @@ export const getBidsThunk = () => async (dispatch) => {
 
 export const createBidThunk = (bid) => async (dispatch) => {
 
-    console.log("At create bid thunk, what is bid", bid)
+    // console.log("At create bid thunk, what is bid", bid)
 
     const response = await fetch("/api/bids/new",
     {
@@ -63,7 +63,7 @@ export const createBidThunk = (bid) => async (dispatch) => {
         return newBid;
     } else {
         const errors = await response.json();
-        console.log("\n\n\nerrors from create bid thunk", errors)
+        // console.log("\n\n\nerrors from create bid thunk", errors)
         return errors;
     }
 }
@@ -145,7 +145,7 @@ export default function bidReducer(state = initialState, action) {
         case GET_BIDS:
             const newBids = {}
 
-            console.log("bid action?", action)
+            // console.log("bid action?", action)
             if (action.payload.length) {
                 action.payload.forEach((bid) => {
                     newBids[bid.id] = bid
@@ -155,7 +155,7 @@ export default function bidReducer(state = initialState, action) {
         case CREATE_BID:
             const resState = {...state};
 
-            console.log("\n\nreducer: bid?", action.payload);
+            // console.log("\n\nreducer: bid?", action.payload);
 
             resState[action.payload.id] = action.payload;
             return resState;
@@ -164,26 +164,26 @@ export default function bidReducer(state = initialState, action) {
             const delState = {...state};
             const deleteBidId = action.payload;
 
-            console.log("delete bid id", deleteBidId)
+            // console.log("delete bid id", deleteBidId)
 
             try {
                 delete delState[deleteBidId];
-                console.log("bid successfully deleted; store")
+                // console.log("bid successfully deleted; store")
             } catch (e) {
-                console.log("unable to delete bid; store");
+                // console.log("unable to delete bid; store");
             }
             return delState;
 
         case DELETE_JUNK:
             const junkState = {...state};
 
-            console.log("at junk reducer, what is junkState", junkState)
+            // console.log("at junk reducer, what is junkState", junkState)
 
             for (let key in junkState) {
                 const junkBid = junkState[key];
 
                 if (junkBid.auctionId == -1) {
-                    console.log(`Deleting junk at ${junkBid.id}`)
+                    // console.log(`Deleting junk at ${junkBid.id}`)
                     delete junkState[key];
                 }
             }
