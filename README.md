@@ -3,7 +3,7 @@ Marketplace Live Auction is a soft clone of FaceBook MarketPlace, and live aucti
 
 The idea is to bring the excitement of live sales and items to a marketplace of used goods and antiquesitemndex
 
-## Tecitemes Used
+## Technologies Used
 Javascript
 Python
 Flask
@@ -64,6 +64,7 @@ Github
 
 ## Items
 - Users can create an Item
+- Users can specify an image URL, or upload images from their computer to showcase the item
 - Users can read/view other users' items
 - Users can update their items
 - Users can delete teir items
@@ -77,11 +78,9 @@ Github
 ## Bids
 - Users can Bid on Auctions
 
-## Future Features
-
-### User Wallet
-
-Users can refill their wallets to fund bids/auctions
+## User Wallet
+- Users can refill their wallets to fund bids/auctions
+- With enough money in their account wallets, users can bid in auctions
 
 
 ## Contact
