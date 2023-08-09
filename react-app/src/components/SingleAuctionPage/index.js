@@ -547,16 +547,27 @@ function SingleAuctionPage() {
             {thisAuction ?
                 (auctionStarted ?
                     <Countdown
+                        key={`${thisAuction.id}active`}
                         date={thisAuction.endTime}
                         // onComplete={resolveAuction(auctionId)}>
                         onComplete={thisAuction && (() => resolveAuction(thisAuction.id))}>
-                            <p>Auction Over!</p>
+                            <p>Expired at: {new Intl.DateTimeFormat('en-US',
+                                {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                }
+                            ).format(new Date(thisAuction.endTime))}</p>
+                            {/* <p>Auction Over!</p> */}
                     </Countdown>
                     :
                     (
                     <>
                     Auction Starting in:_
                     <Countdown
+                        key={`${thisAuction.id}prior`}
                         date={thisAuction.startTime}
                         // onComplete={resolveAuction(auctionId)}>
                         onComplete={thisAuction && (() => setAuctionStarted(true))}>

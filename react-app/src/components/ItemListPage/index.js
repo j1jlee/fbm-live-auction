@@ -54,6 +54,7 @@ function ItemListPage() {
     return (
         <>
         <h2 className="item-list-inventory">Inventory</h2>
+        <p className="item-list-title-description">Items you've uploaded, or won in auctions go here!</p>
 
         {/* <div> */}
         <div className={userItemsList.length ? "item-list-container" : "item-list-container-empty"}>

@@ -10,6 +10,10 @@
     display: flex;
 }
 
+.item-list-buttons button:hover {
+    cursor: pointer;
+}
+
 .item-list-buttons button {
     width: 100%;
     height: 2rem;
@@ -97,13 +101,30 @@
 .item-list-node-hover:hover {
     background-color: lightgray;
     border-radius: 5px;
+
+    cursor: pointer;
 }
 
 .item-list-price {
     color: darkgray;
 }
 
+.item-list-title-description {
+    margin: 0.5rem 0
+}
 
 .item-list-ul {
     list-style: none;
+}
+
+@media screen and (max-width: 1195px) {
+    .item-list-container {
+        grid-template-columns: repeat(auto-fill, 12rem);
+        grid-gap: 0.3rem;
+    }
+
+    .item-list-node {
+        padding: 0.3rem;
+        height: 20rem;
+    }
 }

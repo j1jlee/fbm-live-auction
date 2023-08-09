@@ -107,7 +107,14 @@ function LandingPageAuctionList() {
     //     socket.emit("newAuctionEvent", { note: "create auction thunk auction refresh"})
     // }, [createAuctionThunk])
 
+    function randomKeyText(auctionId) {
+        const resText = `${auctionId}
+        ${Math.floor(Math.random() * 1000)}
+        ${['a', 'b', 'c', 'd', 'e'][Math.floor(Math.random() * 5)]}`;
 
+        console.log(`\n\n\nresText for auction ${auctionId}, ${resText}`);
+        return resText;
+    }
 
     function sortAuctions(auctionList) {
         const tempList = [...auctionList];
@@ -344,7 +351,7 @@ function LandingPageAuctionList() {
         console.log("closer?", closer)
         //DO NOT REMOVE THIS CONSOLE LOG
 
-        
+
 
         // await dispatch(closeAuctionThunk(thisAuction.id))
         // await dispatch(setSwitchBool(!switchBool))
@@ -402,6 +409,8 @@ function LandingPageAuctionList() {
                 <>
                 <div>
                 <Countdown
+                    //add key to prevent countdown stop issue?
+                    key={randomKeyText(auction.id)}
                     date={auction.endTime}
                     onComplete={() => {
                         resolveAuction(auction.id)
@@ -422,11 +431,13 @@ function LandingPageAuctionList() {
                 <p className="landing-page-auction-node-start">Starting at: {timeUTCtoLocal(auction.startTime)}</p>
                 <div className="landing-page-hidden">
                     <Countdown
+                            key={randomKeyText(auction.id)}
                             date={auction.startTime}
                             onComplete={() => {setSwitchBool(!switchBool)}}
                     >
                          <div className="landing-page-inner-show">
                          <Countdown
+                            key={randomKeyText(auction.id)}
                             date={auction.endTime}
                             onComplete={() => {setSwitchBool(!switchBool)}}>
                              <p>Auction Expired</p>
@@ -483,6 +494,84 @@ function LandingPageAuctionList() {
             </>
         )
     }
+    function renderAuctionPassedNew(auctionList) {
+        return (
+            <>
+           <div className="landing-page-auction-grid">
+
+           {auctionList.map((auction) => (
+            <>
+            <div className="landing-page-auction-node">
+
+            <div className="landing-page-auction-node-link" onClick={() => {
+                history.push(`/auction/${auction.id}`)
+            }}>
+
+            {/* {() => {
+                console.log("\n\n\nauction?", auction)
+            }}
+            {() => {
+                console.log("\n\n\nauction.endTime?", auction.endTime)
+            }} */}
+
+            <div className={"landing-page-auction-new-node-image landing-page-image-passed"}>
+
+                {/* item image? */}
+                {allItems ?
+                // allItems[auction.auctionItemId].imageUrl
+                        (allItems[auction.auctionItemId] ? imageHandle(allItems[auction.auctionItemId].imageUrl) : imageHandle('none'))
+
+                        : "Item Not Found"}</div>
+            <div>
+                <p className="landing-page-expired-time">Expired at: {new Intl.DateTimeFormat('en-US',
+                {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                }
+                ).format(new Date(auction.endTime))}</p>
+                {/* time utc to local??? */}
+                {/* <p>Expired at: {new Intl.DateTimeFormat('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                }).format(auction.endTime)}</p> */}
+            </div>
+
+
+            <div>$ {centsToDollars(auction.startingBidCents)}</div>
+            {/* <div>{auction.auctionName}</div> */}
+            <div>{auction.auctionName.length > 30 ? auction.auctionName.substring(0, 25) + "..." : auction.auctionName}</div>
+
+
+            </div>
+
+            <span className="landing-page-buttons">
+
+            <span className={currentUserIsNotSeller(auction) ? "update-disabled" : "landing-page-delete-button-solo"}>
+            <OpenModalButton
+            buttonText="Delete Auction"
+            modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
+            </span>
+
+            </span>
+
+            </div>
+
+
+
+            </>
+           ))
+            }
+
+            </div>
+            </>
+        )
+    }
 
 
     return (
@@ -490,6 +579,9 @@ function LandingPageAuctionList() {
         {/* <h1>Auction List Page here!</h1> */}
 
         <h2>Today's picks</h2>
+        <p className="landing-page-title-description">
+            Select an auction to participate in, bid and win!
+        </p>
         <div>
             <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button>
         </div>
@@ -506,7 +598,7 @@ function LandingPageAuctionList() {
 
         <h2>Past Auctions:</h2>
         <div className="landing-page-auction-wrapper">
-            {sortedAuctionsPassed.length && renderAuctionNew(sortedAuctionsPassed)}
+            {sortedAuctionsPassed.length && renderAuctionPassedNew(sortedAuctionsPassed)}
         </div>
         </>
     )
