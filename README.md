@@ -22,6 +22,10 @@ Github
 ## Auction / Bids
 <img src="https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/readme-auction.PNG" alt="https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/readme-auction.PNG" />
 
+## Auction / Bids / Live Chat
+![image](https://github.com/j1jlee/fbm-live-auction/assets/42744694/9599c1a8-ef7f-41dc-93b1-d1712e085c54)
+
+
 ## Getting started
 1. Clone this repository (only this branch)
 
