@@ -67,18 +67,18 @@ function SingleAuctionPage() {
     const [auctionOver, setAuctionOver] = useState(false);
     const [errors, setErrors] = useState({})
 
-    console.log("BidLIst?", bidList)
-    console.log("pre sort thisauctionbidlist?", thisAuctionBidList)
+    // console.log("BidLIst?", bidList)
+    // console.log("pre sort thisauctionbidlist?", thisAuctionBidList)
     const sortedBidList = sortBidByTime(thisAuctionBidList)
 
     const testBidChatList = sortBidByTime([...thisAuctionBidList, ...chatLog])
-    console.log("test testBidChatList", testBidChatList)
+    // console.log("test testBidChatList", testBidChatList)
 
-    console.log("sortedBidList?", sortedBidList)
-    console.log("thisItem?", thisItem)
-    console.log("thisAuction?", thisAuction)
+    // console.log("sortedBidList?", sortedBidList)
+    // console.log("thisItem?", thisItem)
+    // console.log("thisAuction?", thisAuction)
 
-    console.log("chatLog?", chatLog)
+    // console.log("chatLog?", chatLog)
     // const history = useHistory();
     // if (!currentUser) {
     //     history.push("/");
@@ -116,27 +116,27 @@ function SingleAuctionPage() {
         return sortedTempBidList;
     }
 
-    function bidLogMapper(bids) {
-        if (!bids) {
-            return (<li>No bids yet!</li>)
-        }
+    // function bidLogMapper(bids) {
+    //     if (!bids) {
+    //         return (<li>No bids yet!</li>)
+    //     }
 
-        if (bids.length === 0) {
-            return (<li>No current bids!</li>);
-        }
+    //     if (bids.length === 0) {
+    //         return (<li>No current bids!</li>);
+    //     }
 
-        return ( bids.map((bid) => {
-            let bidderVar = "You";
-            let youOrOther = "single-auction-you"
-            if (!currentUser || bid.bidderId !== currentUser.id) {
-                bidderVar = `User ${bid.bidderId}`
-                youOrOther = "single-auction-other"
-            }
+    //     return ( bids.map((bid) => {
+    //         let bidderVar = "You";
+    //         let youOrOther = "single-auction-you"
+    //         if (!currentUser || bid.bidderId !== currentUser.id) {
+    //             bidderVar = `User ${bid.bidderId}`
+    //             youOrOther = "single-auction-other"
+    //         }
 
-            return (<li className="youOrOther">{bidderVar} bid {centsToDollars(bid.bidAmountCents)}</li>)
+    //         return (<li className="youOrOther">{bidderVar} bid {centsToDollars(bid.bidAmountCents)}</li>)
 
-        }))
-    }
+    //     }))
+    // }
 
     function bidChatMapper(entries) {
         if (!entries) {
@@ -151,6 +151,10 @@ function SingleAuctionPage() {
             let userLabel = "You";
             let auctionEntryClass = "single-auction-bid-you"
             let additionalMessage = "--You're in the lead!"
+
+            if (entry.chatterId === 0) {
+                return (<li className="single-auction-gray-text">Please login to participate in chat!</li>)
+            }
 
             if (entry.bidderId) {
                 if (!currentUser || currentUser.id === thisAuction.sellerId) {
@@ -168,6 +172,9 @@ function SingleAuctionPage() {
             } else if (entry.chatterId) {
                 if (!currentUser || entry.chatterId !== currentUser.id) {
                     userLabel = `User ${entry.chatterId}`
+                }
+                if (entry.chatterId == thisAuction.sellerId) {
+                    userLabel = userLabel + " (owner)";
                 }
 
                 return (<li>{userLabel}: {entry.chatMessage}</li>)
@@ -263,13 +270,13 @@ function SingleAuctionPage() {
         return ""
     }
 
-    function countDownToStart() {
-        const nowDateTime = new Date();
+    // function countDownToStart() {
+    //     const nowDateTime = new Date();
 
-        const startDateTime = Date(thisAuction.startTime);
+    //     const startDateTime = Date(thisAuction.startTime);
 
 
-    }
+    // }
 
     async function resolveAuction(resAuctionId) {
         // const resThisAuction = allAuctions ? allAuctions[auctionId] : ""
@@ -489,6 +496,19 @@ function SingleAuctionPage() {
     const sendChat = (e) => {
         e.preventDefault();
 
+        if (!currentUser) {
+            setChatLog((chatLog) => {
+                let currentChatLog = [...chatLog]
+                currentChatLog.push({ socketAuctionId: thisAuction.id, chatterId: 0, chatMessage:'Invalid message', timeOfBid:(new Date()).toString() })
+
+                //console.log("pre setChatLog, currentChatLog", currentChatLog)
+                return currentChatLog;
+            });
+            setChatMessage('');
+            return;
+        }
+
+
         if (chatMessage.length) {
             setChatMessage('');
 
@@ -499,7 +519,7 @@ function SingleAuctionPage() {
         return;
     }
 
-
+    // console.log("auctionover?", auctionOver)
     // console.log("all auctions?", allAuctions)
     // console.log("this auction?", thisAuction)
     // console.log("this item?", thisItem)
@@ -527,7 +547,7 @@ function SingleAuctionPage() {
                 </ul>
             </div>
 
-            <div className="single-auction-chat-wrapper">
+            <div className={`single-auction-chat-wrapper` + (auctionOver == true ? " single-auction-display-none" : "")}>
             <form onSubmit={sendChat} className="single-auction-chat-form">
                 <input
                     className="single-auction-chat-input"

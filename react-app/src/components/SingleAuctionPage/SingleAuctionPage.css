@@ -53,6 +53,11 @@
     color: darkgray;
 }
 
+.single-auction-display-none {
+    display: none;
+}
+
+
 .single-auction-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -95,6 +100,9 @@
     align-items: center;
 }
 
+.single-auction-gray-text {
+    color: darkgray;
+}
 
 
 .single-auction-image {
