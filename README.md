@@ -19,11 +19,11 @@ Github
 ## Items
 <img src="https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/readme-items.PNG" alt="https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/readme-items.PNG" />
 
-## Auction / Bids
-<img src="https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/readme-auction.PNG" alt="https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/readme-auction.PNG" />
-
 ## Auction / Bids / Live Chat
 ![image](https://github.com/j1jlee/fbm-live-auction/assets/42744694/9599c1a8-ef7f-41dc-93b1-d1712e085c54)
+
+## Wallet
+![image](https://github.com/j1jlee/fbm-live-auction/assets/42744694/74dc8e16-03a9-49d3-9d5a-fe107103d74e)
 
 
 ## Getting started
