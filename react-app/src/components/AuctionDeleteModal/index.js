@@ -4,6 +4,8 @@ import { useModal } from "../../context/Modal";
 
 import { deleteAuctionThunk } from "../../store/auction"
 
+import { socket } from "../LandingPageAuctionList";
+
 function AuctionDeleteModal({auctionId}) {
   const dispatch = useDispatch();
 
@@ -15,6 +17,8 @@ function AuctionDeleteModal({auctionId}) {
     if (deleteAuction) {
         console.log("delete failed?", deleteAuction)
     }
+
+      socket.emit("newAuctionEvent", { note: "new auction refresh"})
       closeModal();
     }
 

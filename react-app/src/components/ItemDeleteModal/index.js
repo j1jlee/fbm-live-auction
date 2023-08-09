@@ -2,11 +2,13 @@
 import { useDispatch } from "react-redux";
 // import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { useHistory } from "react-router-dom";
 
 import { deleteItemThunk } from "../../store/item"
 
 function ItemDeleteModal({itemId}) {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { closeModal } = useModal();
 
@@ -16,6 +18,7 @@ function ItemDeleteModal({itemId}) {
     if (deleteItem) {
         console.log("delete item", deleteItem)
     }
+      history.push('/items');
       closeModal();
     }
 

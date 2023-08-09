@@ -7,6 +7,10 @@ import { getItemsThunk } from "../../store/item";
 
 import { centsToDollars, imageHandle } from "../aaaMiddleware";
 
+import ItemDeleteModal from "../ItemDeleteModal";
+import ItemUpdateModal from "../ItemUpdateModal";
+import OpenModalButton from "../OpenModalButton";
+
 import "./ItemDetailPage.css";
 
 function ItemDetailPage() {
@@ -21,6 +25,7 @@ function ItemDetailPage() {
     }, [dispatch])
 
     const allItems = useSelector((state) => state.items);
+    const currentUser = useSelector(state => state.session.user);
 
     const item = allItems ? allItems[itemId] : "";
 
@@ -56,6 +61,28 @@ function ItemDetailPage() {
        <li key={"owner" + item.ownerId}>Current Owner Id: </li>
        <li> {item.ownerId}</li>
        </ul>
+
+       <br></br>
+       {currentUser && currentUser.id == item.ownerId ?
+
+       <span className="item-detail-buttons">
+
+               <OpenModalButton
+                    className="item-list-update-button"
+                    buttonText="Update Item"
+                    modalComponent={<ItemUpdateModal update_item={item}/>}
+                    />
+
+               <OpenModalButton
+                    className="item-list-delete-button"
+                    buttonText="Delete Item"
+                    modalComponent={<ItemDeleteModal itemId={item.id}/>}
+                />
+        </span>
+            :
+        ""
+        }
+
        {/* <OpenModalButton
             buttonText="Update Item"
             modalComponent={<ItemUpdateModal update_item={item}/>}

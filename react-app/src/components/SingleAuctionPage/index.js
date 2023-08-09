@@ -349,7 +349,7 @@ function SingleAuctionPage() {
         try {
             if (currentUser.id == lastestBid.bidderId) {
                 message = `Congrats! You just won the ${thisItem.name}! It's been added to your Item list.`
-            } else if (currentUser.id = thisAuction.sellerId) {
+            } else if (currentUser.id == thisAuction.sellerId) {
                 message = `Your item ${thisItem.name} has just been won by User ${lastestBid.bidderId}! The bid amount $${centsToDollars(lastestBid.bidAmountCents)} has been added to your wallet!`
             } else {
                 message = `Bidding is over! Sadly, seems like User ${lastestBid.bidderId} got away with the ${thisItem.name}! It's been added to their inventory; Better luck next time!`
@@ -515,7 +515,7 @@ function SingleAuctionPage() {
         <div className="single-auction-grid">
 
         <div className="single-auction-left">
-            <div>{thisItem ? thisItem.name : ''} </div>
+            <div>{thisItem ? thisItem.name : 'Item Name not found'} </div>
             <div className="single-auction-image">
                 {/* IMAGE */}
                 {thisItem ? imageHandle(thisItem.imageUrl) : ''}
@@ -542,7 +542,7 @@ function SingleAuctionPage() {
 
         <div className="single-auction-right">
 
-            <div className="single-auction-item-description">{thisItem ? thisItem.description : ''}</div>
+            <div className="single-auction-item-description">{thisItem ? thisItem.description : 'Description not found'}</div>
             <div className="single-auction-countdown">
             {thisAuction ?
                 (auctionStarted ?

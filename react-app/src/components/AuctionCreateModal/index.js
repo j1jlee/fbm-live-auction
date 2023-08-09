@@ -127,10 +127,8 @@ function AuctionCreateModal() {
         return;
       }
 
-      history.push("/");
-
       socket.emit("newAuctionEvent", { note: "new auction from auction create modal"})
-
+      history.push("/");
       closeModal();
     }
 
