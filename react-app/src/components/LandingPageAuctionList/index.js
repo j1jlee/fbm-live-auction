@@ -23,7 +23,12 @@ import Countdown from 'react-countdown';
 
 import { imageHandle } from "../aaaMiddleware";
 
+
 import "./LandingPageAuctionList.css"
+import { io } from 'socket.io-client';
+let socket;
+
+
 // import ItemCreateModal from "../ItemCreateModal";
 // import ItemDeleteModal from "../ItemDeleteModal";
 // import ItemUpdateModal from "../ItemUpdateModal";
@@ -59,13 +64,49 @@ function LandingPageAuctionList() {
     }) : console.log("");
 
     const sortedAuctionsCurrent = auctionsCurrent.length ? sortAuctions(auctionsCurrent) : [];
-    const sortedAuctionsPassed = auctionsPassed.length ? sortAuctions(auctionsPassed) : [];
+    const sortedAuctionsPassed = auctionsPassed.length ? sortAuctionsReverse(auctionsPassed) : [];
+
+
 
     useEffect(() => {
-        dispatch(getAuctionsThunk());
-        dispatch(getItemsThunk());
-        dispatch(getBidsThunk());
+        // open socket connection
+        // create websocket
+        socket = io();
+
+        //create websocket DEFINE what EVENT does?
+        socket.on("newAuctionEvent", (newAuction) => {
+            //setMessages(messages => [...messages, chat])
+            console.log("new auction, refresh all", newAuction);
+
+            dispatch(getAuctionsThunk())
+            .then(setSwitchBool(!switchBool));
+            // dispatch(getAuctionsThunk())
+            // (setSwitchBool(() => {
+            //     dispatch(getAuctionsThunk());
+            //     return !switchBool;
+            // }));
+        })
+        // when component unmounts, disconnect
+        return (() => {
+            socket.disconnect()
+        })
+    }, [])
+
+    useEffect(() => {
+
+        dispatch(getAuctionsThunk())
+        .then(dispatch(getItemsThunk()))
+        .then(dispatch(getBidsThunk()));
+
+        // socket.emit("newAuctionEvent", { note: "create auction thunk auction refresh"});
     }, [dispatch, switchBool])
+
+    // useEffect(() => {
+    //     console.log("\n\n\ndoes this work? create auction thunk");
+
+    //     socket.emit("newAuctionEvent", { note: "create auction thunk auction refresh"})
+    // }, [createAuctionThunk])
+
 
 
     function sortAuctions(auctionList) {
@@ -79,6 +120,19 @@ function LandingPageAuctionList() {
         })
 
         return tempList;
+    }
+
+    function sortAuctionsReverse(auctionList) {
+        const reverseTempList = [...auctionList];
+
+        reverseTempList.sort((a, b) => {
+            const aTime = (new Date(a.endTime)).getTime();
+            const bTime = (new Date(b.endTime)).getTime();
+
+            return bTime - aTime;
+        })
+
+        return reverseTempList;
     }
 
     const demoSubmit = async (demoSellerId) => {
@@ -115,7 +169,9 @@ function LandingPageAuctionList() {
             //   auctionItemId: allItemsList[0].id,
               sellerId: demoSellerId
             }
-            await dispatch(createAuctionThunk(demoAuction));
+            dispatch(createAuctionThunk(demoAuction))
+            .then(socket.emit("newAuctionEvent", { note: "new auction refresh"}));
+            // await dispatch(createAuctionThunk(demoAuction));
         }
       }
 
@@ -255,6 +311,8 @@ function LandingPageAuctionList() {
             console.log("noBidClose", noBidClose)
 
             setSwitchBool(!switchBool);
+
+            socket.emit("newAuctionEvent", { note: "no bid close refresh"})
             // const switchBoolAgain = await dispatch(setSwitchBool(!switchBool))
             // console.log('switchBool', switchBoolAgain)
             //TODO: update auction to open:False
@@ -286,6 +344,7 @@ function LandingPageAuctionList() {
         console.log("closer?", closer)
         //DO NOT REMOVE THIS CONSOLE LOG
 
+        
 
         // await dispatch(closeAuctionThunk(thisAuction.id))
         // await dispatch(setSwitchBool(!switchBool))
@@ -311,6 +370,9 @@ function LandingPageAuctionList() {
 
            {auctionList.map((auction) => (
             <>
+            {() => console.log("\n\n\ndumb", auction)}
+
+
             <div className="landing-page-auction-node"
             >
 
@@ -318,14 +380,22 @@ function LandingPageAuctionList() {
                 history.push(`/auction/${auction.id}`)
             }}>
 
+            {/* {() => {
+                console.log("\n\n\nauction?", auction)
+            }}
+            {() => {
+                console.log("\n\n\nauction.endTime?", auction.endTime)
+            }} */}
+
             <div className= { pastTime(auction.endTime) ? "landing-page-auction-new-node-image landing-page-image-passed" : "landing-page-auction-new-node-image"}>
+
                 {/* item image? */}
-                {allItems && auction.auctionItemId ?
+                {allItems ?
                 // allItems[auction.auctionItemId].imageUrl
+                        (allItems[auction.auctionItemId] ? imageHandle(allItems[auction.auctionItemId].imageUrl) : imageHandle('none'))
 
-                    imageHandle(allItems[auction.auctionItemId].imageUrl)
+                        : "Item Not Found"}</div>
 
-                : "Item Not Found"}</div>
 
             <div>
             {pastTime(auction.startTime) ?
@@ -373,8 +443,9 @@ function LandingPageAuctionList() {
 
 
             <div>$ {centsToDollars(auction.startingBidCents)}</div>
-            <div>{auction.auctionName}</div>
-            {/* <div>{auction.auctionDescription}</div> */}
+            {/* <div>{auction.auctionName}</div> */}
+            <div>{auction.auctionName.length > 30 ? auction.auctionName.substring(0, 25) + "..." : auction.auctionName}</div>
+
 
             </div>
 
@@ -403,6 +474,7 @@ function LandingPageAuctionList() {
             </div>
 
 
+
             </>
            ))
             }
@@ -422,7 +494,9 @@ function LandingPageAuctionList() {
             <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button>
         </div>
         <div className="landing-page-auction-wrapper">
-            {renderAuctionNew(sortedAuctionsCurrent)}
+            {sortedAuctionsCurrent.length ? renderAuctionNew(sortedAuctionsCurrent)
+            :
+            "No current auctions!"}
             {/* {renderAuction(sortedAuctionsCurrent)} */}
         </div>
 
@@ -432,7 +506,7 @@ function LandingPageAuctionList() {
 
         <h2>Past Auctions:</h2>
         <div className="landing-page-auction-wrapper">
-            {renderAuctionNew(sortedAuctionsPassed)}
+            {sortedAuctionsPassed.length && renderAuctionNew(sortedAuctionsPassed)}
         </div>
         </>
     )
@@ -440,3 +514,5 @@ function LandingPageAuctionList() {
 
 
 export default LandingPageAuctionList;
+
+export { socket };

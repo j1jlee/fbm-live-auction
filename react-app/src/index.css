@@ -3,4 +3,9 @@
 
 :root {
     --button-purple: #581845;
+    --base-color: #0074d9;
+    --li-lighter-gray: rgb(240, 240, 240);
+
+    --auction-button-purple: #412EF0;
+
 }

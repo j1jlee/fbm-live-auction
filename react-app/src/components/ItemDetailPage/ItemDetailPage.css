@@ -6,3 +6,14 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 1rem;
 }
+
+.item-detail-buttons {
+    display: flex;
+    width: 60%;
+}
+
+
+.item-detail-buttons button {
+    width: 60%;
+    height: 2rem;
+}

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuctionsThunk, closeAuctionThunk } from "../../store/auction"
 import { getItemsThunk, tradeItemThunk } from "../../store/item"
 import { getBidsThunk, createBidThunk, deleteJunkThunk } from "../../store/bid"
+import { editWalletThunk, getUserThunk } from "../../store/session";
 
 import { useHistory } from "react-router-dom";
 
@@ -57,6 +58,10 @@ function SingleAuctionPage() {
     const thisItem = allItems && thisAuction ? allItems[thisAuction.auctionItemId] : ''
 
     const [bidInput, setBidInput] = useState(0);
+    const [chatMessage, setChatMessage] = useState("");
+
+    const [chatLog, setChatLog] = useState([]);
+
     // const [ highestBid, setHighestBid ] = useState(thisAuction?.startingBidCents)
     const [auctionStarted, setAuctionStarted] = useState(false);
     const [auctionOver, setAuctionOver] = useState(false);
@@ -66,12 +71,14 @@ function SingleAuctionPage() {
     console.log("pre sort thisauctionbidlist?", thisAuctionBidList)
     const sortedBidList = sortBidByTime(thisAuctionBidList)
 
+    const testBidChatList = sortBidByTime([...thisAuctionBidList, ...chatLog])
+    console.log("test testBidChatList", testBidChatList)
 
     console.log("sortedBidList?", sortedBidList)
     console.log("thisItem?", thisItem)
     console.log("thisAuction?", thisAuction)
 
-
+    console.log("chatLog?", chatLog)
     // const history = useHistory();
     // if (!currentUser) {
     //     history.push("/");
@@ -120,14 +127,70 @@ function SingleAuctionPage() {
 
         return ( bids.map((bid) => {
             let bidderVar = "You";
+            let youOrOther = "single-auction-you"
             if (!currentUser || bid.bidderId !== currentUser.id) {
                 bidderVar = `User ${bid.bidderId}`
+                youOrOther = "single-auction-other"
             }
 
-            return (<li>{bidderVar} bid {centsToDollars(bid.bidAmountCents)}</li>)
+            return (<li className="youOrOther">{bidderVar} bid {centsToDollars(bid.bidAmountCents)}</li>)
 
         }))
     }
+
+    function bidChatMapper(entries) {
+        if (!entries) {
+            return (<li>No bids yet!</li>)
+        }
+
+        if (entries.length === 0) {
+            return (<li>No current bids!</li>);
+        }
+
+        return ( entries.map((entry) => {
+            let userLabel = "You";
+            let auctionEntryClass = "single-auction-bid-you"
+            let additionalMessage = "--You're in the lead!"
+
+            if (entry.bidderId) {
+                if (!currentUser || currentUser.id === thisAuction.sellerId) {
+                    userLabel = `User ${entry.bidderId}`;
+                    auctionEntryClass = "single-auction-bid-neutral"
+                    additionalMessage = "";
+                }
+                else if (entry.bidderId !== currentUser.id) {
+                    userLabel = `User ${entry.bidderId}`
+                    auctionEntryClass = "single-auction-bid-other"
+                    additionalMessage = "--Hurry, bid again!"
+                }
+                return (<li className={auctionEntryClass}>{userLabel} bid {centsToDollars(entry.bidAmountCents)} {additionalMessage}</li>)
+
+            } else if (entry.chatterId) {
+                if (!currentUser || entry.chatterId !== currentUser.id) {
+                    userLabel = `User ${entry.chatterId}`
+                }
+
+                return (<li>{userLabel}: {entry.chatMessage}</li>)
+            }
+        }))
+
+    }
+
+    // function chatMapper(chatlog) {
+    //     for (let chat of chatlog) {
+    //         //console.log("chatmapper?", chat)
+
+    //         let chatterVar = "You";
+    //         if (!currentUser || chat.chatterId !== currentUser.id) {
+    //             chatterVar = `User ${chat.chatterId}`;
+    //         }
+
+    //         console.log(`${chatterVar}: ${chat.chatMessage}`)
+    //     }
+    // }
+
+    //chatMapper(chatLog);
+
 
     function getHighestBid(bids) {
         if (!thisAuction) {
@@ -208,7 +271,7 @@ function SingleAuctionPage() {
 
     }
 
-    function resolveAuction(resAuctionId) {
+    async function resolveAuction(resAuctionId) {
         // const resThisAuction = allAuctions ? allAuctions[auctionId] : ""
         setAuctionOver(true);
 
@@ -238,12 +301,40 @@ function SingleAuctionPage() {
 
         //trade item and close auction
         //HERE YALL
+        const finalSeller = await dispatch(getUserThunk(thisAuction.sellerId));
+        const finalBuyer = await dispatch(getUserThunk(lastBid.bidderId));
+        const finalBidAmount = lastBid.bidAmountCents;
+
+
+
+        const finalSellerCashCents = finalSeller.cashCents;
+        const finalBuyerCashCents = finalBuyer.cashCents;
+        console.log("final seller?", finalSeller)
+        console.log("final buyer?", finalBuyer)
+        console.log("finalBidAMount?", finalBidAmount)
+        console.log("finalseller cashcents?", finalSeller.cashCents)
+        console.log("finalbuyer cashcents?", finalBuyer.cashCents)
+        console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
+        console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
+
+        if (!thisItem) {
+            console.log(`item doesn't exist at close time of auction ${thisAuction.id}, closing:`);
+            dispatch(closeAuctionThunk(thisAuction.id))
+            .then(alert("Item doesn't exist at close of auction! Item must have been erroneously deleted. Closing auction."))
+
+            return;
+        }
+
         dispatch(tradeItemThunk(thisItem.id,
             {
                 lastKnownPriceCents : lastBid.bidAmountCents,
                  ownerId: lastBid.bidderId
             }
         ))
+        .then(dispatch(editWalletThunk(finalSeller.id, (finalBidAmount))))
+        .then(dispatch(editWalletThunk(finalBuyer.id, finalBidAmount * -1)))
+        // .then(dispatch(editWalletThunk(finalSeller.id, (finalSeller.cashCents + finalBidAmount))))
+        // .then(dispatch(editWalletThunk(finalBuyer.id, (finalBuyer.cashCents - finalBidAmount))))
         .then(dispatch(closeAuctionThunk(thisAuction.id)))
         .then(
             alert(congratsOrSorry(lastBid))
@@ -258,6 +349,8 @@ function SingleAuctionPage() {
         try {
             if (currentUser.id == lastestBid.bidderId) {
                 message = `Congrats! You just won the ${thisItem.name}! It's been added to your Item list.`
+            } else if (currentUser.id == thisAuction.sellerId) {
+                message = `Your item ${thisItem.name} has just been won by User ${lastestBid.bidderId}! The bid amount $${centsToDollars(lastestBid.bidAmountCents)} has been added to your wallet!`
             } else {
                 message = `Bidding is over! Sadly, seems like User ${lastestBid.bidderId} got away with the ${thisItem.name}! It's been added to their inventory; Better luck next time!`
             }
@@ -296,7 +389,33 @@ function SingleAuctionPage() {
                 dispatch(getBidsThunk())
             }
             return;
+        })
 
+        socket.on("chatEvent", (chat) => {
+            console.log("\n\n\nCHAT?", chat)
+
+
+            if (chat.socketAuctionId == auctionId) {
+                console.log("socketAuctionId matches auctionId, adding to current chatlog")
+
+                // let currentChatLog = [...chatLog]
+                // currentChatLog.push(chat)
+
+                // console.log("pre setChatLog, currentChatLog", currentChatLog)
+
+                //thank you, set state documentation
+                //https://legacy.reactjs.org/docs/react-component.html#setstate
+
+                setChatLog((chatLog) => {
+                    let currentChatLog = [...chatLog]
+                    currentChatLog.push(chat)
+
+                    //console.log("pre setChatLog, currentChatLog", currentChatLog)
+                    return currentChatLog;
+                });
+                // }currentChatLog);
+
+            }
         })
         // when component unmounts, disconnect
         return (() => {
@@ -336,6 +455,13 @@ function SingleAuctionPage() {
             tempErrors.bidInput = "Can't bid over six figures"
         }
 
+        const walletAmount = currentUser.cashCents;
+
+        if (tempBidInput > walletAmount) {
+            tempErrors.walletAmount = "Can't bid more than amount in wallet"
+        }
+
+
         const currentHighestBid = getHighestBid(thisAuctionBidList)//sortedBidList
 
         if (tempBidInput <= currentHighestBid) {
@@ -360,6 +486,20 @@ function SingleAuctionPage() {
         return;
     }
 
+    const sendChat = (e) => {
+        e.preventDefault();
+
+        if (chatMessage.length) {
+            setChatMessage('');
+
+            socket.emit("chatEvent", { socketAuctionId: thisAuction.id, chatterId: currentUser.id, chatMessage:chatMessage, timeOfBid:(new Date()).toString() })
+
+        }
+
+        return;
+    }
+
+
     // console.log("all auctions?", allAuctions)
     // console.log("this auction?", thisAuction)
     // console.log("this item?", thisItem)
@@ -370,26 +510,39 @@ function SingleAuctionPage() {
 
     return ( thisAuction ? (
         <>
-        <h1>{thisAuction ? thisAuction.auctionName : ""}</h1>
+        <h1 className="single-auction-title">{thisAuction ? thisAuction.auctionName : ""}</h1>
 
         <div className="single-auction-grid">
 
         <div className="single-auction-left">
-            <div>{thisItem ? thisItem.name : ''} </div>
+            <div>{thisItem ? thisItem.name : 'Item Name not found'} </div>
             <div className="single-auction-image">
                 {/* IMAGE */}
-                {imageHandle(thisItem.imageUrl)}
+                {thisItem ? imageHandle(thisItem.imageUrl) : ''}
             </div>
             <div className="single-auction-bidfeed">
                 <ul>
-                {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>}
+                {testBidChatList ? bidChatMapper(testBidChatList) : <li>None yet!</li>}
+                {/* {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>} */}
                 </ul>
+            </div>
+
+            <div className="single-auction-chat-wrapper">
+            <form onSubmit={sendChat} className="single-auction-chat-form">
+                <input
+                    className="single-auction-chat-input"
+                    type="textbox"
+                    value={chatMessage}
+                    onChange={(e) => {setChatMessage(e.target.value)}}
+                />
+                <button type="submit" className="single-auction-chat-button">Send Chat</button>
+            </form>
             </div>
         </div>
 
         <div className="single-auction-right">
 
-            <div className="single-auction-item-description">{thisItem ? thisItem.description : ''}</div>
+            <div className="single-auction-item-description">{thisItem ? thisItem.description : 'Description not found'}</div>
             <div className="single-auction-countdown">
             {thisAuction ?
                 (auctionStarted ?
@@ -429,16 +582,19 @@ function SingleAuctionPage() {
             <>
             <form onSubmit={sendBid}>
                 <input
+                    className="single-auction-bidform-input"
                     type="number"
                     step="0.01"
                     value={bidInput}
                     onChange={updateBidInput}
                 />
-                <button type="submit">Send Bid</button>
+                <button type="submit" className="single-auction-bid-button">Send Bid</button>
             </form>
                 <div>
                 {Object.values(errors).length ? Object.values(errors).map((error) => {
-                   return <p key={error}>{error}</p>
+                   return <p key={error}className="single-auction-error">
+                            {error}
+                        </p>
                 }) : ""}
                 </div>
             </>

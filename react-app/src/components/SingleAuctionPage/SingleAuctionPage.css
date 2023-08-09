@@ -1,8 +1,62 @@
 
 
+.single-auction-title {
+    overflow-wrap: anywhere;
+}
+
+.single-auction-bid-button {
+    background-color: #77b9d1;
+    color: white;
+
+    font-weight: 600;
+    border-radius: 5px;
+    text-shadow: 1px 1px 2px black;
+
+    height: 3rem;
+}
+
+.single-auction-bid-button:active {
+    background-color: #224b52;
+    color: darkgray;
+}
+
+.single-auction-bidform-input {
+    margin: 0 0.5rem 0 0;
+}
+
+.single-auction-chat-wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.single-auction-chat-form {
+    display: flex;
+    width: 100%;
+    height: 4rem;
+}
+
+.single-auction-chat-input {
+    width: 100%;
+}
+
+.single-auction-chat-button {
+    border-radius: 5px;
+
+    color: white;
+    font-weight: 600;
+    background-color: #412EF0;
+    text-shadow: 2px 2px 2px black;
+}
+
+.single-auction-chat-button:active {
+    background-color: navy;
+    color: darkgray;
+}
+
 .single-auction-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+
 
     grid-gap: 2rem;
 
@@ -17,7 +71,7 @@
 
 
     display: grid;
-    grid-template-rows: .5fr 3fr 5fr;
+    grid-template-rows: .5fr 3fr 2fr 2fr 1fr;
 
 }
 .single-auction-right {
@@ -45,6 +99,7 @@
 
 .single-auction-image {
     height: 15rem;
+    margin: 0.5rem 0;
 }
 .single-auction-bidfeed {
     overflow-y: scroll;
@@ -55,6 +110,10 @@
 .single-auction-bidfeed li {
     list-style: none;
 
+}
+
+.single-auction-error {
+    color: red;
 }
 
 .single-auction-item {
@@ -68,4 +127,19 @@
 }
 .single-auction-bidform {
 
+}
+
+.single-auction-bid-you {
+    color: #427646;
+    font-weight: 600;
+}
+
+.single-auction-bid-other {
+    color: #C54E57;
+    font-weight: 600;
+}
+
+.single-auction-bid-neutral {
+    font-weight: 600;
+    color: darkgray;
 }

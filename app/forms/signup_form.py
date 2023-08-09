@@ -39,7 +39,7 @@ class SignUpForm(FlaskForm):
         'username', validators=[DataRequired(), username_exists, Length(min=1, max=40)])
     email = StringField('email', validators=[DataRequired(), user_exists, Length(min=5, max=255), custom_email])
     # email = StringField('email', validators=[DataRequired(), user_exists, Length(min=5, max=255), Email()])
-    password = StringField('password', validators=[DataRequired()])
+    password = StringField('password', validators=[DataRequired(), Length(min=8, max=30)])
 
     firstname = StringField('firstname', validators=[DataRequired(), Length(min=1, max=20)])
     lastname = StringField('lastname', validators=[DataRequired(), Length(min=1, max=20)])

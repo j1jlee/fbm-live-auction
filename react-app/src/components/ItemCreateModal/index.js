@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 
+import { useHistory } from "react-router-dom";
+
+
 import { createItemThunk } from "../../store/item"
 
 import './ItemCreateModal.css'
@@ -21,9 +24,8 @@ function ItemCreateModal() {
 
 
   const [image, setImage] = useState(null)
-
   const currentUser = useSelector(state => state.session.user)
-
+  const history = useHistory();
   const { closeModal } = useModal();
 
 
@@ -127,8 +129,8 @@ function ItemCreateModal() {
 
 
     const newItem = {
-        name: itemName,
-        description: itemDescription || "No description",
+        name: itemName.trim(),
+        description: itemDescription.trim() || "No description",
         lastKnownPriceCents: parseInt(itemPrice * 100),
         ownerId: currentUser.id,
 
@@ -140,11 +142,14 @@ function ItemCreateModal() {
 
     console.log("newItem, before createItemThunk", newItem)
 
-      const result = dispatch(createItemThunk(newItem));
+      const result = await dispatch(createItemThunk(newItem));
       // const result = await dispatch(createItemThunk(newItem));
       if (result && result.errors) {
         setErrors(result.errors)
       }
+
+      console.log("\n\n\nredirect to items?", result)
+      history.push(`/items/${result.id}`);
       closeModal();
     }
 

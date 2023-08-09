@@ -20,6 +20,7 @@ function WalletDisplay({user}) {
         <OpenModalCustomText
             customText="Add Funds to Wallet"
             hoverTitle="Add Funds"
+            customClass="wallet-add-funds-button"
             modalComponent={<AddToWalletModal />} />
 
         &emsp;

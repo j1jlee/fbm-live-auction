@@ -33,7 +33,8 @@ function ItemListPage() {
 
 
 
-    const userItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId === currentUser.id) : []
+    const userItemsList = allItemsList && currentUser ? (allItemsList.filter((item) => item.ownerId === currentUser.id)).reverse() : []
+    // const userItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId === currentUser.id) : []
 
     const otherItemsList = allItemsList && currentUser ? allItemsList.filter((item) => item.ownerId !== currentUser.id) : []
 
@@ -118,11 +119,11 @@ function ItemListPage() {
        {/* original end to all items wrapper */}
 
         <h2>Other User's Items (Maybe you can win these in a future auction!)</h2>
-        <div className="item-list-container">
+        <div className="item-list-container item-list-horizontal">
             {otherItemsList ? otherItemsList.map((item) => (
             // {allItemsList ? allItemsList.map((item) => (
                 <>
-                <div className="item-list-node item-list-node-hover">
+                <div className="item-list-node item-list-node-hover item-list-node-horizontal">
                 <ul className="item-list-ul" onClick={() => history.push(`/items/${item.id}`)}>
                 {/* <li key={item.id}>Item ID: {item.id}</li> */}
                <li key={item.imageUrl} className="item-list-image item-list-image-others">{imageHandle(item.imageUrl)}</li>

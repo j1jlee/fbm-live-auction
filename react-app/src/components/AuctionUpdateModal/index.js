@@ -65,10 +65,10 @@ function AuctionUpdateModal({update_auction}) {
 
     const submitErrors = [];
 
-    if (auctionName.length === 0 || auctionName.length > 200) {
+    if (auctionName.trim().length === 0 || auctionName.length > 200) {
       submitErrors.push({auctionName: "Name length must be between 1 and 200 characters"})
     }
-    if (auctionDescription.length === 0 || auctionDescription.length > 300) {
+    if (auctionDescription.trim().length === 0 || auctionDescription.length > 300) {
       submitErrors.push({auctionName: "Description length must be between 1 and 300 characters"})
     }
     if (auctionStartingBidCents <= 0) {
@@ -121,8 +121,8 @@ function AuctionUpdateModal({update_auction}) {
     }
 
     const updateAuction = {};
-    if (auctionName !== update_auction.name) updateAuction.auctionName = auctionName;
-    if (auctionDescription !== update_auction.description) updateAuction.auctionDescription = auctionDescription;
+    if (auctionName !== update_auction.name) updateAuction.auctionName = auctionName.trim();
+    if (auctionDescription !== update_auction.description) updateAuction.auctionDescription = auctionDescription.trim();
 
     if (auctionStartingBidCents !== update_auction.startingBidCents) updateAuction.startingBidCents = auctionStartingBidCents;
 

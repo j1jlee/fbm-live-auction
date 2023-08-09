@@ -68,9 +68,9 @@ function ItemUpdateModal({update_item}) {
     }
 
     const updateItem = {};
-    if (itemName !== update_item.name) updateItem.name = itemName;
-    if (itemDescription !== update_item.description) updateItem.description = itemDescription;
-    if (itemImageUrl !== update_item.imageUrl) updateItem.imageUrl = itemImageUrl;
+    if (itemName !== update_item.name) updateItem.name = itemName.trim();
+    if (itemDescription !== update_item.description) updateItem.description = itemDescription.trim();
+    if (itemImageUrl !== update_item.imageUrl) updateItem.imageUrl = itemImageUrl.trim();
 
     // const newItem = {
     //     name: itemName,

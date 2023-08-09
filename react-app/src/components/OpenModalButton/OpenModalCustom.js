@@ -7,6 +7,7 @@ function OpenModalCustomText({
 
   customText,
   hoverTitle, //description on mouse hover
+  customClass,
 
   onButtonClick, // optional: callback function that will be called once the button that opens the modal is clicked
   onModalClose // optional: callback function that will be called once the modal is closed
@@ -26,7 +27,11 @@ function OpenModalCustomText({
     <>
     {/* <button onClick={onClick}>{buttonText}</button> */}
 
-    <span title={hoverTitle} onClick={onClick}>{customText}</span>
+    <span title={hoverTitle}
+          onClick={onClick}
+          className={customClass}>
+      {customText}
+    </span>
 
     </>
 

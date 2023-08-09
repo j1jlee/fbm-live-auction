@@ -7,6 +7,8 @@ import { useHistory } from "react-router-dom";
 import { createAuctionThunk } from "../../store/auction"
 import { getItemsThunk } from "../../store/item";
 
+import { socket } from "../LandingPageAuctionList";
+
 function AuctionCreateModal() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState([]);
@@ -43,15 +45,19 @@ function AuctionCreateModal() {
 
     const submitErrors = [];
 
-    if (auctionName.length === 0 || auctionName.length > 200) {
+    if (auctionName.trim().length === 0 || auctionName.length > 200) {
       submitErrors.push({auctionName: "Name length must be between 1 and 200 characters"})
     }
-    if (auctionDescription.length === 0 || auctionDescription.length > 300) {
+    if (auctionDescription.trim().length === 0 || auctionDescription.length > 300) {
       submitErrors.push({itemName: "Description length must be between 1 and 300 characters"})
     }
     if (startingBidCents <= 0) {
         submitErrors.push({itemPrice: "Starting Bid must be greater than $0.00"
     })
+    }
+
+    if (startingBidCents > 9999999) {
+      submitErrors.push({itemPrice: "Starting bid must be less than eight figures"})
     }
 
     // const validImageSuffix = ["png", "jpg", "jpeg", "gif", "tiff", "bmp"]
@@ -80,6 +86,8 @@ function AuctionCreateModal() {
         submitErrors.push({Time: "Please select a starting and ending date"})
     }
 
+
+
     if ((startDateTimeIntoObj.getTime() + 60000) < timeNowMilli) {
         submitErrors.push({startTime: "Starting time must be after current time"})
     }
@@ -101,8 +109,8 @@ function AuctionCreateModal() {
 
 
     const newAuction = {
-       auctionName,
-       auctionDescription,
+       auctionName: auctionName.trim(),
+       auctionDescription: auctionDescription.trim(),
        startingBidCents: startingBidCents * 100,
     //    startTime,
     //    endTime,
@@ -114,10 +122,12 @@ function AuctionCreateModal() {
     };
 
       const result = dispatch(createAuctionThunk(newAuction));
-      if (result) {
-        setErrors(result.errors)
+      if (result.errors) {
+        setErrors(result.errors);
+        return;
       }
 
+      socket && socket.emit("newAuctionEvent", { note: "new auction from auction create modal"})
       history.push("/");
       closeModal();
     }

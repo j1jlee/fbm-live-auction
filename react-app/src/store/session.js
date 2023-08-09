@@ -97,6 +97,50 @@ export const signUp = (username, email, password, firstname, lastname, cashCents
 	}
 };
 
+export const getUserThunk = (userId) => async (dispatch) => {
+	const response = await fetch(`/api/users/${userId}`);
+
+	console.log("\n\n\ngetUserThunk response?", response)
+
+	if (response.ok) {
+		const data = await response.json();
+		return data;
+	} else if (response.status < 500) {
+		const data = await response.json();
+		if (data.errors) {
+			return data.errors;
+		}
+	} else {
+		return ["An error occurred. Please try again."];
+	}
+}
+
+
+export const editWalletThunk = (userId, newCashCents) => async (dispatch) => {
+	const response = await fetch(`/api/users/${userId}/wallet`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			newCashCents
+		}),
+	});
+
+	if (response.ok) {
+		const data = await response.json();
+		dispatch(setUser(data));
+		return null;
+	} else if (response.status < 500) {
+		const data = await response.json();
+		if (data.errors) {
+			return data.errors;
+		}
+	} else {
+		return ["An error occurred. Please try again."];
+	}
+};
+
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:

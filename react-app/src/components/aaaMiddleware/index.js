@@ -56,6 +56,12 @@ function centsToDollars(cents) {
     return `${String(cents).substring(0, String(cents).length - 2)}.${String(cents).substring(String(cents).length - 2)}`
 }
 
+function dollarsNumToCents(dollars) {
+    const dollars100 = dollars * 100;
+    return dollars100 - (dollars100 % 1);
+}
+
+
 function sortBidByTime(bids) {
     const tempBidList = [...bids]
 
@@ -86,4 +92,4 @@ function sortBidByTime(bids) {
 }
 
 
-export { urlToImage, centsToDollars, sortBidByTime, imageHandle};
+export { urlToImage, centsToDollars, sortBidByTime, imageHandle, dollarsNumToCents};

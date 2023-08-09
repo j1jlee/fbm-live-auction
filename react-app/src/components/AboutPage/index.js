@@ -88,7 +88,7 @@ function AboutPage() {
 
         <br></br>
         <hr></hr>
-
+{/*
         <button onClick={updateClick}>Test Update Text</button>
 
 
@@ -126,7 +126,7 @@ function AboutPage() {
             />
 
         <button type="submit">get file</button>
-        </form>
+        </form> */}
 
 
         {/* <form onSubmit={getHandle} method={"POST"}>

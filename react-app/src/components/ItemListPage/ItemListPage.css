@@ -33,6 +33,20 @@
     grid-auto-flow: row;
 }
 
+.item-list-horizontal {
+
+    grid-auto-flow: column;
+    grid-template-columns: unset;
+    grid-template-rows: repeat(auto-fill, 20rem);
+
+    /* background-color: pink; */
+    overflow-x: scroll;
+}
+
+.item-list-node-horizontal {
+    width: 10rem;
+}
+
 .item-list-container-empty {
     margin-top: 1rem;
 
