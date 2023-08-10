@@ -65,11 +65,11 @@ function AboutPage() {
         </div>
 
         <div>
-        <a href="https://github.com/j1jlee/fbm-live-auction/">Github</a>
+        <a href="https://www.github.com/j1jlee/fbm-live-auction/" target="_blank">Github</a>
         </div>
 
         <div>
-        <a href="linkedin.com/in/joshua-lee-9573a0142">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/jaewon-lee-9573a0142" target="_blank">LinkedIn</a>
         </div>
 
         <br></br>

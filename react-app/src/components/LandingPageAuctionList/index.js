@@ -552,11 +552,16 @@ function LandingPageAuctionList() {
 
             <span className="landing-page-buttons">
 
-            <span className={currentUserIsNotSeller(auction) ? "update-disabled" : "landing-page-delete-button-solo"}>
+            <span className={"landing-page-delete-button-solo"}>
             <OpenModalButton
             buttonText="Delete Auction"
             modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
             </span>
+            {/* <span className={currentUserIsNotSeller(auction) ? "update-disabled" : "landing-page-delete-button-solo"}>
+            <OpenModalButton
+            buttonText="Delete Auction"
+            modalComponent={<AuctionDeleteModal auctionId={auction.id} />} />
+            </span> */}
 
             </span>
 

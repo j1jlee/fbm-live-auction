@@ -4,6 +4,8 @@ import { useModal } from "../../context/Modal";
 
 import { updateItemThunk } from "../../store/item"
 
+import './ItemUpdateModal.css';
+
 function ItemUpdateModal({update_item}) {
   const dispatch = useDispatch();
 
@@ -116,7 +118,7 @@ function ItemUpdateModal({update_item}) {
 
   return (
     <>
-      <div>
+      <div className="item-update-modal">
       <h1>Update Item</h1>
       <form onSubmit={handleSubmit} method={"POST"}>
 
@@ -127,7 +129,7 @@ function ItemUpdateModal({update_item}) {
         })}
         </ul>
 
-        <div>
+        <div className="item-update-name">
         <label>
           Item Name
           <input
@@ -143,7 +145,7 @@ function ItemUpdateModal({update_item}) {
         </label>
         </div>
 
-        <div>
+        <div className="item-update-description">
         <label>
           Description
           <input
@@ -159,9 +161,7 @@ function ItemUpdateModal({update_item}) {
         </label>
         </div>
 
-        <div>
-
-        </div>
+        <div className="item-update-url">
 
         <label>
           Image URL
@@ -171,14 +171,15 @@ function ItemUpdateModal({update_item}) {
             value={itemImageUrl}
             onChange={(e) => {
               setItemImageUrl(e.target.value)
-              }
             }
-            //   required
+          }
+          //   required
           />
         </label>
 
+        </div>
 
-        <button type="submit">Update Item</button>
+        <button type="submit" className="item-update-button">Update Item</button>
       </form>
 
       </div>

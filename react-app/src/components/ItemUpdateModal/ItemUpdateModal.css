@@ -1,0 +1,18 @@
+
+
+.item-update-modal {
+    width: 25rem;
+}
+
+.item-update-name, .item-update-description, .item-update-url {
+    margin: 0.5rem 0;
+}
+
+/* .item-update-description input {
+    height: 3rem;
+    text-align: top;
+} */
+
+.item-update-button {
+    margin-top: 0.5rem;
+}
