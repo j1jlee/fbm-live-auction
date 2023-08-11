@@ -65,15 +65,6 @@ export const demoItems = [
     // ownerId : 3
     },
 
-    {
-    name : "Edgy Boy",
-    description : "This fancy knife has a serrated back, handle fortified with the coolest blue steel, and an edge that's sharper than your wit. Perfect for all your grass-cutting needs.",
-    lastKnownPriceCents : 99900,
-    imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/KNIFE_1_resized.jpg",
-
-    // ownerId : 3
-    },
-
 // #owner 3
     {
     name : "Giant Hotel",

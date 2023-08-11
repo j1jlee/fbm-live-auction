@@ -673,8 +673,10 @@ function LandingPageAuctionList() {
             Select an auction to participate in, bid and win!
         </p>
         <div>
-            <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button>
-            <button onClick={() => handleGetUsersButton()}>get all users maybe</button>
+            {/* <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button> */}
+            <button onClick={() => handleGetUsersButton()}
+            className="landing-page-populate-button"
+            >(Demo) Populate Auctions</button>
         </div>
         <div className="landing-page-auction-wrapper">
             {sortedAuctionsCurrent.length ? renderAuctionNew(sortedAuctionsCurrent)
