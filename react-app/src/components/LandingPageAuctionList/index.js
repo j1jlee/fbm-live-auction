@@ -14,7 +14,7 @@ import AuctionDeleteModal from "../AuctionDeleteModal";
 
 import { centsToDollars } from "../aaaMiddleware";
 // import { urlToImage } from "../aaaMiddleware";
-import { createAuctionThunk } from "../../store/auction";
+import { createAuctionThunk, deleteAuctionThunk } from "../../store/auction";
 import { createItemThunk } from "../../store/item";
 
 import { getAllUsersThunk } from "../../store/session";
@@ -54,6 +54,7 @@ function LandingPageAuctionList() {
     const auctionsCurrent = []
 
     const [switchBool, setSwitchBool] = useState(true);
+    const [currentDeleteId, setCurrentDeleteId] = useState(0);
 
     allAuctionsList ? allAuctionsList.forEach((auction) => {
         const nowTime = (new Date()).getTime();
@@ -68,6 +69,40 @@ function LandingPageAuctionList() {
 
     const sortedAuctionsCurrent = auctionsCurrent.length ? sortAuctions(auctionsCurrent) : [];
     const sortedAuctionsPassed = auctionsPassed.length ? sortAuctionsReverse(auctionsPassed) : [];
+
+    // if (sortedAuctionsPassed.length) {
+    //     console.log("sortedAuctionsPassed?", sortedAuctionsPassed)
+    // }
+
+    async function cleanupAuctions() {
+        if (sortedAuctionsPassed.length > 10) {
+            const lastPassedAuction = sortedAuctionsPassed[sortedAuctionsPassed.length - 1];
+
+            // console.log("currentDeleteId?", currentDeleteId);
+            // console.log("lasspassedauction Id?", lastPassedAuction.id);
+
+            if (lastPassedAuction.id == currentDeleteId) {
+                // console.log("previous render delete, returning", lastPassedAuction.id);
+
+                return;
+            }
+
+            if (lastPassedAuction) {
+                // console.log("last passed auction,", lastPassedAuction)
+
+                try {
+                    // console.log("deleting auction", lastPassedAuction.id)
+
+                    setCurrentDeleteId(lastPassedAuction.id);
+
+                    const deleteAuction = await dispatch(deleteAuctionThunk(lastPassedAuction.id))
+
+
+                } catch {}
+            }
+
+        }
+    }
 
 
 
@@ -103,6 +138,12 @@ function LandingPageAuctionList() {
 
         // socket.emit("newAuctionEvent", { note: "create auction thunk auction refresh"});
     }, [dispatch, switchBool])
+
+    useEffect(() => {
+        // console.log("execute on close auction?")
+        cleanupAuctions();
+    }, [resolveAuction])
+    // }, [dispatch(closeAuctionThunk)])
 
     // useEffect(() => {
     //     console.log("\n\n\ndoes this work? create auction thunk");
@@ -161,7 +202,7 @@ function LandingPageAuctionList() {
 
     const handleGetUsersButton = async () => {
 
-        console.log("handling getusers")
+        // console.log("handling getusers")
 
         // e.preventDefault();
 
@@ -179,8 +220,8 @@ function LandingPageAuctionList() {
 
         const handleTimeNow = new Date();
 
-        console.log("demoitemstemp length?", demoItemsTemp.length)
-        console.log("itemindex starter?", itemIndexStarter)
+        // console.log("demoitemstemp length?", demoItemsTemp.length)
+        // console.log("itemindex starter?", itemIndexStarter)
 
         for (let i = 0; i < 10; i++) {
             //console.log("whee", i);
@@ -197,8 +238,8 @@ function LandingPageAuctionList() {
             //apply ownerId to tempItem
             tempItem.ownerId = tempUser.id
 
-            console.log("tempItem?", tempItem.name)
-            console.log("tempItem ownerid?", tempItem.ownerId)
+            // console.log("tempItem?", tempItem.name)
+            // console.log("tempItem ownerid?", tempItem.ownerId)
 
             //
             const tempDemoItem = await dispatch(createItemThunk(tempItem));
@@ -442,14 +483,10 @@ function LandingPageAuctionList() {
         // await dispatch(setSwitchBool(!switchBool))
 
 
-            console.log(`Traded item for auction ${thisAuction.id} to user ${lastBid.bidderId}`)
-        // .then(dispatch(closeAuctionThunk(thisAuction.id)))
-        // .then(dispatch(setSwitchBool(!switchBool)))
+            // console.log(`Traded item for auction ${thisAuction.id} to user ${lastBid.bidderId}`)
 
 
-        //     console.log(`Traded item for auction ${thisAuction.id} to user ${lastBid.bidderId}`)
-
-        console.log("\n\n\nthis auction is open, with timer over! closing:")
+        // console.log("\n\n\nthis auction is open, with timer over! closing:")
     }
 
 
@@ -462,7 +499,7 @@ function LandingPageAuctionList() {
 
            {auctionList.map((auction) => (
             <>
-            {() => console.log("\n\n\ndumb", auction)}
+            {/* {() => console.log("\n\n\ndumb", auction)} */}
 
 
             <div className="landing-page-auction-node"
