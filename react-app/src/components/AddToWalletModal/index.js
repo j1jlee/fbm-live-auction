@@ -38,8 +38,8 @@ function AddToWalletModal() {
       submitErrors.push({addAmount: "Amount to Add must be greater than 1.00"})
     }
 
-    if (addAmount > 99999) {
-      submitErrors.push({excessive: "Cannot add more than five figures"})
+    if (addAmount > 999999) {
+      submitErrors.push({excessive: "Cannot add more than six figures at a time"})
     }
 
     if (submitErrors.length === 1 &&

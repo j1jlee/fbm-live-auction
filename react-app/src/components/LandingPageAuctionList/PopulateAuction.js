@@ -2,7 +2,7 @@
 
 
 
-const populateAuction = async (demoSellerId) => {
+const demoSubmitNew = async (demoSellerId) => {
 
     const timeNow = new Date();
     const timePlusMinute = new Date(timeNow.getTime() + 60000);

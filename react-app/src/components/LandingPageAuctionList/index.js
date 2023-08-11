@@ -13,9 +13,11 @@ import AuctionUpdateModal from "../AuctionUpdateModal";
 import AuctionDeleteModal from "../AuctionDeleteModal";
 
 import { centsToDollars } from "../aaaMiddleware";
-import { urlToImage } from "../aaaMiddleware";
+// import { urlToImage } from "../aaaMiddleware";
 import { createAuctionThunk } from "../../store/auction";
 import { createItemThunk } from "../../store/item";
+
+import { getAllUsersThunk } from "../../store/session";
 
 import { sortBidByTime } from "../aaaMiddleware";
 
@@ -23,6 +25,7 @@ import Countdown from 'react-countdown';
 
 import { imageHandle } from "../aaaMiddleware";
 
+import { demoItems } from "./DemoAuctionSeed";
 
 import "./LandingPageAuctionList.css"
 import { io } from 'socket.io-client';
@@ -140,6 +143,37 @@ function LandingPageAuctionList() {
         })
 
         return reverseTempList;
+    }
+
+    function getRandomInt(min, max) {
+        if (!min || !max) return null;
+        if (min < max) return null;
+
+        const minMaxDiff = max - min;
+
+        return Math.floor(Math.random() * minMaxDiff) + min;
+    }
+
+    const handleGetUsersButton = async () => {
+
+        console.log("handling getusers")
+
+        // e.preventDefault();
+
+        
+
+        const allUsersRes = await dispatch(getAllUsersThunk());
+        const allUsersArray = allUsersRes.users;
+        const allUsersLength = allUsersArray.length;
+
+        console.log("does this work?", allUsersRes)
+        console.log("does this work?", allUsersRes.users.length)
+
+        for (let i = 0; i < 10; i++) {
+            console.log("whee", i);
+
+            //starterpoint is [...demoItems], index 0~ length - 1
+        }
     }
 
     const demoSubmit = async (demoSellerId) => {
@@ -589,6 +623,7 @@ function LandingPageAuctionList() {
         </p>
         <div>
             <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button>
+            <button onClick={() => handleGetUsersButton()}>get all users maybe</button>
         </div>
         <div className="landing-page-auction-wrapper">
             {sortedAuctionsCurrent.length ? renderAuctionNew(sortedAuctionsCurrent)

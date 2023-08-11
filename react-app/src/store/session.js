@@ -97,6 +97,22 @@ export const signUp = (username, email, password, firstname, lastname, cashCents
 	}
 };
 
+export const getAllUsersThunk = () => async (dispatch) => {
+	const response = await fetch('api/users/');
+
+	if (response.ok) {
+		const users = await response.json();
+		return users;
+	} else if (response.status < 500) {
+		const data = await response.json();
+		if (data.errors) {
+			return data.errors;
+		}
+	} else {
+		return ["An error occurred. Please try again."];
+	}
+}
+
 export const getUserThunk = (userId) => async (dispatch) => {
 	const response = await fetch(`/api/users/${userId}`);
 
