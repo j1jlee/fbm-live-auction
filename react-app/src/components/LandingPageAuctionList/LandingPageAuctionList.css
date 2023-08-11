@@ -116,6 +116,30 @@
     margin: 0.5rem 0;
 }
 
+.landing-page-populate-button {
+    /* border: none; */
+    padding: 0.5rem;
+    color: #007FFF;
+    /* color: white; */
+    font-weight: 600;
+
+    border-radius: 5px;
+    border-color: #D7EAFF;
+    /* border-color: #C4F9EF; */
+    /* border-color: #4ACEB4; */
+    /* background-color: #F0F8FF; */
+    background-color: #E0EFFF;
+    /* background-color: var(--auction-button-purple); */
+    /* background-color: #4AA6CE; */
+
+}
+
+.landing-page-populate-button:hover {
+    background-color: #C6E2FF;
+    cursor: pointer;
+}
+
+
 
 @media screen and (max-width: 1170px) {
     .landing-page-auction-grid {
