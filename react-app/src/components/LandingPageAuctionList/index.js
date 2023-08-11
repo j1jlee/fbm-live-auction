@@ -146,8 +146,13 @@ function LandingPageAuctionList() {
     }
 
     function getRandomInt(min, max) {
-        if (!min || !max) return null;
-        if (min < max) return null;
+        if ((!max && max !== 0) ||
+            (!min && min !== 0) ||
+            (min > max))
+         {
+            return null;
+        }
+
 
         const minMaxDiff = max - min;
 
@@ -160,20 +165,66 @@ function LandingPageAuctionList() {
 
         // e.preventDefault();
 
-        
+
 
         const allUsersRes = await dispatch(getAllUsersThunk());
         const allUsersArray = allUsersRes.users;
         const allUsersLength = allUsersArray.length;
 
-        console.log("does this work?", allUsersRes)
-        console.log("does this work?", allUsersRes.users.length)
+        const demoItemsTemp = [...demoItems];
+        const demoItemsTempLength = demoItemsTemp.length
+
+        const itemIndexStarter = getRandomInt(0, demoItemsTempLength)
+        const userIndexStarter = getRandomInt(0, allUsersLength)
+
+        const handleTimeNow = new Date();
+
+        console.log("demoitemstemp length?", demoItemsTemp.length)
+        console.log("itemindex starter?", itemIndexStarter)
 
         for (let i = 0; i < 10; i++) {
-            console.log("whee", i);
+            //console.log("whee", i);
 
             //starterpoint is [...demoItems], index 0~ length - 1
+            const tempItemIndex = (itemIndexStarter + i) % demoItemsTempLength;
+            const tempUserIndex = (userIndexStarter + i) % allUsersLength;
+
+            const tempItem = demoItemsTemp[tempItemIndex];
+            const tempUser = allUsersArray[tempUserIndex];
+
+            const tempDatePlus = new Date(handleTimeNow.getTime() + getRandomInt(90000, 300000));
+
+            //apply ownerId to tempItem
+            tempItem.ownerId = tempUser.id
+
+            console.log("tempItem?", tempItem.name)
+            console.log("tempItem ownerid?", tempItem.ownerId)
+
+            //
+            const tempDemoItem = await dispatch(createItemThunk(tempItem));
+
+            // console.log("tempDemoItem?", tempDemoItem)
+
+            if (tempDemoItem) {
+                // console.log("trying to create demo auction")
+
+                const tempDemoAuction = {
+                  auctionName: `Auction for ${tempItem.name}`,
+                  auctionDescription: tempItem.description,
+                  startingBidCents: tempItem.lastKnownPriceCents % 1000000,
+                  startTime: handleTimeNow.toString(),
+                  endTime: tempDatePlus.toString(),
+                  auctionItemId: tempDemoItem.id,
+                //   auctionItemId: allItemsList[0].id,
+                  sellerId: tempUser.id
+                }
+                await dispatch(createAuctionThunk(tempDemoAuction))
+
+                // await dispatch(createAuctionThunk(demoAuction));
+            }
         }
+
+        socket.emit("newAuctionEvent", { note: "mass auction refresh"});
     }
 
     const demoSubmit = async (demoSellerId) => {

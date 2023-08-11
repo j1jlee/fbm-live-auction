@@ -7,7 +7,7 @@ export const demoItems = [
     lastKnownPriceCents : 50000,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/VASE_1_resized.jpg",
 
-    ownerId : 2
+    // ownerId : 2
     },
 
     {
@@ -16,16 +16,16 @@ export const demoItems = [
     lastKnownPriceCents : 7777700,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/TOAST_1_resized.jpg",
 
-    ownerId : 2
+    // ownerId : 2
     },
 
     {
     name : "Anti-Gravity Time Pieces",
-    description : "These clocks defy gravity! Nobody knows why. If you ever win these, invest in some proper hardware to nail these suckers down!",
+    description : "These clocks defy gravity! Nobody knows why. If you ever win these, invest in some proper hardware to nail these things down!",
     lastKnownPriceCents : 125959,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/ANTIQUE_1_resized.jpg",
 
-    ownerId : 2
+    // ownerId : 2
     },
 
 // #for owner 2
@@ -35,7 +35,7 @@ export const demoItems = [
     lastKnownPriceCents : 12595900,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/ANTIQUE_2_resized.jpg",
 
-    ownerId : 3
+    // ownerId : 3
     },
 
     {
@@ -44,7 +44,7 @@ export const demoItems = [
     lastKnownPriceCents : 500,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/CHINA_1_resized.jpg",
 
-    ownerId : 3
+    // ownerId : 3
     },
 
     {
@@ -53,7 +53,7 @@ export const demoItems = [
     lastKnownPriceCents : 10000,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/COINS_1_resized.jpg",
 
-    ownerId : 3
+    // ownerId : 3
     },
 
     {
@@ -62,7 +62,7 @@ export const demoItems = [
     lastKnownPriceCents : 3771300,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/GUITAR_1_resized.jpg",
 
-    ownerId : 3
+    // ownerId : 3
     },
 
     {
@@ -71,7 +71,7 @@ export const demoItems = [
     lastKnownPriceCents : 99900,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/KNIFE_1_resized.jpg",
 
-    ownerId : 3
+    // ownerId : 3
     },
 
 // #owner 3
@@ -81,7 +81,7 @@ export const demoItems = [
     lastKnownPriceCents : 750000,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/HOTEL_1_resized.jpg",
 
-    ownerId : 1
+    // ownerId : 1
     },
 
     {
@@ -90,7 +90,7 @@ export const demoItems = [
     lastKnownPriceCents : 1455000,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/HOTEL_2_resized.jpg",
 
-    ownerId : 1
+    // ownerId : 1
     },
 
     {
@@ -99,7 +99,7 @@ export const demoItems = [
     lastKnownPriceCents : 818100,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/RECORD_1_resized.jpg",
 
-    ownerId : 1
+    // ownerId : 1
     },
 
     {
@@ -108,7 +108,7 @@ export const demoItems = [
     lastKnownPriceCents : 200000,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/SOFA_1_resized.jpg",
 
-    ownerId : 1
+    // ownerId : 1
     },
 
     {
@@ -117,6 +117,6 @@ export const demoItems = [
     lastKnownPriceCents : 150000,
     imageUrl : "https://raw.githubusercontent.com/j1jlee/fbm-live-auction/main/images/SOFA_2_resized.jpg",
 
-    ownerId : 1
+    // ownerId : 1
     }
 ]
