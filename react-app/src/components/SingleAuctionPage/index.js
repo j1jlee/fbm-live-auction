@@ -540,11 +540,14 @@ function SingleAuctionPage() {
                 {/* IMAGE */}
                 {thisItem ? imageHandle(thisItem.imageUrl) : ''}
             </div>
-            <div className="single-auction-bidfeed">
+            <div className={testBidChatList.length < 9 ? "single-auction-bidfeed" : "single-auction-bidfeed single-auction-bidfeed-overflow"}>
                 <ul>
                 {testBidChatList ? bidChatMapper(testBidChatList) : <li>None yet!</li>}
                 {/* {sortedBidList ? bidLogMapper(sortedBidList) : <li>None yet!</li>} */}
                 </ul>
+                <div id="single-auction-bidfeed-anchor">
+
+                </div>
             </div>
 
             <div className={`single-auction-chat-wrapper` + (auctionOver == true ? " single-auction-display-none" : "")}>

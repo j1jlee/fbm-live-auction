@@ -76,6 +76,7 @@
 
 
     display: grid;
+    /* grid-template-rows: .5fr 3fr 2fr 20rem 1fr; */
     grid-template-rows: .5fr 3fr 2fr 2fr 1fr;
 
 }
@@ -110,10 +111,29 @@
     margin: 0.5rem 0;
 }
 .single-auction-bidfeed {
-    overflow-y: scroll;
     padding: 1rem;
     box-shadow: inset lightgray 0px 0px 4px 4px;
+    height: 10rem;
+
+
+
+    /* justify-content: start; */
+
+    overflow-y: scroll;
 }
+
+.single-auction-bidfeed-overflow {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+/* .single-auction-bidfeed * {
+    overflow-anchor: none;
+}
+.single-auction-bidfeed-anchor {
+    overflow-anchor: auto;
+} */
+
 
 .single-auction-bidfeed li {
     list-style: none;
