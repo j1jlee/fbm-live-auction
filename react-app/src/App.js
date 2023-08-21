@@ -18,6 +18,8 @@ import SingleAuctionPage from "./components/SingleAuctionPage";
 // import AaCountdownTest from "./components/AaCountdownTest";
 // import AaSocketTestTwo from "./components/AaSocketTestTwo";
 
+// import { scrollToTop } from "./components/aaaMiddleware";
+
 import AboutPage from "./components/AboutPage";
 import HowToBidPage from "./components/HowToBidPage";
 
@@ -32,6 +34,11 @@ import "./App.css"
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // useEffect(() => {
+  //   scrollToTop();
+  // }, [])
+
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);

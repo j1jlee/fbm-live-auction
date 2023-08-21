@@ -12,7 +12,8 @@ import { useHistory } from "react-router-dom";
 
 import Countdown from "react-countdown";
 
-import { imageHandle } from "../aaaMiddleware";
+// import { imageHandle } from "../aaaMiddleware";
+import { imageHandle, scrollToTop } from "../aaaMiddleware";
 
 import "./SingleAuctionPage.css"
 
@@ -27,6 +28,11 @@ function SingleAuctionPage() {
     // const [ bidLogs, setBidLogs] = useState([]);
     const [ numSwitch, setNumSwitch ] = useState(0)
     const [ boolSwitch, setBoolSwitch ] = useState(true)
+
+    useEffect(() => {
+        scrollToTop();
+    }, [])
+
 
     useEffect(() => {
         dispatch(getAuctionsThunk());

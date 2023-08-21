@@ -91,5 +91,18 @@ function sortBidByTime(bids) {
     return sortedTempBidList;
 }
 
+const scrollToTop = () => {
+    // document.body.scrollTop = 0; //safari
+    // document.documentElement.scrollTop = 0;
+    // console.log("scroll to top?");
+    const thisBody = document.querySelector(".app-just-page");
 
-export { urlToImage, centsToDollars, sortBidByTime, imageHandle, dollarsNumToCents};
+    // if (thisBody) console.log("thisBody?", thisBody)
+
+    thisBody.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
+    // thisBody.scrollTo({top: 0, left: 0, behavior: 'smooth'})
+}
+
+
+export { scrollToTop, urlToImage, centsToDollars, sortBidByTime, imageHandle, dollarsNumToCents};

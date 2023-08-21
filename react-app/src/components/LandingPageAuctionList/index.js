@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 
-import { getAuctionsThunk, closeAuctionThunk } from "../../store/auction";
-import { getItemsThunk, tradeItemThunk } from "../../store/item";
+import { getAuctionsThunk, closeAuctionThunk, createAuctionThunk, deleteAuctionThunk } from "../../store/auction";
+// import { createAuctionThunk, deleteAuctionThunk } from "../../store/auction";
+import { getItemsThunk, tradeItemThunk, createItemThunk } from "../../store/item";
+// import { createItemThunk } from "../../store/item";
 import { getBidsThunk } from "../../store/bid";
 
 
@@ -12,18 +14,16 @@ import OpenModalButton from "../OpenModalButton";
 import AuctionUpdateModal from "../AuctionUpdateModal";
 import AuctionDeleteModal from "../AuctionDeleteModal";
 
-import { centsToDollars } from "../aaaMiddleware";
 // import { urlToImage } from "../aaaMiddleware";
-import { createAuctionThunk, deleteAuctionThunk } from "../../store/auction";
-import { createItemThunk } from "../../store/item";
 
 import { getAllUsersThunk } from "../../store/session";
 
-import { sortBidByTime } from "../aaaMiddleware";
-
 import Countdown from 'react-countdown';
 
-import { imageHandle } from "../aaaMiddleware";
+
+import { centsToDollars, sortBidByTime, imageHandle, scrollToTop } from "../aaaMiddleware";
+// import { sortBidByTime } from "../aaaMiddleware";
+// import { imageHandle } from "../aaaMiddleware";
 
 import { demoItems } from "./DemoAuctionSeed";
 
@@ -507,6 +507,7 @@ function LandingPageAuctionList() {
 
             <div className="landing-page-auction-node-link" onClick={() => {
                 history.push(`/auction/${auction.id}`)
+                // scrollToTop();
             }}>
 
             {/* {() => {
@@ -712,9 +713,16 @@ function LandingPageAuctionList() {
         <div>
             {/* <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button> */}
             <button onClick={() => handleGetUsersButton()}
-            className="landing-page-populate-button"
+            className={thisSession.user ? "landing-page-populate-button" : "update-disabled"}
             >(Demo) Populate Auctions</button>
         </div>
+
+        {/*If not logged in, show login / signup buttons  */}
+        <div>
+            <p>Please login, or signup to start participating in Auctions!</p>
+        </div>
+
+
         <div className="landing-page-auction-wrapper">
             {sortedAuctionsCurrent.length ? renderAuctionNew(sortedAuctionsCurrent)
             :
