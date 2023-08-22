@@ -14,6 +14,9 @@ import OpenModalButton from "../OpenModalButton";
 import AuctionUpdateModal from "../AuctionUpdateModal";
 import AuctionDeleteModal from "../AuctionDeleteModal";
 
+import SignupFormModal from "../SignupFormModal";
+import LoginFormModal from "../LoginFormModal";
+
 // import { urlToImage } from "../aaaMiddleware";
 
 import { getAllUsersThunk } from "../../store/session";
@@ -718,8 +721,18 @@ function LandingPageAuctionList() {
         </div>
 
         {/*If not logged in, show login / signup buttons  */}
-        <div>
+        <div className={thisSession.user ? "update-disabled" : ""}>
             <p>Please login, or signup to start participating in Auctions!</p>
+
+            <div className="landing-page-login-signup-buttons">
+            <OpenModalButton
+            buttonText="Login"
+            modalComponent={<LoginFormModal/>} />
+            <OpenModalButton
+            buttonText="Sign Up"
+            modalComponent={<SignupFormModal/>} />
+
+            </div>
         </div>
 
 

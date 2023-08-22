@@ -15,7 +15,7 @@ function OpenModalCustomText({
   const { setModalContent, setOnModalClose } = useModal();
 
   const onClick = () => {
-    console.log("Open modal custom")
+    //console.log("Open modal custom")
 
     if (onModalClose) setOnModalClose(onModalClose);
     setModalContent(modalComponent);

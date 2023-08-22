@@ -88,7 +88,18 @@
     /* border-radius: 5px; */
 }
 
+.landing-page-login-signup-buttons {
+    display: flex;
+    flex-direction: column;
 
+    /* width: 15rem;
+    height: 4rem; */
+}
+
+.landing-page-login-signup-buttons button {
+    width: 15rem;
+    height: 2rem;
+}
 
 
 
