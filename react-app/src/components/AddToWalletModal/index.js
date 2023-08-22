@@ -55,7 +55,7 @@ function AddToWalletModal() {
         return;
     }
 
-      dispatch(editWalletThunk(currentUser.id, dollarsNumToCents(addAmount)))
+      dispatch(editWalletThunk(currentUser.id, dollarsNumToCents(addAmount), currentUser.id))
 
       // history.push("/");
       closeModal();

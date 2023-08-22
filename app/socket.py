@@ -52,3 +52,7 @@ def handle_bid(data):
 @socketio.on("newAuctionEvent")
 def handle_new_auction(data):
     emit("newAuctionEvent", data, broadcast=True)
+
+# @socketio.on("closeAuctionEvent")
+# def handle_close_auction(data):
+#     emit("closeAuctionEvent", data, broadcast=True)

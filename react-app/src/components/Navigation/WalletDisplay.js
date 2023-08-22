@@ -7,7 +7,9 @@ import AddToWalletModal from '../AddToWalletModal';
 import { useModal } from '../../context/Modal';
 import OpenModalCustomText from '../OpenModalButton/OpenModalCustom';
 
-// import { useSelector } from 'react-redux';
+// import { useEffect } from 'react';
+
+import { useSelector } from 'react-redux';
 
 // import OpenModalButton from '../OpenModalButton';
 
@@ -17,10 +19,11 @@ function WalletDisplay({user}) {
 
     const { setModalContent, setOnModalClose } = useModal();
 
-    // const currentUser = useSelector(state => state.session.user)
+    const currentUser = useSelector(state => state.session.user)
 
     return (
-        <span className={user ? "" : "update-disabled"}>
+        <span className={currentUser ? "" : "update-disabled"}>
+        {/* <span className={user ? "" : "update-disabled"}> */}
         <OpenModalCustomText
             customText="Add Funds to Wallet"
             hoverTitle="Add Funds"
@@ -32,7 +35,8 @@ function WalletDisplay({user}) {
         <span className="wallet-display-money">
             <span className="material-symbols-outlined wallet-display-icon">attach_money</span>
             <span className="wallet-display-cash">
-                {user && centsToDollars(user.cashCents)}
+                {currentUser && centsToDollars(user.cashCents)}
+                {/* {user && centsToDollars(user.cashCents)} */}
             </span>
         </span>
         </span>

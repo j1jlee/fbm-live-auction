@@ -132,7 +132,7 @@ export const getUserThunk = (userId) => async (dispatch) => {
 }
 
 
-export const editWalletThunk = (userId, newCashCents) => async (dispatch) => {
+export const editWalletThunk = (userId, newCashCents, selfId) => async (dispatch) => {
 	const response = await fetch(`/api/users/${userId}/wallet`, {
 		method: "PUT",
 		headers: {
@@ -144,8 +144,14 @@ export const editWalletThunk = (userId, newCashCents) => async (dispatch) => {
 	});
 
 	if (response.ok) {
-		const data = await response.json();
-		dispatch(setUser(data));
+		// const data = await response.json();
+		// dispatch(setUser(data));
+
+		const userUpdates = await fetch(`/api/users/${selfId}`);
+		const selfData = await userUpdates.json();
+
+		dispatch(setUser(selfData));
+
 		return null;
 	} else if (response.status < 500) {
 		const data = await response.json();

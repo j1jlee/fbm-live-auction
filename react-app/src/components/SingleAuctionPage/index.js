@@ -73,11 +73,16 @@ function SingleAuctionPage() {
     const [auctionOver, setAuctionOver] = useState(false);
     const [errors, setErrors] = useState({})
 
+    const [closerList, setCloserList] = useState([])
+
     // console.log("BidLIst?", bidList)
     // console.log("pre sort thisauctionbidlist?", thisAuctionBidList)
     const sortedBidList = sortBidByTime(thisAuctionBidList)
 
     const testBidChatList = sortBidByTime([...thisAuctionBidList, ...chatLog])
+
+
+    let closerPatch = [];
     // console.log("test testBidChatList", testBidChatList)
 
     // console.log("sortedBidList?", sortedBidList)
@@ -318,17 +323,11 @@ function SingleAuctionPage() {
         const finalBuyer = await dispatch(getUserThunk(lastBid.bidderId));
         const finalBidAmount = lastBid.bidAmountCents;
 
-
-
         const finalSellerCashCents = finalSeller.cashCents;
         const finalBuyerCashCents = finalBuyer.cashCents;
-        // console.log("final seller?", finalSeller)
-        // console.log("final buyer?", finalBuyer)
-        // console.log("finalBidAMount?", finalBidAmount)
-        // console.log("finalseller cashcents?", finalSeller.cashCents)
-        // console.log("finalbuyer cashcents?", finalBuyer.cashCents)
-        // console.log("finalSeller after deal?", finalSeller.cashCents + finalBidAmount)
-        // console.log("finalBuyer after deal?", finalBuyer.cashCents + finalBidAmount)
+
+
+        console.log("finalseller, buyer, bidmaount", finalSeller, finalBuyer, finalBidAmount)
 
         if (!thisItem) {
             // console.log(`item doesn't exist at close time of auction ${thisAuction.id}, closing:`);
@@ -338,31 +337,75 @@ function SingleAuctionPage() {
             return;
         }
 
+        // if (auctionOver == false) {
+
+        // }
         dispatch(tradeItemThunk(thisItem.id,
             {
                 lastKnownPriceCents : lastBid.bidAmountCents,
                  ownerId: lastBid.bidderId
             }
         ))
-        .then(dispatch(editWalletThunk(finalSeller.id, (finalBidAmount))))
-        .then(dispatch(editWalletThunk(finalBuyer.id, finalBidAmount * -1)))
+
+        // if (currentUser) {
+        //     socket.emit("closeAuctionEvent", {closerAuctionId: thisAuction.id, closerUserId: currentUser.id})
+        // }
+            // .then(setCloserList(closerList))
+
+            // if (closerList.length && closerList[0].closerUserId == currentUser.id) {
+            //     console.log("currentUser is first closer!", currentUser.id, closerList[0])
+
+            //     dispatch(editWalletThunk(finalSeller.id, (finalBidAmount), currentUser.id))
+            //     .then(dispatch(editWalletThunk(finalBuyer.id, (finalBidAmount * -1), currentUser.id)))
+            // }
+
+
+
         // .then(dispatch(editWalletThunk(finalSeller.id, (finalSeller.cashCents + finalBidAmount))))
         // .then(dispatch(editWalletThunk(finalBuyer.id, (finalBuyer.cashCents - finalBidAmount))))
-        .then(dispatch(closeAuctionThunk(thisAuction.id)))
+        dispatch(closeAuctionThunk(thisAuction.id))
         .then(
             alert(congratsOrSorry(lastBid))
-            // console.log(`Traded item ${thisItem.id} ${thisItem.name} to user ${lastBid.bidderId}`)
             )
+        .then(() => {
+            if (currentUser.id == lastBid.bidderId) {
+                dispatch(editWalletThunk(finalBuyer.id, (finalBidAmount * -1), currentUser.id));
+
+            } else if (currentUser.id == thisAuction.sellerId) {
+                dispatch(editWalletThunk(finalSeller.id, (finalBidAmount), currentUser.id));
+            }
+        })
+        // .then(
+        //     () => {
+        //         // console.log("then check for closerPatch after end", closerPatch, closerPatch.length)
+
+        //         if (closerList.length && closerList[0].closerUserId == currentUser.id) {
+        //         // if (closerList.length && closerList[0].closerUserId == currentUser.id) {
+        //             console.log("currentUser is first closer!", currentUser.id, closerList[0])
+
+        //             dispatch(editWalletThunk(finalSeller.id, (finalBidAmount), currentUser.id))
+        //             .then(dispatch(editWalletThunk(finalBuyer.id, (finalBidAmount * -1), currentUser.id)))
+        //     }
+
+        // }
+        // )
 
         // console.log("\n\n\nthis auction is open, with timer over! closing:")
     }
 
     function congratsOrSorry(lastestBid) {
         let message = "";
+
+
         try {
             if (currentUser.id == lastestBid.bidderId) {
                 message = `Congrats! You just won the ${thisItem.name}! It's been added to your Item list.`
+                // await dispatch(editWalletThunk(finalBuyer.id, (finalBidAmount * -1), currentUser.id));
+
             } else if (currentUser.id == thisAuction.sellerId) {
+
+                // await dispatch(editWalletThunk(finalSeller.id, (finalBidAmount), currentUser.id));
+
                 message = `Your item ${thisItem.name} has just been won by User ${lastestBid.bidderId}! The bid amount $${centsToDollars(lastestBid.bidAmountCents)} has been added to your wallet!`
             } else {
                 message = `Bidding is over! Sadly, seems like User ${lastestBid.bidderId} got away with the ${thisItem.name}! It's been added to their inventory; Better luck next time!`
@@ -376,6 +419,10 @@ function SingleAuctionPage() {
     //
     //
 
+    useEffect(() => {
+        console.log("latest closerList", closerList);
+        console.log("thisauction closed?", thisAuction)
+    }, [closerList])
 
     useEffect(() => {
 
@@ -430,6 +477,33 @@ function SingleAuctionPage() {
 
             }
         })
+
+        // socket.on("closeAuctionEvent", (closer) => {
+
+        //     if (closer.closerAuctionId === thisAuction.id)
+
+        //     setCloserList((closerList) => {
+
+        //         console.log("closer", closer)
+        //         let tempCloserList = [...closerList];
+        //         tempCloserList.push(closer);
+
+        //         //hack, ridiculous
+        //         // closerPatch = [...tempCloserList];
+
+        //         // console.log("tempCloserList?", tempCloserList)
+        //         // console.log("closerPatch?", closerPatch)
+
+        //         return tempCloserList;
+        //     })
+
+        //     setBoolSwitch(!boolSwitch);
+
+        //     dispatch(createBidThunk(junkBid()));
+
+        //     dispatch(deleteJunkThunk())
+
+        // })
         // when component unmounts, disconnect
         return (() => {
             socket.disconnect()
