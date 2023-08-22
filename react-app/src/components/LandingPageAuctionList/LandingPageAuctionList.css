@@ -1,6 +1,53 @@
 
+.landing-page-login-signup-buttons {
+    display: flex;
+    flex-direction: column;
 
+    /* margin: 0.5rem 0; */
+    /* width: 15rem;
+    height: 4rem; */
+}
 
+.landing-page-login-signup-buttons button {
+    width: 15rem;
+    height: 2rem;
+
+    border-radius: 5px;
+
+    color: #F0F8FF;
+
+    font-size: 100%;
+    font-weight: 600;
+}
+
+.landing-page-login-signup-buttons button:hover {
+    cursor: pointer;
+}
+
+.landing-page-blurb {
+    padding: 1rem 0;
+}
+
+.landing-page-login-button button {
+
+    background-color: #007FFF;
+    border: none;
+    margin: 0.3rem;
+}
+
+.landing-page-login-button button:active {
+    background-color: #006cd8;
+}
+
+.landing-page-signup-button button {
+    background-color: #2bad2b;
+    border: none;
+    margin: 0 0.3rem;
+}
+
+.landing-page-signup-button button:active {
+    background-color: #218421;
+}
 
 .landing-page-auction-wrapper {
     display: flex;
@@ -88,18 +135,6 @@
     /* border-radius: 5px; */
 }
 
-.landing-page-login-signup-buttons {
-    display: flex;
-    flex-direction: column;
-
-    /* width: 15rem;
-    height: 4rem; */
-}
-
-.landing-page-login-signup-buttons button {
-    width: 15rem;
-    height: 2rem;
-}
 
 
 

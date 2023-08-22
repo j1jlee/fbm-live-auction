@@ -706,52 +706,78 @@ function LandingPageAuctionList() {
 
 
     return (
-        <>
-        {/* <h1>Auction List Page here!</h1> */}
 
-        <h2>Today's picks</h2>
-        <p className="landing-page-title-description">
-            Select an auction to participate in, bid and win!
-        </p>
-        <div>
-            {/* <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button> */}
-            <button onClick={() => handleGetUsersButton()}
-            className={thisSession.user ? "landing-page-populate-button" : "update-disabled"}
-            >(Demo) Populate Auctions</button>
-        </div>
-
-        {/*If not logged in, show login / signup buttons  */}
-        <div className={thisSession.user ? "update-disabled" : ""}>
-            <p>Please login, or signup to start participating in Auctions!</p>
-
-            <div className="landing-page-login-signup-buttons">
-            <OpenModalButton
-            buttonText="Login"
-            modalComponent={<LoginFormModal/>} />
-            <OpenModalButton
-            buttonText="Sign Up"
-            modalComponent={<SignupFormModal/>} />
-
+        thisSession.user ?
+            <>
+            {/* <h1>Auction List Page here!</h1> */}
+            <h2>Today's picks</h2>
+            <p className="landing-page-title-description">
+                Select an auction to participate in, bid and win!
+            </p>
+            <div>
+                {/* <button onClick={() => demoSubmit(2)}>Create Demo Auction (from User 2)</button> */}
+                <button onClick={() => handleGetUsersButton()}
+                className={thisSession.user ? "landing-page-populate-button" : "update-disabled"}
+                >(Demo) Populate Auctions</button>
             </div>
-        </div>
 
+            <div className="landing-page-auction-wrapper">
+                {sortedAuctionsCurrent.length ? renderAuctionNew(sortedAuctionsCurrent)
+                :
+                "No current auctions!"}
+                {/* {renderAuction(sortedAuctionsCurrent)} */}
+            </div>
 
-        <div className="landing-page-auction-wrapper">
-            {sortedAuctionsCurrent.length ? renderAuctionNew(sortedAuctionsCurrent)
+            <br></br>
+            <hr></hr>
+            <br></br>
+
+            <h2>Past Auctions:</h2>
+            <div className="landing-page-auction-wrapper">
+                {sortedAuctionsPassed.length && renderAuctionPassedNew(sortedAuctionsPassed)}
+            </div>
+            </>
+
             :
-            "No current auctions!"}
-            {/* {renderAuction(sortedAuctionsCurrent)} */}
-        </div>
 
-        <br></br>
-        <hr></hr>
-        <br></br>
+            <>
+            {/*If not logged in, show login / signup buttons  */}
+            <div className={thisSession.user ? "update-disabled" : ""}>
 
-        <h2>Past Auctions:</h2>
-        <div className="landing-page-auction-wrapper">
-            {sortedAuctionsPassed.length && renderAuctionPassedNew(sortedAuctionsPassed)}
-        </div>
-        </>
+            <h2>Welcome to Marketplace Live Auction!</h2>
+                <div className="landing-page-blurb">
+                    {/* <p>Marketplace Live Auction is a site where you can auction off or bid for various items and antiques.</p>
+                        <br></br> */}
+                    <p>Take part in various timed auctions, and <strong>outbid</strong> other users to win! </p>
+                        <br></br>
+                    <p><strong>Upload Items</strong> to auction off, and watch as other users race against the clock to offer you the greatest bid!</p>
+                        <br></br>
+                    <p>Find new homes for your old treasures. Wade through a sea of auctions to find your diamond in the rough.</p>
+                        <br></br>
+
+                    <h2>Post. Bid. Win!</h2>
+                </div>
+
+                <div className="landing-page-blurb-login">
+                <p>To get started, please login (or signup) below:</p>
+                    <div className="landing-page-login-signup-buttons">
+                        <span className="landing-page-login-button"
+                                title="Login">
+                            <OpenModalButton
+                            buttonText="Login"
+                            modalComponent={<LoginFormModal/>} />
+                        </span>
+
+                        <span className="landing-page-signup-button"
+                                title="Sign Up">
+                            <OpenModalButton
+                            buttonText="Sign Up"
+                            modalComponent={<SignupFormModal/>} />
+                        </span>
+                    </div>
+                </div>
+            </div>
+            </>
     )
 }
 
